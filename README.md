@@ -103,7 +103,7 @@ The application uses the public Supabase key and the learner's session. The priv
 - [AGENTS.md](AGENTS.md): project instructions and product boundaries.
 - [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
 - [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
-- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): completed foundation and subsequent acceptance gates.
+- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. The next package is **C1: persist existing course context**.
 - [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.
 - [Original Word strategy](docs/reference/Meno_Product_Strategy.docx): preserved source reference.
 

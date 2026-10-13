@@ -1,10 +1,45 @@
 # Meno implementation plan
 
-Prepared on 13 October 2026 after reviewing the complete handoff and Word strategy. Repository organization, application bootstrap, and Slice 1 are implemented. Slice 2 is next; the full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
+Updated on 13 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, application bootstrap, and Slice 1 are implemented. Slice 2 is next; the full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
 
 Build a persistent mentor that helps a returning learner take a useful next step and see why it matters. The first complete demonstration runs from existing course context to diagnostic evidence, accepted recovery work, evaluated submission, and a changed opportunity requirement gap.
 
 There is no fixed deadline. Work in dependency order, finish each acceptance gate, and keep the returning-learner journey as the priority when choosing scope.
+
+## What we are building
+
+Meno connects **learner context → observable skill evidence → a useful next action → practical work → clearer opportunity gaps**. The Passport preserves that continuity. The Momentum Engine helps a learner move forward; the Opportunity Engine gives that work a credible destination. The interface should always explain the next action and why it fits this learner.
+
+| Product area | What the learner can do when the core product is complete | Delivery stage |
+|---|---|---|
+| Account and Passport | Sign in, keep goals and preferences, inspect evidence and its source, return without losing context | Foundation exists; evidence view grows in Stages 3–4; account/data controls in Stage 7 |
+| Existing learning | Describe a course or class, correct mapped topics, mark the current checkpoint, and continue from there | Stage 3 |
+| Skill assessment | Take a short check, skip or retry, and understand strengths, uncertainty, and gaps | Stage 3 |
+| Learning path | Accept, edit, or decline a manageable milestone linked to the current course and goal | Stage 3; revisions in Stage 4 |
+| Mentor workspace | Ask a course-aware question, see a different explanation, and choose relevant practice or a vetted resource | Stage 4 |
+| Practical work | Submit bounded work, see rubric-based feedback, and inspect exactly which evidence changed | Stage 4 |
+| Recovery | Explain an obstacle, reduce a plan, or resume after a pause without losing previous evidence | Stage 4 |
+| Opportunity Radar | Inspect requirements, sources, eligibility uncertainty, relevant evidence, and a useful gap-closing task | Stage 5 |
+| Research and operations | Understand limitations, report a problem, control personal data, and use a reliable supported pilot | Research throughout; Stages 6–7 |
+
+### Four journeys, one shared system
+
+| Entry | Initial path | What must be preserved |
+|---|---|---|
+| Returning or stuck — primary | Existing course/checkpoint → selective diagnostic → short recovery milestone → supported task → changed opportunity gap | Retained strengths and prior progress; no automatic restart |
+| Just starting | Goal → gentle prerequisite check → small first milestone → explanation and practice | Ability to skip, choose pace, and see why the first step matters |
+| Actively learning | Current course/module → a stated question or obstacle → relevant help → optional check/task | Existing course order and current checkpoint |
+| Seeking opportunities | Goal and self-reported/project context → requirements comparison → targeted evidence-building task | Existing evidence and freedom to explore; a project link alone is not verified skill |
+
+The first working domain remains frontend JavaScript. Other domains are visible in the long-term scope, not silently claimed as supported by the first diagnostic.
+
+### Release boundaries
+
+- **Core prototype — Stages 0–6:** The entire returning-learner loop works with real persistence, a bounded live mentor integration, deterministic checks, learner-approved plans, and clearly labeled demo opportunities. The other entry states reuse this system. A model-unavailable fallback remains usable.
+- **Pilot — Stage 7:** Selected real learners can use hosted authentication, recovery flows, data controls, verified content, monitored services, and a documented support process. This is a separate release gate, not implied by a successful local demo.
+- **Expansion — Stage 8:** Broader subjects, languages, uploads, notifications, offline support, and partnerships follow observed learner needs and viable operating costs.
+
+The existing strategy remains the product source of truth. This roadmap sequences its capabilities; it does not add employment guarantees, automated application decisions, or a new product direction.
 
 ## Scope and decision status
 
@@ -25,6 +60,24 @@ Initial defaults proposed for implementation are a frontend JavaScript curriculu
 | 4. Slice 3: Mentor and Momentum | Stage 3 | Contextual help, practical task, approved recovery revision | Evaluated work changes relevant evidence and the next action. |
 | 5. Slice 4: Opportunity Radar | Stage 4; requirements fixture can start in Stage 3 | Transparent skill gaps connected to learning | New evidence changes only the opportunity requirements it supports. |
 | 6. Slice 5: Demo and resilience | Stages 2–5 | Reproducible full journey, alternative entries, mobile/error validation | David's story completes without manual database changes between steps. |
+| 7. Pilot readiness | Stage 6 plus hosting, content, and operating decisions | Hosted access, account recovery, data controls, verified content, monitoring, learner feedback | Pilot release gate below passes; real learner access is intentionally enabled. |
+| 8. Expansion | Pilot findings and measured operating needs | Prioritized broader capabilities | Each addition solves an observed need and has its own acceptance gate. |
+
+```mermaid
+flowchart LR
+    F["Passport foundation · complete"] --> C["Course context"]
+    C --> D["Diagnostic evidence"]
+    D --> P["Accepted next milestone"]
+    P --> M["Mentor and practical work"]
+    M --> R["Recovery and plan revisions"]
+    M --> O["Opportunity gap comparison"]
+    R --> V["Complete journey verification"]
+    O --> V
+    V --> B["Pilot release"]
+    B --> X["Evidence-led expansion"]
+```
+
+Resource curation and a fictional opportunity requirements fixture can be prepared alongside assessment design. Build the product in the order above; this does not require multiple agents or independent services.
 
 ### Stage 0 — Repository organization
 
@@ -115,11 +168,42 @@ Completed: restored root instructions, strategy/design documents, diagrams, orig
 2. Run David's complete flow from sign-in through changed opportunity gaps using actual application actions. Provide reset instructions for local demo data; require no manual database edits during the journey.
 3. Verify phone-sized layouts, keyboard navigation, labels/focus, readable feedback, low-bandwidth text paths, loading states, and network retries. If drafts exist locally, distinguish unsynced from saved state.
 4. Exercise cross-user attacks, malicious imported text, broken resources, model unavailability, and failed/partial saves. Verify no tokens or private coursework leak into browser bundles or logs.
-5. Complete setup, data-handling, fixture, and limitation documentation. Test a clean local installation. If a deployment is requested, choose and configure the target, inspect migrations and environment boundaries, and run smoke checks after deployment.
+5. Complete setup, data-handling, fixture, and limitation documentation. Test a clean local installation and prepare the Stage 7 release handoff. Hosted pilot access remains subject to that stage's release gate.
 6. Prepare a concise demo script showing context, evidence before/after, recovery, and opportunity reasoning. Make simulation and assessment limits visible.
 7. Run learner usability sessions when participants are available. Resolve the survey contact-wording issue before sharing it. Record findings about the next action, constraints, and motivation without presenting a small sample as proof of long-term retention or employment outcomes.
 
 **Acceptance:** The primary journey succeeds without hidden operator interventions, remains truthful when a dependency fails, and has passed the relevant automated and manual checks. Beginner and opportunity-seeking flows reuse the same evidence model.
+
+### Stage 7 — Prepare a real learner pilot
+
+This stage extends the prototype into a supported release. Its details are proposed work, not a claim that the current local app is production-ready.
+
+| Work package | Build and operating work | Completion evidence |
+|---|---|---|
+| B1. Account lifecycle | Configure hosted email confirmation and delivery, password reset, expired-link handling, sign-out/session behavior, and account settings | A new user confirms, signs in, resets a forgotten password, returns, and signs out through actual email flows |
+| B2. Data control | Explain stored fields and model processing; implement authenticated export and deliberate account deletion; define retention for messages, outlines, attempts, logs, and backups | Owner-scoped export is usable; deletion removes the intended account records and related private artifacts; backup-retention limits are stated accurately |
+| B3. Hosted operations | Choose hosting and database projects, separate environments, manage secrets, apply migrations, configure error monitoring and request/cost limits, and document backup/restore and rollback | Clean remote CI, staging smoke checks, a tested restore procedure, and a release/runbook review; no private data in telemetry |
+| B4. Content and support | Verify a small real resource/opportunity set, define freshness checks and expiry behavior, make reporting a broken source or misleading feedback possible, and establish a support owner | Sources have provenance and checked dates; expired/unverified entries are distinguishable; reported issues reach a defined review process |
+| B5. Pilot evaluation | Recruit appropriate learners through an agreed research process, explain the prototype's limits, observe complete journeys, review assessment disagreements, and compare repeated sessions | Documented findings drive a prioritized revision list; outcome claims are limited to observed evidence |
+
+**Release gate:** The core journey passes in staging with hosted services; account recovery and data controls work; live content is verified; error/cost monitoring and operational ownership exist; learner-facing limitations are accurate. Configure and prepare the release before requesting any still-needed deployment or spend authorization. This planning request does not itself provision paid services, publish the app, or contact participants.
+
+### Stage 8 — Expansion backlog and entry conditions
+
+These cover the wider product ambition. They remain options to prioritize after learning from the prototype and pilot, rather than mandatory work before the first useful release.
+
+| Capability | What an implementation would include | Start when |
+|---|---|---|
+| More tech domains | Domain-specific taxonomy, vetted resources, diagnostic items, practical rubrics, and relevant opportunity requirements | The first domain's learning loop is useful and there is evidence of demand for the next one |
+| Multilingual support | Externalized UI copy, reviewed translations, locale-aware prompts/content, right-to-left layout where needed, and assessment parity checks | Learner demand identifies priority languages and reviewers are available |
+| Permitted document uploads | Bounded formats/sizes, private storage, authorized retrieval, safe parsing, provenance, and deletion | Pasted outlines are a demonstrated obstacle; storage and retention controls exist |
+| Opt-in reminders | Preferences, timezone, quiet hours, unsubscribe, delivery logs, retries, and respectful message limits | In-app recovery proves useful and learners explicitly request outbound support |
+| Offline improvements | Saved read access, clearly marked unsynced drafts, retry/conflict handling, and private-device safeguards | Network observations show graceful reconnection is insufficient |
+| Broader real opportunities | Additional opportunity types, eligibility fields, source agreements, freshness workflows, and application outcome tracking with consent | A small verified catalog is maintainable and useful |
+| Stronger project assessment | Better rubrics, reviewer adjudication, supported artifact formats, and isolated execution only where required | Fixed exercises cannot evaluate the needed skill and grader operations can be supported |
+| Partnerships and access funding | School/community pilots, employer feedback, operating cost analysis, and a sustainable funding approach | Learner value and actual costs are measured; free-to-learner access has a viable model |
+
+Social feeds, a full LMS, broad crawling, autonomous agents, and application automation are not assumed requirements. Add them only through an explicit product decision justified by evidence.
 
 ## First implementation work package — delivered
 
@@ -129,6 +213,52 @@ Local verification on 13 October 2026: clean `npm ci` completed with no reported
 
 **Next work package:** Stage 3 / Slice 2. Begin with owned course/module records, bounded pasted outlines, editable skill mapping, and a versioned deterministic diagnostic. Add the provider adapter only when extraction first needs it, with manual mapping as a fallback. Carry evidence through to a learner-accepted recovery milestone. Persistence and isolation are now established prerequisites.
 
+## Work queue and reviewable changes
+
+Use these IDs in commits or future issues to keep implementation tied to an observable outcome. Every item is **planned** unless marked complete above. The order is a dependency sequence, not a calendar estimate.
+
+| ID | Work package | Depends on | Acceptance gate |
+|---|---|---|---|
+| C1 | Course draft, modules, checkpoint, and ownership model | Foundation | Authenticated services save, edit, read, and confirm permitted course context; other users cannot access it |
+| C2 | Editable course UI and manual skill mapping | C1 | Unknown topics stay visibly unmapped; the learner can correct order, topics, and checkpoint without losing the original draft |
+| AI1 | Bounded provider adapter and outline extraction | C2; provider/cost configuration for live calls | Validated candidate topics appear as a draft; injected text, provider failure, and unknown skills cannot alter confirmed context; manual mapping still works |
+| D1 | Versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side |
+| D2 | Diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
+| P1 | Next-step selection and revisioned milestone proposals | D2; small resource/requirements fixture | Different evidence or study constraints produce different justified small milestones; unassessed skills are not treated as failures |
+| P2 | Path UI and accept/edit/decline behavior | P1 | Only an accepted proposal replaces the active plan; stale or duplicate requests cannot overwrite a newer revision |
+| M1 | Course-aware mentor workspace and resource selection | P2, AI1 | Explanation and recommendations reference the learner's actual context and vetted resources; provider failure preserves saved work |
+| T1 | Bounded practical exercise, rubric, and submission UI | P2; exercise/rubric decisions | The learner can submit and inspect feedback; incomplete or unsupported work is explicitly inconclusive; arbitrary code is never executed in the app |
+| T2 | Atomic evidence, task result, and next-action update | T1 | A scoped result changes only supported skill findings and the relevant next action; retries cannot double-award evidence |
+| R1 | In-app check-in and recovery proposals | M1, T2 | A learner states an obstacle and accepts, edits, or declines a smaller revision; simulated inactivity is labeled; prior evidence survives |
+| O1 | Curated opportunity records, requirements, and read UI | D1 shared skills; T1 evidence scope | Demo, verified, unverified, and expired records are distinguishable; required/preferred skills and non-skill eligibility remain separate |
+| O2 | Explainable comparison, saved opportunities, and gap-to-task link | O1, T2, P2 | New relevant evidence changes its requirement comparison; unrelated requirements remain unchanged; a chosen gap can propose a learning task |
+| Q1 | Full journey, alternative entries, accessibility, and failure checks | C1–O2 | Returning and beginner journeys pass; active and opportunity-seeking entries preserve context; mobile, keyboard, retry, and isolation checks pass |
+| Q2 | Repeatable demo, documentation, and learner-review preparation | Q1 | A fresh local setup completes the story without hidden database edits; research materials are ready and available usability findings are recorded |
+| B1–B5 | Pilot readiness packages above | Q2 and required provider/hosting decisions | Pilot release gate passes |
+
+Live-provider setup gates the live AI acceptance checks, not C1/C2 or the deterministic assessment/path work. Controlled test responses are test fixtures and must never appear in the product as live mentor output. O1's requirements fixture is prepared early so assessments and opportunities refer to the same skills.
+
+Research participant availability does not block the local prototype. Keep unperformed learner studies visibly pending; carry them into the pilot rather than treating internal testing as customer validation.
+
+### The next three implementation changes
+
+1. **C1 — Persist existing course context.** Add the smallest course/module schema, draft/confirmed state, selected checkpoint, grants/RLS, strict request schemas, and typed services. Store a bounded permitted outline and its learner corrections. Add ownership, validation, confirmation, and retry tests. Derive learner identity from the session; never trust a supplied owner ID.
+2. **C2 — Let learners review and continue their course.** Add a reachable import/review flow from onboarding or the dashboard. Capture title/source, optional reference URL, outline, modules, and where the learner stopped. Support manual mapping to canonical skills, explicit unmapped topics, edit/cancel/retry, and a persisted confirmation step. Verify a returning learner can reload without being forced back to the beginning.
+3. **AI1 — Suggest topics safely.** Add server-only provider configuration, a narrow extraction contract, time/size limits, response validation, and uncertainty labels. Call the provider outside database transactions, then validate and save only the draft for the authenticated learner. Confirmed course context changes only after learner review. Exercise real extraction when configuration is available; otherwise retain the manual path and continue to D1.
+
+These changes complete the course-context portion of Slice 2. They do not yet claim that a learner's skills were assessed or that a recovery plan was generated.
+
+## How each work package is implemented
+
+1. **Define the behavior.** Write the learner action, expected saved state, boundary cases, and acceptance check. Inspect current code and the relevant installed framework documentation before choosing an implementation.
+2. **Settle the contract.** Define ownership, states/transitions, data bounds, required evidence, and request/response schemas. Add the minimum migration, grants, RLS, and indexes. Generate database types from the resulting schema.
+3. **Implement the domain operation.** Keep authorization and domain writes on the server. Put feature rules in `src/features/`, shared infrastructure in `src/lib/`, route handlers in `src/app/`, and reusable presentation in `src/components/`. Keep assessed evidence behind trusted evaluation operations.
+4. **Build the actual learner flow.** Connect forms and screens to persistent services. Include meaningful loading, empty, failure, retry, and confirmation states. Reuse the current visual system and keep phone-sized, text-first interaction usable.
+5. **Verify the outcome.** Use unit tests for nontrivial rules, actual database tests for ownership/atomicity, and browser checks for the affected journey. Add model-contract fixtures where AI is involved. Run relevant checks and the build; avoid tests that merely repeat implementation details.
+6. **Record and commit.** Update current status, setup, migration notes, and decisions. Review the diff for unintended changes, secrets, and generated output. Commit a coherent package with its validation evidence. Do not mark an item complete while its acceptance check remains blocked.
+
+Keep one application and one authoritative database. A new feature should not require a new service, agent framework, queue, or generic abstraction unless a concrete requirement demands it. Review the running product at each milestone, rather than postponing all usability work until Stage 6.
+
 ## Data and AI boundaries
 
 The normal write path is: authenticate → validate input → authorize related records → run the domain operation → persist a consistent result → return safe application state. Client fields and model output are inputs, never proof of permission.
@@ -136,6 +266,34 @@ The normal write path is: authenticate → validate input → authorize related 
 Model output is a typed proposal. Validate known IDs and learner ownership after schema validation, and reject the entire operation when it is invalid. Use atomic database operations for evidence/state/event updates and for accepted revisions. Model failures should preserve the last valid application state.
 
 Human-editable goals, preferences, and course corrections are distinct from evaluated evidence. Opportunity matching reads evidence; it cannot manufacture it. The full schema can grow with each slice, but these boundaries must hold from the first migration.
+
+### Persistence and state contracts to carry forward
+
+| Area | State and data contract |
+|---|---|
+| Course | Distinguish editable draft from confirmed context; store module order, mapped/unmapped topics, checkpoint, and revision. An AI re-extraction cannot silently replace learner corrections. |
+| Assessment | Retain the exact question/rubric version, bounded submitted responses, evaluated skill scope, result, and evidence references. A retry returns the same outcome; a retake is a distinct attempt. |
+| Evidence | Keep prior observations and limitations. Specify how later evidence changes the current skill summary before shipping retakes; neither a self-report nor an unsupported model judgment may overwrite assessed history. |
+| Plan | Separate proposal from accepted revision. Keep one active plan per relevant goal, scope milestones to it, reject stale updates, and preserve previous revisions and learner choices. |
+| Practical work | Distinguish submission, feedback, task completion, and demonstrated skill. Persist result/evidence/event changes consistently; do not label missing or unevaluable work as either passed or failed. |
+| Mentor | Assemble bounded context from authorized records. Treat source text as data; validate all suggested IDs and actions. Define minimum message retention before saving conversations. |
+| Opportunity | Retain source, checked date, verification/demo status, requirements, and eligibility uncertainty. Comparisons reference evidence and the requirement version used; saved records belong to the learner. |
+| Event history | Use bounded event types and references for meaningful actions. Do not duplicate full coursework, private conversations, or credentials in analytics/event payloads. |
+
+Server checks protect both ordinary API requests and direct database access. Expensive model calls happen outside transactions; only a validated result with current ownership/revision checks enters the final atomic write.
+
+### Division of responsibility between rules and AI
+
+| Operation | Authoritative behavior | Appropriate AI contribution | Failure behavior |
+|---|---|---|---|
+| Outline mapping | Known skill IDs, input bounds, ownership, and learner confirmation | Suggest topics and candidate mappings with uncertainty | Manual entry and correction |
+| Diagnostic | Versioned answer keys and deterministic scoped scoring | Explain an already established finding | Show stored results and a fixed explanation |
+| Next milestone | Prerequisites, actual evidence, available study time, known tasks, and acceptance | Draft a rationale or bounded proposal | Conservative valid milestone from the known task set |
+| Mentor response | Authorized context, allowed operations, source IDs, and request limits | Explain, clarify, and suggest practice | Current task/resources remain available; offer a retry |
+| Practical feedback | Defined rubric, checkable observations, and evidence transition policy | Assist with rubric feedback within documented limits | Mark unsupported evaluation inconclusive and allow revision/review |
+| Opportunity comparison | Explicit requirements, recorded evidence, source status, and eligibility fields | Explain the computed gaps in plain language | Deterministic requirement-by-requirement comparison |
+
+Before any AI-assisted practical feedback can support `demonstrated`, document the supported evidence, rubric criteria, validation, and disagreement/review path. Model confidence alone never creates mastery. Maintain adversarial fixtures for injected instructions, invented IDs/sources, cross-user requests, malformed responses, refusals, timeouts, and duplicate submissions.
 
 ## Release evidence
 
@@ -154,8 +312,38 @@ Human-editable goals, preferences, and course corrections are distinct from eval
 
 Use unit tests for deterministic rules, database integration tests for authorization and consistency, and Playwright for user journeys. Live model calls are a separately configured smoke check; required tests should use controlled responses and not depend on paid API availability.
 
+## Research, measurement, and decisions
+
+Research runs alongside delivery. Prepare the survey/interview and usability materials from the existing strategy, resolve its optional-contact wording, and have the founder arrange any participant outreach. This task does not publish a survey or send messages. Keep findings separate from product claims; a small exploratory sample does not establish retention or employment impact.
+
+| Question | Useful evidence | How it changes the build |
+|---|---|---|
+| Can learners resume without restarting? | Observe where returning learners set their checkpoint, correct mapping, and choose the first task | Adjust course review, diagnostic scope, or next-step selection |
+| Does the recommendation make sense? | Learner explains the suggested action and its reason in their own words | Improve evidence display and rationale before adding more content |
+| Does assessment reflect the work? | Compare rubric findings with independently reviewed sample attempts; inspect disagreement and retakes | Revise questions/rubrics and evidence rules, not just AI wording |
+| Does recovery help? | Record offered/accepted/declined revisions and whether a meaningful task is later completed | Adjust intervention size and tone without equating absence with failure |
+| Do opportunities clarify purpose? | Learner identifies a requirement, its evidence, its uncertainty, and a useful next task | Improve gap explanations and catalog relevance |
+| Is it accessible and affordable to operate? | Mobile/keyboard observations, failed saves, response latency, provider failures, and actual request cost | Prioritize usability, fallbacks, caching, or model limits |
+
+Track minimal events such as assessment completion, milestone acceptance/completion, recovery choice, and opportunity inspection, with necessary context and no raw private content. Report denominators and observations; clicks, chat volume, and streaks are not proof of skill growth. Set pilot success targets from a baseline and agreed research goals rather than inventing numbers now.
+
+| Decision | Working position | Resolve before |
+|---|---|---|
+| Stack and architecture | Adopted Next.js/TypeScript/local Supabase modular monolith | Already recorded; revisit only for a concrete need |
+| Demonstration domain | Existing frontend JavaScript taxonomy | D1 final question set; wider domains wait for Stage 8 |
+| David's API finding | Keep API integration unassessed until observed; promises needs review only with evidence | D1 fixture acceptance; record reconciliation in the technical design |
+| Diagnostic thresholds and retakes | Versioned objective items, skips unknown, retained history | D1/D2 evidence transition implementation |
+| Practical rubric | Bounded task and checkable criteria; AI feedback limits visible | T1/T2 before skill promotion |
+| Provider, model, and spend | Configurable provider adapter; no hard-coded model/pricing assumption | AI1 live calls; founder supplies credentials and operating budget when needed |
+| Resources and opportunities | Small vetted resource set; clearly labeled fictional requirements first | P1/M1 fixtures; real sources checked before live publication |
+| Mentor/source retention | Minimum needed for continuity; user-visible policy | M1 persistence, then B2 for pilot export/deletion |
+| Hosting and release | Proposed hosting target remains unprovisioned | B3; review current service constraints and costs then |
+| Reminders/languages/funding | In-app English prototype, stored language preference, free-access ambition | Pilot feedback and Stage 8 prioritization |
+
+No question in this table blocks unrelated local work. Record a working default as a proposal, an implemented technical choice as adopted, and a founder-confirmed product decision only when it is actually confirmed.
+
 ## Deferred work and decision checkpoints
 
-Defer broad curriculum coverage, automatic crawling, paid-course integrations, arbitrary-code grading infrastructure, a vector database, microservices, external notification delivery, billing, full offline sync, and production multilingual coverage.
+Stage 8 captures the wider ambition. Defer broad curriculum coverage, automatic crawling, paid-course integrations, arbitrary-code grading infrastructure, a vector database, microservices, external notification delivery, billing, full offline sync, and production multilingual coverage from the core prototype.
 
 Before each affected stage, resolve only what is needed: stack/auth/database configuration at bootstrap; diagnostic/rubric and fixture reconciliation before assessment; model/cost limits before live mentor integration; real source verification before live listings; hosting and access settings before deployment. Record approved changes in the existing decision logs. These checkpoints do not delay independent local development.
