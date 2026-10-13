@@ -15,7 +15,9 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 - Atomic, retry-safe Passport saves and tested database access controls.
 - Unit, database integration, and browser tests, plus a CI workflow.
 
-Course import, diagnostics, AI mentoring, recovery plans, and opportunity matching are subsequent slices in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). No hosted deployment or live AI provider is configured.
+**C1: Course-context persistence** is also implemented at the API/database layer. Authenticated learners can save versioned course drafts, ordered modules, topic mappings, and a checkpoint; confirm the revision they reviewed; and retrieve draft and confirmed context separately. Updates reject stale revisions, retries return their original result, and private course records are protected by grants and RLS. The [course API contract](docs/COURSE_CONTEXT.md) describes the endpoints and limits.
+
+The course editing interface (C2), AI extraction, diagnostics, mentoring, recovery plans, and opportunity matching are subsequent packages in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). No hosted deployment or live AI provider is configured.
 
 ## Local development
 
@@ -25,6 +27,7 @@ Use Node.js `22.23.2`, npm `10.9.8`, and a running Docker engine. From the repos
 nvm use
 npm ci
 npm run db:start
+npm run db:migrate
 npm run db:env
 npm run dev
 ```
@@ -34,6 +37,8 @@ Open [Meno locally](http://localhost:3000), choose **Create an account**, and co
 `db:env` creates an ignored `.env.local` from the local Supabase stack without printing credentials. It refuses to overwrite an existing file: skip that step on an already configured checkout. [`.env.example`](.env.example) documents each variable. Keep `NEXT_PUBLIC_APP_URL` equal to the browser origin, including the port, when changing the development address.
 
 The local stack uses API port `54321`, database port `54322`, and email preview port `54324`. Email confirmation is disabled **only in the local development configuration**. Hosted authentication and email delivery will need separate configuration before deployment.
+
+After pulling a feature branch with new migrations, run `npm run db:migrate` against the running local stack. It applies pending migrations without resetting existing learner data. New checkouts also use this command; already-applied migrations are skipped.
 
 `npm run db:stop` stops the local stack and preserves its data. To intentionally erase **all local learner accounts and application data**, use `npm run db:reset`; it reapplies migrations and the shared skill seed. The reset command explicitly targets the local database. Automated tests instead remove or roll back their own temporary learners.
 
@@ -64,6 +69,7 @@ meno/
 │   ├── TECHNICAL_DESIGN.md
 │   ├── PROJECT_REVIEW.md
 │   ├── IMPLEMENTATION_PLAN.md
+│   ├── COURSE_CONTEXT.md
 │   ├── assets/
 │   └── reference/
 │       └── Meno_Product_Strategy.docx
@@ -94,7 +100,7 @@ The implemented stack is a TypeScript modular monolith using Next.js App Router,
 
 Routes authenticate and validate requests, feature services load or save domain state, and the database enforces ownership and evidence rules. `save_passport` derives identity from authentication, serializes concurrent saves for each learner, and deduplicates request IDs. Clients cannot write assessed evidence or promote their own skills directly.
 
-Stored data currently includes the authentication account, chosen entry state, goal, optional display name and learning preferences, unassessed skill records, and bounded Passport save events. No course submissions, AI conversation logs, or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
+Stored data includes the authentication account, chosen entry state, goal, optional display name and learning preferences, unassessed skill records, and bounded history events. The course API additionally stores permitted outlines, module/topic mappings, self-reported checkpoints, and retained course revisions. Course history receipts contain request fingerprints and revision IDs, not copies of the outline. No assessed task submissions, AI conversation logs, or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
 
 The application uses the public Supabase key and the learner's session. The privileged local test key is only for test setup and cleanup; it is not used by application code. OpenAI and hosting remain future integrations.
 
@@ -103,11 +109,16 @@ The application uses the public Supabase key and the learner's session. The priv
 - [AGENTS.md](AGENTS.md): project instructions and product boundaries.
 - [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
 - [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
-- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. The next package is **C1: persist existing course context**.
+- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. C1 is complete; the next package is **C2: editable course UI and manual skill mapping**.
+- [Course-context contract](docs/COURSE_CONTEXT.md): implemented API, draft/confirmation behavior, limits, and verification.
 - [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.
 - [Original Word strategy](docs/reference/Meno_Product_Strategy.docx): preserved source reference.
 
 Implementation references: [Next.js setup](https://nextjs.org/docs/app/getting-started/installation), [Supabase server-side authentication](https://supabase.com/docs/guides/auth/server-side/creating-a-client?framework=nextjs), [row-level security](https://supabase.com/docs/guides/database/postgres/row-level-security), and [local development](https://supabase.com/docs/guides/local-development/cli/getting-started).
+
+## Contribution workflow
+
+Create or switch to a feature branch before changing files. Commit coherent, verified work on that branch; do not commit directly to `main`. Keep the implementation plan and relevant contracts current as each package is delivered.
 
 ## Product boundaries
 

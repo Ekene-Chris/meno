@@ -5,7 +5,91 @@ export type Database = {
 
   "public": {
           Tables: {
-            "learner_skills": {
+            "course_modules": {
+                  Row: {
+                    "course_id": string,"id": string,"position": number,"revision": number,"title": string,"topics": NonNullable<Json>,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "course_id": string,"id": string,"position": number,"revision": number,"title": string,"topics": NonNullable<Json>,"user_id": string
+                  }
+                  Update: {
+                    "course_id"?: string,"id"?: string,"position"?: number,"revision"?: number,"title"?: string,"topics"?: NonNullable<Json>,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "course_modules_course_id_revision_user_id_fkey"
+      columns: ["course_id","revision","user_id"]
+isOneToOne: false
+      referencedRelation: "course_revisions"
+      referencedColumns: ["course_id","revision","user_id"]
+    }
+                  ]
+                },"course_revisions": {
+                  Row: {
+                    "checkpoint_module_id": string | null,"checkpoint_note": string | null,"confirmed_at": string | null,"course_id": string,"created_at": string,"outline": string,"revision": number,"source_type": string,"source_url": string | null,"title": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "checkpoint_module_id"?: string | null,"checkpoint_note"?: string | null,"confirmed_at"?: string | null,"course_id": string,"created_at"?: string,"outline": string,"revision": number,"source_type": string,"source_url"?: string | null,"title": string,"user_id": string
+                  }
+                  Update: {
+                    "checkpoint_module_id"?: string | null,"checkpoint_note"?: string | null,"confirmed_at"?: string | null,"course_id"?: string,"created_at"?: string,"outline"?: string,"revision"?: number,"source_type"?: string,"source_url"?: string | null,"title"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "course_checkpoint_module_fk"
+      columns: ["course_id","revision","checkpoint_module_id"]
+isOneToOne: false
+      referencedRelation: "course_modules"
+      referencedColumns: ["course_id","revision","id"]
+    },{
+      foreignKeyName: "course_revisions_course_id_user_id_fkey"
+      columns: ["course_id","user_id"]
+isOneToOne: false
+      referencedRelation: "course_summaries"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "course_revisions_course_id_user_id_fkey"
+      columns: ["course_id","user_id"]
+isOneToOne: false
+      referencedRelation: "courses"
+      referencedColumns: ["id","user_id"]
+    }
+                  ]
+                },"courses": {
+                  Row: {
+                    "confirmed_revision": number | null,"created_at": string,"id": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "confirmed_revision"?: number | null,"created_at"?: string,"id"?: string,"revision": number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "confirmed_revision"?: number | null,"created_at"?: string,"id"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "course_confirmed_revision_fk"
+      columns: ["id","confirmed_revision"]
+isOneToOne: false
+      referencedRelation: "course_revisions"
+      referencedColumns: ["course_id","revision"]
+    },{
+      foreignKeyName: "course_latest_revision_fk"
+      columns: ["id","revision"]
+isOneToOne: false
+      referencedRelation: "course_revisions"
+      referencedColumns: ["course_id","revision"]
+    },{
+      foreignKeyName: "courses_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"learner_skills": {
                   Row: {
                     "last_evidence_id": string | null,"skill_id": string,"status": string,"updated_at": string,"user_id": string
                   }
@@ -39,14 +123,14 @@ isOneToOne: false
                   ]
                 },"learning_events": {
                   Row: {
-                    "entity_id": string | null,"id": string,"occurred_at": string,"request_id": string,"type": string,"user_id": string
+                    "entity_id": string | null,"id": string,"occurred_at": string,"request_hash": string | null,"request_id": string,"result": Json | null,"type": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "entity_id"?: string | null,"id"?: string,"occurred_at"?: string,"request_id": string,"type": string,"user_id": string
+                    "entity_id"?: string | null,"id"?: string,"occurred_at"?: string,"request_hash"?: string | null,"request_id": string,"result"?: Json | null,"type": string,"user_id": string
                   }
                   Update: {
-                    "entity_id"?: string | null,"id"?: string,"occurred_at"?: string,"request_id"?: string,"type"?: string,"user_id"?: string
+                    "entity_id"?: string | null,"id"?: string,"occurred_at"?: string,"request_hash"?: string | null,"request_id"?: string,"result"?: Json | null,"type"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -160,10 +244,42 @@ isOneToOne: false
                 }
           }
           Views: {
-            [_ in never]: never
+            "course_summaries": {
+                  Row: {
+                    "confirmed_revision": number | null,"id": string | null,"revision": number | null,"source_type": string | null,"title": string | null,"updated_at": string | null,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    {
+      foreignKeyName: "course_confirmed_revision_fk"
+      columns: ["id","confirmed_revision"]
+isOneToOne: false
+      referencedRelation: "course_revisions"
+      referencedColumns: ["course_id","revision"]
+    },{
+      foreignKeyName: "course_latest_revision_fk"
+      columns: ["id","revision"]
+isOneToOne: false
+      referencedRelation: "course_revisions"
+      referencedColumns: ["course_id","revision"]
+    },{
+      foreignKeyName: "courses_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                }
           }
           Functions: {
-            "save_passport":
+            "confirm_course":
+{ Args: { "p_course_id": string,"p_expected_revision": number,"p_request_id": string }; Returns: Json
+                           },
+"save_course_draft":
+{ Args: { "p_course_id"?: string,"p_expected_revision": number,"p_input": Json,"p_request_id": string }; Returns: Json
+                           },
+"save_passport":
 { Args: { "p_input": Json,"p_request_id": string }; Returns: undefined
                            }
           }

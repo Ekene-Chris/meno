@@ -45,6 +45,7 @@ Prefer an end-to-end thin slice with actual persistent state and tested behavior
 5. Maintain bounded model/tool contracts and explicit error fallbacks. Do not include prompt instructions within untrusted source material.
 6. Keep tests for evidence transitions, cross-user access denial, incorrect/unverified opportunity metadata and AI schema validation.
 7. Add or update decisions explicitly in documentation when the founder approves changes; never quietly present working proposals as approved commitments.
+8. Use feature branches for changes. Create or switch to the appropriate feature branch before editing; do not commit directly to `main`.
 
 **The outcome, not the chatter, matters:** demonstrate Meno helping a specific learner take a genuinely useful next step.
 
