@@ -1,2 +1,118 @@
-# meno
-AI-learning mentor
+# Meno
+
+**Learn anywhere. Get mentored here.**
+
+Meno is a persistent, course-agnostic AI learning and career mentor. It helps learners who have stalled regain momentum, demonstrate practical skills, and connect their progress to credible opportunities. Beginners and learners seeking opportunities share the same underlying learner context.
+
+## Current implementation
+
+Application bootstrap and **Slice 1: Learner Passport** are implemented:
+
+- Email/password account creation, sign-in, cookie sessions, and sign-out.
+- Four onboarding entries: beginning, returning or stuck, actively learning, and exploring opportunities.
+- A private, persistent goal, optional learning preferences, and Passport dashboard.
+- Fourteen shared frontend skills, initially **not assessed**, with evidence provenance enforced in the database.
+- Atomic, retry-safe Passport saves and tested database access controls.
+- Unit, database integration, and browser tests, plus a CI workflow.
+
+Course import, diagnostics, AI mentoring, recovery plans, and opportunity matching are subsequent slices in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). No hosted deployment or live AI provider is configured.
+
+## Local development
+
+Use Node.js `22.23.2`, npm `10.9.8`, and a running Docker engine. From the repository root:
+
+```sh
+nvm use
+npm ci
+npm run db:start
+npm run db:env
+npm run dev
+```
+
+Open [Meno locally](http://localhost:3000), choose **Create an account**, and complete onboarding. `nvm use` is optional if the required Node version is already installed. The Supabase CLI is a pinned project dependency; a global installation is unnecessary.
+
+`db:env` creates an ignored `.env.local` from the local Supabase stack without printing credentials. It refuses to overwrite an existing file: skip that step on an already configured checkout. [`.env.example`](.env.example) documents each variable. Keep `NEXT_PUBLIC_APP_URL` equal to the browser origin, including the port, when changing the development address.
+
+The local stack uses API port `54321`, database port `54322`, and email preview port `54324`. Email confirmation is disabled **only in the local development configuration**. Hosted authentication and email delivery will need separate configuration before deployment.
+
+`npm run db:stop` stops the local stack and preserves its data. To intentionally erase **all local learner accounts and application data**, use `npm run db:reset`; it reapplies migrations and the shared skill seed. The reset command explicitly targets the local database. Automated tests instead remove or roll back their own temporary learners.
+
+## Verification
+
+With the local database running and `.env.local` configured:
+
+```sh
+npm run check
+npm run test:integration
+npm run test:browser:install
+npm run test:e2e
+npm run build
+```
+
+`check` runs Biome lint, TypeScript, and unit tests. Integration tests exercise the real database, including anonymous and cross-user denial, evidence integrity, concurrent saves, and retries. Browser tests start their own application on port `3100` and check persistence, session reentry, mobile onboarding, and protected APIs. Database and browser test setup rejects non-loopback database/API hosts.
+
+Regenerate database types after schema changes with `npm run db:types`. [CI](.github/workflows/checks.yml) uses the same setup and verification commands; it has not yet run remotely. CI does not deploy the application.
+
+## Repository layout
+
+```text
+meno/
+├── AGENTS.md
+├── README.md
+├── docs/
+│   ├── PRODUCT_STRATEGY.md
+│   ├── TECHNICAL_DESIGN.md
+│   ├── PROJECT_REVIEW.md
+│   ├── IMPLEMENTATION_PLAN.md
+│   ├── assets/
+│   └── reference/
+│       └── Meno_Product_Strategy.docx
+├── src/
+│   ├── app/
+│   ├── components/
+│   ├── features/
+│   ├── lib/
+│   ├── types/
+│   └── proxy.ts
+├── supabase/
+│   ├── migrations/
+│   ├── seed.sql
+│   ├── config.toml
+│   └── setup.mjs
+└── tests/
+    ├── unit/
+    ├── integration/
+    ├── e2e/
+    └── helpers/
+```
+
+This follows the agreed layout, with root tooling files and `.github/` supporting development. The temporary directory guides have been consolidated into this single README. Create further feature modules as their slices are implemented.
+
+## Architecture and data boundaries
+
+The implemented stack is a TypeScript modular monolith using Next.js App Router, React, Tailwind, Supabase/Postgres, and Zod. Dependency versions are pinned in `package.json` and `package-lock.json`. Biome, Vitest, and Playwright cover lint, domain/database checks, and browser behavior.
+
+Routes authenticate and validate requests, feature services load or save domain state, and the database enforces ownership and evidence rules. `save_passport` derives identity from authentication, serializes concurrent saves for each learner, and deduplicates request IDs. Clients cannot write assessed evidence or promote their own skills directly.
+
+Stored data currently includes the authentication account, chosen entry state, goal, optional display name and learning preferences, unassessed skill records, and bounded Passport save events. No course submissions, AI conversation logs, or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
+
+The application uses the public Supabase key and the learner's session. The privileged local test key is only for test setup and cleanup; it is not used by application code. OpenAI and hosting remain future integrations.
+
+## Project documents
+
+- [AGENTS.md](AGENTS.md): project instructions and product boundaries.
+- [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
+- [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
+- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): completed foundation and subsequent acceptance gates.
+- [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.
+- [Original Word strategy](docs/reference/Meno_Product_Strategy.docx): preserved source reference.
+
+Implementation references: [Next.js setup](https://nextjs.org/docs/app/getting-started/installation), [Supabase server-side authentication](https://supabase.com/docs/guides/auth/server-side/creating-a-client?framework=nextjs), [row-level security](https://supabase.com/docs/guides/database/postgres/row-level-security), and [local development](https://supabase.com/docs/guides/local-development/cli/getting-started).
+
+## Product boundaries
+
+- Track 2, learner engagement, and Track 3, guidance and opportunity, drive the product.
+- Record self-report, observed answers, assessed work, and AI inference distinctly.
+- Persist only authorized, validated changes; require appropriate learner confirmation for plan revisions.
+- Label fictional opportunities and simulated inactivity visibly as demo data.
+- Preserve learner agency, course independence, privacy, accessibility, and text-first mobile use.

@@ -1,36 +1,45 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies and local package cache
+/node_modules/
+/.npm/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Test output and saved browser sessions
+/coverage/
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
 
-# testing
-/coverage
-
-# next.js
+# Generated application builds and profiles
 /.next/
+/.next-profiles/
 /out/
+/build/
 
-# production
-/build
-
-# misc
-.DS_Store
+# Local environment and private keys; keep the setup template tracked
+.env
+.env.*
+!.env.example
 *.pem
+*.key
+*.p12
+*.pfx
 
-# debug
+# Local logs and operating-system metadata
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.DS_Store
+Thumbs.db
 
-# local env files
-.env*.local
-.env
+# Local hosting configuration
+/.vercel/
 
-# vercel
-.vercel
-
-# typescript
+# Generated TypeScript state
 *.tsbuildinfo
-next-env.d.ts
+/next-env.d.ts
+
+# Local Supabase CLI state; migrations, config, and seeds stay tracked
+/supabase/.temp/
+/supabase/.branches/
