@@ -26,7 +26,7 @@ export function jsonError(error: unknown) {
   );
 }
 
-export async function readMutation(request: Request) {
+export async function readMutation(request: Request, maxBytes = 8192) {
   const expectedOrigin = new URL(process.env.NEXT_PUBLIC_APP_URL || request.url).origin;
   if (request.headers.get("origin") !== expectedOrigin) {
     throw new AppError(403, "INVALID_ORIGIN", "Please submit this form from Meno.");
@@ -42,7 +42,7 @@ export async function readMutation(request: Request) {
     const { done, value } = await reader.read();
     if (done) break;
     length += value.length;
-    if (length > 8192) {
+    if (length > maxBytes) {
       await reader.cancel();
       throw new AppError(413, "INPUT_TOO_LARGE", "Please shorten your response and try again.");
     }

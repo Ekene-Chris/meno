@@ -36,6 +36,14 @@ describe("mutation boundary", () => {
       code: "INVALID_INPUT",
     });
   });
+  it("allows a course-sized request only when explicitly configured and counts UTF-8 bytes", async () => {
+    const body = JSON.stringify({ outline: "x".repeat(9000) });
+    await expect(readMutation(request(body), 65536)).resolves.toHaveProperty("outline");
+    await expect(readMutation(request(body))).rejects.toMatchObject({ status: 413 });
+    await expect(
+      readMutation(request(JSON.stringify({ outline: "語".repeat(22000) })), 65536),
+    ).rejects.toMatchObject({ status: 413 });
+  });
   it("accepts bounded same-origin JSON", async () => {
     await expect(readMutation(request('{"ok":true}'))).resolves.toEqual({ ok: true });
   });

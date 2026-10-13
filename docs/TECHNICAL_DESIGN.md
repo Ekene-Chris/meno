@@ -6,7 +6,7 @@
 **Companion document:** [`PRODUCT_STRATEGY.md`](PRODUCT_STRATEGY.md)  
 **Source of truth:** The product strategy explains **why** and **for whom**; this document explains **how** the hackathon proof of concept should work. Resolve conflicts explicitly with the founder rather than silently choosing one document.
 
-**Implementation update — 13 October 2026:** Bootstrap and Slice 1 are now implemented. Most of this document remains the broader blueprint; it does not imply that AI mentoring, diagnostics, or opportunity matching are already available. See Section 16 for adopted implementation choices and the [implementation plan](IMPLEMENTATION_PLAN.md) for verified progress.
+**Implementation update — 13 October 2026:** Bootstrap, Slice 1, and C1's course-context API/database foundation are implemented. See the [course-context contract](COURSE_CONTEXT.md) for its versioned schema and routes. Most of this document remains the broader blueprint; it does not imply that the course editor, AI mentoring, diagnostics, or opportunity matching are already available. See Section 16 for adopted implementation choices and the [implementation plan](IMPLEMENTATION_PLAN.md) for verified progress.
 
 > **Meno's promise:** Learn anywhere. Get mentored here.  
 > **Technical north star:** Preserve a learner's context, detect their next useful step, validate actual skill progress, and connect progress to credible opportunities.
@@ -571,8 +571,12 @@ These are **questions Codex should surface briefly**, but they should not be use
 | 13 Oct 2026 | Persisted four entry states and optional learning constraints; seeded 14 frontend skills and acyclic prerequisites; added scoped evidence foundations | Implemented; learners begin with all skills not assessed |
 | 13 Oct 2026 | Restricted private tables with grants and RLS; clients cannot insert assessed evidence or promote their own skills | Actual anonymous, authenticated, and cross-user database tests pass |
 | 13 Oct 2026 | Adopted Biome, Vitest, and Playwright with local Supabase tests and a CI workflow | Local lint/type/unit/database/browser checks pass; remote CI has not run |
+| 13 Oct 2026 | Use feature branches for changes instead of committing directly to `main` | Founder requested; recorded in `AGENTS.md` and the contribution workflow |
+| 13 Oct 2026 | C1 uses `courses`, retained `course_revisions`, and revision-scoped `course_modules`; confirmed context remains separate from later drafts | Implemented on `feat/course-context-foundation`; API and database tests pass |
+| 13 Oct 2026 | Bounded course save/confirm functions derive identity, validate shared skill references and checkpoints, compare revisions, and persist retry fingerprints/results with history events | Implemented and tested for direct RPC input, ownership, rollback, duplicate requests, and concurrency |
+| 13 Oct 2026 | `GET/POST /api/courses`, `GET/PUT /api/courses/{id}`, and `POST /api/courses/{id}/confirm` precede the course editor and extraction | Implemented; reference URLs are stored only, and course input does not create assessment evidence |
 
-OpenAI integration, hosting, course ingestion, diagnostic rubrics, recovery milestones, and opportunity matching remain future work. These implementation choices record what was built under the instruction to proceed; they do not relabel the remaining proposals as founder-approved decisions.
+The course editor, AI extraction, OpenAI integration, hosting, diagnostic rubrics, recovery milestones, and opportunity matching remain future work. These implementation choices record what was built under the instruction to proceed; they do not relabel the remaining proposals as founder-approved decisions.
 
 ## 17. Codex start instruction
 

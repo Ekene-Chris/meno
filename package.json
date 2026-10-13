@@ -20,6 +20,7 @@
     "test:browser:install": "node --env-file-if-exists=.env.local node_modules/@playwright/test/cli.js install chromium",
     "check": "npm run lint && npm run typecheck && npm test",
     "db:start": "supabase start",
+    "db:migrate": "supabase migration up --local",
     "db:env": "node supabase/setup.mjs",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset --local",
