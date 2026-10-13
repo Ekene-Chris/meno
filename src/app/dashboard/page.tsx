@@ -98,11 +98,14 @@ export default async function Dashboard() {
         </span>
         <div>
           <p className="eyebrow">YOUR CONTEXT IS SAVED</p>
-          <h2>A foundation for your next step.</h2>
+          <h2>Pick up where you left off.</h2>
           <p className="chapter-description">
-            You can return to this Passport and update your goals at any time. Course connections,
-            skill checks, and mentor guidance are coming in the next version.
+            Bring a course or class, arrange its topics, and save your place. Your progress belongs
+            here, even after a pause. Skill checks and mentor guidance are coming next.
           </p>
+          <Link href="/courses" className="text-link">
+            Continue with your courses <ArrowUpRight size={16} aria-hidden="true" />
+          </Link>
         </div>
       </section>
       <section className="skills-section">
@@ -143,7 +146,11 @@ export default async function Dashboard() {
               <span>
                 {event.type === "onboarding_completed"
                   ? "Your Learner Passport began"
-                  : "You updated your learning context"}
+                  : event.type === "course_draft_saved"
+                    ? "You saved a course draft"
+                    : event.type === "course_confirmed"
+                      ? "You confirmed your course context"
+                      : "You updated your learning context"}
               </span>
               <time dateTime={event.occurred_at}>
                 {new Intl.DateTimeFormat("en", {

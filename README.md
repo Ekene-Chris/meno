@@ -17,7 +17,9 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **C1: Course-context persistence** is also implemented at the API/database layer. Authenticated learners can save versioned course drafts, ordered modules, topic mappings, and a checkpoint; confirm the revision they reviewed; and retrieve draft and confirmed context separately. Updates reject stale revisions, retries return their original result, and private course records are protected by grants and RLS. The [course API contract](docs/COURSE_CONTEXT.md) describes the endpoints and limits.
 
-The course editing interface (C2), AI extraction, diagnostics, mentoring, recovery plans, and opportunity matching are subsequent packages in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). No hosted deployment or live AI provider is configured.
+**C2: Course editor and review** is implemented on `feat/course-editor`. Open **My courses** from the dashboard or navigation to add a course, arrange modules and topics, choose shared skills or leave topics unmapped, and keep your checkpoint. Save a draft, review it, then explicitly confirm it. Later edits retain the previous confirmed context. Conflicting saves preserve your form for comparison; uncertain saves can be retried without duplicates.
+
+AI extraction, diagnostics, mentoring, recovery plans, and opportunity matching are subsequent packages in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). No hosted deployment or live AI provider is configured.
 
 ## Local development
 
@@ -54,9 +56,9 @@ npm run test:e2e
 npm run build
 ```
 
-`check` runs Biome lint, TypeScript, and unit tests. Integration tests exercise the real database, including anonymous and cross-user denial, evidence integrity, concurrent saves, and retries. Browser tests start their own application on port `3100` and check persistence, session reentry, mobile onboarding, and protected APIs. Database and browser test setup rejects non-loopback database/API hosts.
+`check` runs Biome lint, TypeScript, and unit tests. Integration tests exercise the real database, including anonymous and cross-user denial, evidence integrity, concurrent saves, and retries. Browser tests start their own application on port `3100` and check persistence, session reentry, mobile onboarding/course editing, manual mapping, checkpoint changes, confirmation, conflicts, lost responses, pagination, and protected routes. Database and browser test setup rejects non-loopback database/API hosts.
 
-Regenerate database types after schema changes with `npm run db:types`. [CI](.github/workflows/checks.yml) uses the same setup and verification commands; it has not yet run remotely. CI does not deploy the application.
+Regenerate database types after schema changes with `npm run db:types`. [CI](.github/workflows/checks.yml) uses the same setup and verification commands; C1's checks passed on [PR #1](https://github.com/Ekene-Chris/meno/pull/1). CI does not deploy the application.
 
 ## Repository layout
 
@@ -109,7 +111,7 @@ The application uses the public Supabase key and the learner's session. The priv
 - [AGENTS.md](AGENTS.md): project instructions and product boundaries.
 - [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
 - [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
-- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. C1 is complete; the next package is **C2: editable course UI and manual skill mapping**.
+- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. C1 and C2 are complete; the next package is **AI1: bounded provider adapter and outline extraction**.
 - [Course-context contract](docs/COURSE_CONTEXT.md): implemented API, draft/confirmation behavior, limits, and verification.
 - [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.
 - [Original Word strategy](docs/reference/Meno_Product_Strategy.docx): preserved source reference.

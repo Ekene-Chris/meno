@@ -6,7 +6,7 @@
 **Companion document:** [`PRODUCT_STRATEGY.md`](PRODUCT_STRATEGY.md)  
 **Source of truth:** The product strategy explains **why** and **for whom**; this document explains **how** the hackathon proof of concept should work. Resolve conflicts explicitly with the founder rather than silently choosing one document.
 
-**Implementation update — 13 October 2026:** Bootstrap, Slice 1, and C1's course-context API/database foundation are implemented. See the [course-context contract](COURSE_CONTEXT.md) for its versioned schema and routes. Most of this document remains the broader blueprint; it does not imply that the course editor, AI mentoring, diagnostics, or opportunity matching are already available. See Section 16 for adopted implementation choices and the [implementation plan](IMPLEMENTATION_PLAN.md) for verified progress.
+**Implementation update — 13 October 2026:** Bootstrap, Slice 1, C1's course-context API/database foundation, and C2's manual course editor/review are implemented. See the [course-context contract](COURSE_CONTEXT.md) for the learner flow, versioned schema, and routes. Most of this document remains the broader blueprint; AI extraction/mentoring, diagnostics, and opportunity matching are not yet available. See Section 16 for adopted implementation choices and the [implementation plan](IMPLEMENTATION_PLAN.md) for verified progress.
 
 > **Meno's promise:** Learn anywhere. Get mentored here.  
 > **Technical north star:** Preserve a learner's context, detect their next useful step, validate actual skill progress, and connect progress to credible opportunities.
@@ -570,13 +570,15 @@ These are **questions Codex should surface briefly**, but they should not be use
 | 13 Oct 2026 | Atomic `save_passport` function derives authenticated identity, serializes each learner's saves, deduplicates request IDs, and enforces one active goal | Implemented and tested, including concurrent saves and rollback |
 | 13 Oct 2026 | Persisted four entry states and optional learning constraints; seeded 14 frontend skills and acyclic prerequisites; added scoped evidence foundations | Implemented; learners begin with all skills not assessed |
 | 13 Oct 2026 | Restricted private tables with grants and RLS; clients cannot insert assessed evidence or promote their own skills | Actual anonymous, authenticated, and cross-user database tests pass |
-| 13 Oct 2026 | Adopted Biome, Vitest, and Playwright with local Supabase tests and a CI workflow | Local lint/type/unit/database/browser checks pass; remote CI has not run |
+| 13 Oct 2026 | Adopted Biome, Vitest, and Playwright with local Supabase tests and a CI workflow | Local lint/type/unit/database/browser checks pass; C1's remote CI passed on PR #1 |
 | 13 Oct 2026 | Use feature branches for changes instead of committing directly to `main` | Founder requested; recorded in `AGENTS.md` and the contribution workflow |
 | 13 Oct 2026 | C1 uses `courses`, retained `course_revisions`, and revision-scoped `course_modules`; confirmed context remains separate from later drafts | Implemented on `feat/course-context-foundation`; API and database tests pass |
 | 13 Oct 2026 | Bounded course save/confirm functions derive identity, validate shared skill references and checkpoints, compare revisions, and persist retry fingerprints/results with history events | Implemented and tested for direct RPC input, ownership, rollback, duplicate requests, and concurrency |
 | 13 Oct 2026 | `GET/POST /api/courses`, `GET/PUT /api/courses/{id}`, and `POST /api/courses/{id}/confirm` precede the course editor and extraction | Implemented; reference URLs are stored only, and course input does not create assessment evidence |
+| 13 Oct 2026 | C2 adds private course list/new/review pages, manual mapping, module order and checkpoint editing, and explicit saved-version confirmation | Implemented on `feat/course-editor`, based on merged C1; no schema migration or AI configuration required |
+| 13 Oct 2026 | Preserve unsaved form data on conflicts; require explicit comparison/replacement; reuse uncertain request IDs and reread current state after receipts | Browser checks cover competing saves/confirmations, lost responses with intervening edits, cancel, mobile entry, and returning sessions |
 
-The course editor, AI extraction, OpenAI integration, hosting, diagnostic rubrics, recovery milestones, and opportunity matching remain future work. These implementation choices record what was built under the instruction to proceed; they do not relabel the remaining proposals as founder-approved decisions.
+AI extraction, OpenAI integration, hosting, diagnostic rubrics, recovery milestones, and opportunity matching remain future work. These implementation choices record what was built under the instruction to proceed; they do not relabel the remaining proposals as founder-approved decisions.
 
 ## 17. Codex start instruction
 

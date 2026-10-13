@@ -8,7 +8,7 @@ export function AppShell({
   active,
 }: {
   children: React.ReactNode;
-  active: "passport" | "onboarding";
+  active: "passport" | "onboarding" | "courses";
 }) {
   return (
     <div className="app-layout">
@@ -19,12 +19,21 @@ export function AppShell({
           <Link
             href="/dashboard"
             className={active === "passport" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "passport" ? "page" : undefined}
           >
             <LayoutDashboard size={18} aria-hidden="true" /> My Passport
           </Link>
           <Link
+            href="/courses"
+            className={active === "courses" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "courses" ? "page" : undefined}
+          >
+            <BookOpen size={18} aria-hidden="true" /> My courses
+          </Link>
+          <Link
             href="/onboarding"
             className={active === "onboarding" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "onboarding" ? "page" : undefined}
           >
             <BookOpen size={18} aria-hidden="true" /> Goals & preferences
           </Link>
