@@ -31,6 +31,7 @@ export const config = {
     "/courses/:path*",
     "/assessment/:path*",
     "/learning-path/:path*",
+    "/mentor/:path*",
     "/sign-in",
     "/auth/:path*",
     "/api/:path*",

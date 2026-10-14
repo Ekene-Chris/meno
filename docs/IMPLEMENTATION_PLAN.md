@@ -1,6 +1,6 @@
 # Meno implementation plan
 
-Updated on 14 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1 is merged through PR #4; D1/D2 diagnostic evidence and P1 proposals are merged; P2 review is implemented on its feature branch.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 was merged through [PR #2](https://github.com/Ekene-Chris/meno/pull/2) with passing CI. Hosted development setup is recorded in [HOSTED_DEVELOPMENT.md](HOSTED_DEVELOPMENT.md). The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
+Updated on 14 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1 is merged through PR #4; D1/D2 diagnostic evidence and P1 proposals are merged; P2 review is merged through PR #8; M1 is implemented on its feature branch.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 was merged through [PR #2](https://github.com/Ekene-Chris/meno/pull/2) with passing CI. Hosted development setup is recorded in [HOSTED_DEVELOPMENT.md](HOSTED_DEVELOPMENT.md). The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
 
 Build a persistent mentor that helps a returning learner take a useful next step and see why it matters. The first complete demonstration runs from existing course context to diagnostic evidence, accepted recovery work, evaluated submission, and a changed opportunity requirement gap.
 
@@ -56,7 +56,7 @@ Initial defaults proposed for implementation are a frontend JavaScript curriculu
 | 0. Repository organization | None | Canonical handoff paths, preserved sources, review and plan | Complete; initial source checksums passed. Temporary guides are now consolidated in the root README. |
 | 1. Application bootstrap | Stage 0 | Runnable application and reproducible development setup | Complete; clean install, lint, typecheck, unit tests, setup helper, and production build pass. |
 | 2. Slice 1: Passport foundation | Stage 1 | Authentication, goals, constraints, private persisted learner context | Implemented; session reentry, atomic saves, cross-user denial, and evidence restrictions pass database/browser tests. |
-| 3. Slice 2: Course, diagnostic, recovery | Stage 2 | Editable syllabus mapping, real assessment evidence, proposed/accepted milestone | In progress: C1/C2/AI1 are merged; D1/D2 are merged; P1 is merged through PR #7. P2 implements review and learner-approved activation on its feature branch. Full gate: different results yield different justified next steps. |
+| 3. Slice 2: Course, diagnostic, recovery | Stage 2 | Editable syllabus mapping, real assessment evidence, proposed/accepted milestone | In progress: C1/C2/AI1 are merged; D1/D2 are merged; P1 is merged through PR #7. P2 is merged through PR #8; M1 adds contextual mentor help on its feature branch. Full gate: different results yield different justified next steps. |
 | 4. Slice 3: Mentor and Momentum | Stage 3 | Contextual help, practical task, approved recovery revision | Evaluated work changes relevant evidence and the next action. |
 | 5. Slice 4: Opportunity Radar | Stage 4; requirements fixture can start in Stage 3 | Transparent skill gaps connected to learning | New evidence changes only the opportunity requirements it supports. |
 | 6. Slice 5: Demo and resilience | Stages 2–5 | Reproducible full journey, alternative entries, mobile/error validation | David's story completes without manual database changes between steps. |
@@ -117,7 +117,7 @@ Completed: restored root instructions, strategy/design documents, diagrams, orig
 
 ### Stage 3 — Slice 2: Course context, assessment, and first recovery plan
 
-**Status:** C1/C2 are complete; AI1 and D1 are merged through PRs #4/#5. D2 is merged through PR #6. P1 is merged through PR #7. P2 adds learner review and acceptance on `feat/recovery-step-review`. The [course-context contract](COURSE_CONTEXT.md) records the manual flow; the [diagnostic contract](DIAGNOSTIC.md) records attempts, deterministic evaluation, evidence precedence and limitations.
+**Status:** C1/C2 are complete; AI1 and D1 are merged through PRs #4/#5. D2 is merged through PR #6. P1 is merged through PR #7. P2 is merged through PR #8. M1 adds contextual help on `feat/mentor-workspace`. The [course-context contract](COURSE_CONTEXT.md) records the manual flow; the [diagnostic contract](DIAGNOSTIC.md) records attempts, deterministic evaluation, evidence precedence and limitations.
 
 **Directories:** `features/resources/`, `features/assessment/`, `features/learning-paths/`, `app/assessment/`, `app/learning-path/`, the necessary API routes, and the first `lib/ai/` schemas/provider adapter.
 
@@ -253,7 +253,7 @@ Proposal saves use authenticated context/receipt reads before the existing trust
 
 See [RECOVERY_PROPOSALS.md](RECOVERY_PROPOSALS.md) for policy, resource review deadlines, API contracts, limits and P2 requirements. Local lint, TypeScript, 111 unit tests, 54 database checks and all 24 browser journeys are verified. The production build passes and compiled browser assets contain no privileged key values or answer keys. The additive migration is applied to the authorized development project without resetting data. Remote CI and live preview acceptance results are tracked in the P1 PR.
 
-### P2 follow-up — implemented on a feature branch
+### P2 follow-up — merged through PR #8
 
 Added /learning-path, evidence-linked explanations, explicit confirmed-course selection, editable bounded tasks, a second acceptance/decline confirmation, a separate accepted step and paginated proposal history. Edits create immutable pending revisions; one decision is allowed per proposal. Only a fresh latest pending proposal can replace the accepted step. Declining an obsolete proposal remains safe and preserves prior work. No action completes a task, changes a course checkpoint or awards evidence.
 
@@ -261,7 +261,13 @@ The additive schema stores owner-scoped immutable decisions and exact action rec
 
 Local lint, TypeScript, 113 unit tests and 63 real database checks pass. All 30 browser journeys are verified (28 passed in the full run; two fixture/assertion corrections passed on targeted rerun). The production build passes; compiled browser assets contain no privileged key values or diagnostic answer keys. The 320-pixel review layout was inspected. The additive migration is applied to meno-dev without resetting data. Remote CI and live preview verification are tracked in the P2 PR. See [RECOVERY_PROPOSALS.md](RECOVERY_PROPOSALS.md) for the implemented contract. Contextual mentor chat and practical submission/evaluation are not part of P2.
 
-**Next work package:** M1 — a course-aware mentor workspace with vetted references and a provider-failure fallback. Practical exercises and assessed evidence changes follow T1/T2.
+### M1 follow-up — implemented on a feature branch
+
+Added a private mentor workspace with accepted-step/course context, persisted questions and typed AI explanations, reviewed references and scoped evidence provenance. One orchestrator retrieves bounded context and validates replies; no chat action grades work, awards evidence, advances a checkpoint or activates a proposal. Ready/failed/pending receipts preserve exact retries, context checks reject obsolete source assumptions and the app keeps questions/current work through provider failures.
+
+Mentor and outline reservations now share existing per-learner/global request counters and the development 50-request ceiling. New private storage/RLS and trusted RPCs retain source snapshots/model/policy provenance; configured OpenAI/Supabase keys are reused. See [MENTOR_WORKSPACE.md](MENTOR_WORKSPACE.md) for API, privacy, source, retry and configuration contracts. Local lint, TypeScript, 125 unit tests, 72 real database checks and all 35 browser journeys pass. The final small-screen layout was inspected and its five mentor journeys pass after the layout refinement. The additive schema has been applied to meno-dev without resetting data. Production build, fresh CI and live-provider acceptance results are tracked in the M1 PR.
+
+**Next work package:** T1 — a bounded practical exercise and versioned rubric. Trusted evaluation and evidence transitions follow T2.
 
 ## Work queue and reviewable changes
 
@@ -275,8 +281,8 @@ Use these IDs in commits or future issues to keep implementation tied to an obse
 | D1 | **Complete:** versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side; PR #5 merged |
 | D2 | **Complete:** diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
 | P1 — merged #7 | **Merged:** next-step selection and revisioned milestone proposals | D2; small resource/requirements fixture | Different evidence or study constraints produce different justified small milestones; unassessed skills are not treated as failures |
-| P2 — implemented on branch | Path UI and accept/edit/decline behavior | P1 — merged #7 | Only an accepted proposal replaces the active plan; stale or duplicate requests cannot overwrite a newer revision |
-| M1 | Course-aware mentor workspace and resource selection | P2, AI1 | Explanation and recommendations reference the learner's actual context and vetted resources; provider failure preserves saved work |
+| P2 — merged #8 | Path UI and accept/edit/decline behavior | P1 — merged #7 | Only an accepted proposal replaces the active plan; stale or duplicate requests cannot overwrite a newer revision |
+| M1 — implemented on branch | Course-aware mentor workspace and resource selection | P2, AI1 | Explanation and recommendations reference the learner's actual context and vetted resources; provider failure preserves saved work |
 | T1 | Bounded practical exercise, rubric, and submission UI | P2; exercise/rubric decisions | The learner can submit and inspect feedback; incomplete or unsupported work is explicitly inconclusive; arbitrary code is never executed in the app |
 | T2 | Atomic evidence, task result, and next-action update | T1 | A scoped result changes only supported skill findings and the relevant next action; retries cannot double-award evidence |
 | R1 | In-app check-in and recovery proposals | M1, T2 | A learner states an obstacle and accepts, edits, or declines a smaller revision; simulated inactivity is labeled; prior evidence survives |

@@ -283,6 +283,11 @@ export function CourseEditor({
           Choose a step with this confirmed course
         </Link>
       )}
+      {saved?.confirmed && !editing && (
+        <Link href={`/mentor?courseId=${saved.id}`} className="text-link course-back">
+          Get help with this confirmed course
+        </Link>
+      )}
       {notice && (
         <p role="status" className="form-notice">
           {notice}

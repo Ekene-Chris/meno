@@ -352,6 +352,9 @@ export function PathReviewEditor({
         <section className="form-section path-active" aria-label="Your accepted step">
           <p className="eyebrow">YOUR ACCEPTED STEP</p>
           <h2>Ready when you are.</h2>
+          <Link href="/mentor" className="text-link">
+            Work through this with Meno
+          </Link>
           <ProposalView record={saved.active} compact />
           <p className="field-help">
             Accepting saves your intention. It does not complete the task or award skill evidence.

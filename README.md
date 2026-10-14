@@ -25,7 +25,9 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **P1: Recovery proposal APIs** selects and retains a small milestone from observed evidence, the goal, confirmed course context and study constraints. Each proposal includes rationale, source references, a reviewed resource and limits. Unassessed skills remain unknown; proposals do not activate a plan or award evidence. **P2: My next step** adds the review/edit/accept/decline screen, explicit confirmation, a separate accepted step and paginated history. Edits stay pending; declines preserve the active step; stale context and conflicting choices are rejected. Lost responses can be retried without duplicate decisions. See the [recovery proposal contract](docs/RECOVERY_PROPOSALS.md).
 
-Mentoring, practical evaluation and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
+**M1: Contextual mentor workspace** adds private saved questions, bounded explanations and vetted references grounded in the accepted step, confirmed course and observed evidence. Open **My mentor**; AI help does not grade work or change a plan. Provider failure keeps the task/references usable, and exact retries preserve saved conversation. Outline and mentor calls share request limits. See the [mentor contract](docs/MENTOR_WORKSPACE.md).
+
+Practical evaluation and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
 
 ## Local development
 
