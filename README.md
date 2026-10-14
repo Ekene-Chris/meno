@@ -27,7 +27,9 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **M1: Contextual mentor workspace** adds private saved questions, bounded explanations and vetted references grounded in the accepted step, confirmed course and observed evidence. Open **My mentor**; AI help does not grade work or change a plan. Provider failure keeps the task/references usable, and exact retries preserve saved conversation. Outline and mentor calls share request limits. See the [mentor contract](docs/MENTOR_WORKSPACE.md).
 
-Practical work (T1) is merged through PR #10: private resumable guided API-app scaffolds, versioned feedback, explicit submission and unassessed free-form text. See [the practical work contract](docs/PRACTICAL_WORK.md). T2 adds explicit, narrowly scoped guided evidence recording and suggested follow-ups on its feature branch; see [the progress contract](docs/PRACTICAL_PROGRESS.md). Accepted tasks and checkpoints remain separate.
+Practical work (T1) is merged through PR #10: private resumable guided API-app scaffolds, versioned feedback, explicit submission and unassessed free-form text. See [the practical work contract](docs/PRACTICAL_WORK.md). T2 is merged through PR #11 with explicit, narrowly scoped guided evidence recording and suggested follow-ups; see [the progress contract](docs/PRACTICAL_PROGRESS.md). Accepted tasks and checkpoints remain separate.
+
+Tonight’s demo branch adds **Opportunity Radar** (three clearly fictional briefs with saved before/after comparisons) and **My journey** (progress from actual saved records). See [the opportunity contract](docs/OPPORTUNITY_RADAR.md) and [tonight’s demo runbook](docs/DEMO_RUNBOOK.md).
 
 Practical evaluation and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
 

@@ -317,7 +317,11 @@ export function PracticalEditor({ initial }: { initial: PracticalAttempt }) {
         </section>
         {input.mode === "guided" &&
           saved.content.sessions.map((session) => (
-            <section key={session.id} className="form-section practical-session">
+            <section
+              key={session.id}
+              className="form-section practical-session"
+              id={`session-${session.id}`}
+            >
               <h2>{session.title}</h2>
               <p>{session.intro}</p>
               <pre className="practical-code">{session.template}</pre>

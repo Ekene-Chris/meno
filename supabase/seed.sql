@@ -1,3 +1,2 @@
--- The shared v1 curriculum is initialized in 202610140003_recovery_proposals.sql
--- before curated resources reference its IDs. No learner accounts, results, or
--- opportunities are seeded. Keep future demo fixtures explicitly separate.
+-- Shared skills/resources and explicitly labeled fictional opportunities are initialized
+-- in versioned migrations. No learner accounts or invented learner results are seeded.

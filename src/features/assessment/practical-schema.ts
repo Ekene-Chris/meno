@@ -75,6 +75,7 @@ export const practicalReceiptSchema = z.strictObject({
   status: z.enum(["draft", "submitted"]),
 });
 export const practicalPageSchema = z.strictObject({
+  session: z.enum(["promises", "fetch", "display"]).optional(),
   page: z.coerce.number().int().min(0).max(10000).default(0),
 });
 export type PracticalInput = z.infer<typeof practicalInputSchema>;

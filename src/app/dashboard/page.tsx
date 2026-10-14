@@ -4,6 +4,7 @@ import { ArrowUpRight, BookOpen, Check, Compass, Flag, Pencil, Sprout } from "lu
 import { AppShell } from "@/components/app-shell";
 import { requireLearner } from "@/lib/auth/session";
 import { getPassport } from "@/features/learner-passport/service";
+import { getJourney } from "@/features/momentum/journey-service";
 import { entryStates } from "@/features/learner-passport/schema";
 
 export const metadata = { title: "My Learner Passport" };
@@ -18,6 +19,7 @@ export default async function Dashboard() {
   const { db, user } = await requireLearner();
   const { profile, goal, skills, events, recentEvidence } = await getPassport(db, user.id);
   if (!profile || !goal) redirect("/onboarding");
+  const journey = await getJourney(db);
   const entry = entryStates.find((entry) => entry.value === profile.entry_state);
   const savedDate = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeZone: "UTC" }).format(
     new Date(profile.updated_at),
@@ -34,6 +36,22 @@ export default async function Dashboard() {
           <Check size={14} aria-hidden="true" /> Saved {savedDate}
         </span>
       </div>
+      <section className="form-section">
+        <p className="eyebrow">YOUR NEXT HELPFUL STEP</p>
+        <h2>{journey.next.title}</h2>
+        <p>{journey.next.description}</p>
+        <div className="course-actions">
+          <Link className="button primary" href={journey.next.href}>
+            Continue your journey
+          </Link>
+          <Link className="text-link" href="/journey">
+            View the connected journey
+          </Link>
+          <Link className="text-link" href="/opportunities">
+            Explore example opportunities
+          </Link>
+        </div>
+      </section>
       <div className="dashboard-grid">
         <section className="goal-card">
           <span className="card-kicker">

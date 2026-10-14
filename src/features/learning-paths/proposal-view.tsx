@@ -124,6 +124,9 @@ export function ProposalView({
             <aside className="path-demo">
               <strong>{p.demoConnection.label}</strong>
               <p>{p.demoConnection.statement}</p>
+              <Link href={`/opportunities/${p.demoConnection.fixtureId}`} className="text-link">
+                Inspect the example requirements and gaps
+              </Link>
             </aside>
           )}
           <details className="path-evidence">

@@ -1,0 +1,174 @@
+[
+  {
+    "id": "demo-frontend-api-v1",
+    "title": "Frontend API portfolio brief",
+    "kind": "portfolio",
+    "description": "An example direction: prepare a small interface that reads data, handles failure and explains its decisions. This is a fictional project brief, not a vacancy.",
+    "requirements": [
+      {
+        "id": "promise-preparation",
+        "skillId": "js.promises",
+        "priority": "required",
+        "evidenceLevel": "guided_foundation",
+        "title": "Promise-chain preparation",
+        "description": "Meet the fixed promise scaffold and trace criteria; independent promise implementation is assessed separately."
+      },
+      {
+        "id": "fetch-preparation",
+        "skillId": "web.fetch-api",
+        "priority": "required",
+        "evidenceLevel": "guided_foundation",
+        "title": "API-response preparation",
+        "description": "Meet the fixed status-check, JSON-reading and response trace criteria. This is preparation, not a deployed integration."
+      },
+      {
+        "id": "functions-project",
+        "skillId": "js.functions",
+        "priority": "required",
+        "evidenceLevel": "independent_project",
+        "title": "Apply functions in your own project",
+        "description": "Provide independently assessed project evidence for this skill."
+      },
+      {
+        "id": "arrays-project",
+        "skillId": "js.arrays",
+        "priority": "required",
+        "evidenceLevel": "independent_project",
+        "title": "Apply array transformations",
+        "description": "Provide independently assessed project evidence for this skill."
+      },
+      {
+        "id": "promises-project",
+        "skillId": "js.promises",
+        "priority": "required",
+        "evidenceLevel": "independent_project",
+        "title": "Build an independent promise flow",
+        "description": "Guided choices and quiz answers do not establish independent implementation."
+      },
+      {
+        "id": "fetch-project",
+        "skillId": "web.fetch-api",
+        "priority": "required",
+        "evidenceLevel": "independent_project",
+        "title": "Build and review an API integration",
+        "description": "Independent project evidence is still needed after guided preparation."
+      },
+      {
+        "id": "git-project",
+        "skillId": "git.basics",
+        "priority": "preferred",
+        "evidenceLevel": "independent_project",
+        "title": "Share a versioned project",
+        "description": "A published, reviewed source history can support this preferred requirement; it is not verified by this prototype exercise."
+      }
+    ],
+    "organization": "Meno fictional scenario",
+    "verification": "demo",
+    "isDemo": true,
+    "sourceUrl": null,
+    "applicationUrl": null,
+    "deadline": null,
+    "location": null,
+    "eligibility": [
+      "Location and work authorization rules are unspecified.",
+      "Education, time commitment and compensation are unspecified.",
+      "This fictional example has no application process."
+    ]
+  },
+  {
+    "id": "demo-frontend-apprenticeship-v1",
+    "title": "Junior frontend apprenticeship pathway",
+    "kind": "apprenticeship",
+    "description": "Explore the kinds of learning evidence a frontend apprenticeship might ask for. No employer, place, compensation or application is real.",
+    "requirements": [
+      {
+        "id": "html-project",
+        "skillId": "web.html-basics",
+        "priority": "required",
+        "evidenceLevel": "independent_project",
+        "title": "Build a meaningful page structure",
+        "description": "An independent HTML artifact should support this requirement."
+      },
+      {
+        "id": "css-project",
+        "skillId": "web.css-layout",
+        "priority": "required",
+        "evidenceLevel": "independent_project",
+        "title": "Explain and implement a responsive layout",
+        "description": "A CSS layout artifact remains unverified by the JavaScript exercises."
+      },
+      {
+        "id": "dom-preparation",
+        "skillId": "web.dom",
+        "priority": "required",
+        "evidenceLevel": "guided_foundation",
+        "title": "Prepare loading, text and error states",
+        "description": "The fixed display scaffold can support this preparation requirement, within its limited scope."
+      },
+      {
+        "id": "git-project",
+        "skillId": "git.basics",
+        "priority": "preferred",
+        "evidenceLevel": "independent_project",
+        "title": "Work with version control",
+        "description": "Version-control evidence stays separate from JavaScript progress."
+      }
+    ],
+    "organization": "Meno fictional scenario",
+    "verification": "demo",
+    "isDemo": true,
+    "sourceUrl": null,
+    "applicationUrl": null,
+    "deadline": null,
+    "location": null,
+    "eligibility": [
+      "Location and work authorization rules are unspecified.",
+      "Education, time commitment and compensation are unspecified.",
+      "This fictional example has no application process."
+    ]
+  },
+  {
+    "id": "demo-community-ui-v1",
+    "title": "Community interface challenge",
+    "kind": "community",
+    "description": "A fictional community contribution brief for practicing a small accessible interface. Use it to choose evidence to build, not to claim an open contribution task.",
+    "requirements": [
+      {
+        "id": "dom-preparation",
+        "skillId": "web.dom",
+        "priority": "required",
+        "evidenceLevel": "guided_foundation",
+        "title": "Practice visible interface states",
+        "description": "Meet the fixed display choices and failure trace; accessibility and a complete app are not thereby verified."
+      },
+      {
+        "id": "html-project",
+        "skillId": "web.html-basics",
+        "priority": "required",
+        "evidenceLevel": "independent_project",
+        "title": "Create semantic page content",
+        "description": "Independent HTML work remains needed."
+      },
+      {
+        "id": "css-project",
+        "skillId": "web.css-layout",
+        "priority": "preferred",
+        "evidenceLevel": "independent_project",
+        "title": "Adapt the layout to small screens",
+        "description": "This preferred artifact requirement is independent of guided DOM progress."
+      }
+    ],
+    "organization": "Meno fictional scenario",
+    "verification": "demo",
+    "isDemo": true,
+    "sourceUrl": null,
+    "applicationUrl": null,
+    "deadline": null,
+    "location": null,
+    "eligibility": [
+      "Location and work authorization rules are unspecified.",
+      "Education, time commitment and compensation are unspecified.",
+      "This fictional example has no application process."
+    ]
+  }
+]

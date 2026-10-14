@@ -1989,3 +1989,9 @@ nav.course-actions {
   .practical-session select { font-size: .8rem; }
   .practical-code { padding: 10px; }
 }
+
+.demo-label { color: var(--green); background: #edf2e8; border-radius: 6px; padding: 8px 12px; font-size: .75rem; font-weight: 700; display: inline-block; }
+.opportunity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 20px; margin-top: 24px; }
+.opportunity-change { border-left: 3px solid var(--green); padding: 10px 14px; background: var(--soft); }
+.journey-steps { list-style: none; padding: 0; }
+.journey-steps .form-section { margin-top: 20px; }
