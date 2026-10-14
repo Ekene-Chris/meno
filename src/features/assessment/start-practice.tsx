@@ -2,7 +2,11 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { practicalReceiptSchema } from "./practical-schema";
-export function StartPractice() {
+export function StartPractice({
+  focusSession,
+}: {
+  focusSession?: "promises" | "fetch" | "display";
+}) {
   const router = useRouter();
   const requestId = useRef<string | null>(null);
   const working = useRef(false);
@@ -30,7 +34,7 @@ export function StartPractice() {
         );
       const result = practicalReceiptSchema.parse(await res.json());
       navigating = true;
-      router.push(`/practice/${result.attemptId}`);
+      router.push(`/practice/${result.attemptId}${focusSession ? `#session-${focusSession}` : ""}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Please retry.");
     } finally {

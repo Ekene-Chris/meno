@@ -395,6 +395,72 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"opportunities": {
+                  Row: {
+                    "content": NonNullable<Json>,"id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "content": NonNullable<Json>,"id": string
+                  }
+                  Update: {
+                    "content"?: NonNullable<Json>,"id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"opportunity_requirements": {
+                  Row: {
+                    "content": NonNullable<Json>,"id": string,"opportunity_id": string,"skill_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "content": NonNullable<Json>,"id": string,"opportunity_id": string,"skill_id": string
+                  }
+                  Update: {
+                    "content"?: NonNullable<Json>,"id"?: string,"opportunity_id"?: string,"skill_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "opportunity_requirements_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "opportunities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "opportunity_requirements_skill_id_fkey"
+      columns: ["skill_id"]
+isOneToOne: false
+      referencedRelation: "skills"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"opportunity_save_receipts": {
+                  Row: {
+                    "expected_saved": boolean,"opportunity_id": string,"request_id": string,"result": NonNullable<Json>,"saved": boolean,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "expected_saved": boolean,"opportunity_id": string,"request_id": string,"result": NonNullable<Json>,"saved": boolean,"user_id": string
+                  }
+                  Update: {
+                    "expected_saved"?: boolean,"opportunity_id"?: string,"request_id"?: string,"result"?: NonNullable<Json>,"saved"?: boolean,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "opportunity_save_receipts_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "opportunities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "opportunity_save_receipts_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"outline_extractions": {
                   Row: {
                     "course_id": string | null,"created_at": string,"error_code": string | null,"expected_confirmed_revision": number | null,"expected_revision": number,"input_hash": string,"model": string,"request_id": string,"result": Json | null,"status": string,"user_id": string
@@ -559,6 +625,32 @@ isOneToOne: false
                   Relationships: [
 
                   ]
+                },"saved_opportunities": {
+                  Row: {
+                    "baseline": NonNullable<Json>,"opportunity_id": string,"saved_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "baseline": NonNullable<Json>,"opportunity_id": string,"saved_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "baseline"?: NonNullable<Json>,"opportunity_id"?: string,"saved_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "saved_opportunities_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "opportunities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "saved_opportunities_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"skill_evidence": {
                   Row: {
                     "assessment_attempt_id": string | null,"assessment_method": string | null,"caveat": string | null,"evaluated_at": string,"id": string,"kind": string,"outcome": string,"practical_attempt_id": string | null,"rubric_version": string | null,"scope": string | null,"skill_id": string,"source_id": string,"user_id": string
@@ -689,6 +781,9 @@ isOneToOne: false
 "finish_outline_extraction":
 { Args: { "p_error_code"?: string,"p_request_id": string,"p_result": Json,"p_user_id": string }; Returns: Json
                            },
+"get_journey_state":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "get_learning_path_context":
 { Args: { "p_course_id"?: string }; Returns: Json
                            },
@@ -698,6 +793,9 @@ isOneToOne: false
 "get_mentor_context":
 { Args: { "p_course_id"?: string,"p_use_accepted_course"?: boolean }; Returns: Json
                            },
+"get_opportunity_radar":
+{ Args: { "p_opportunity"?: string }; Returns: Json
+                           },
 "learning_path_context_for":
 { Args: { "p_course_id": string,"p_user_id": string }; Returns: Json
                            },
@@ -706,6 +804,9 @@ isOneToOne: false
                            },
 "mutate_practical_attempt":
 { Args: { "p_attempt_id": string,"p_expected_revision": number,"p_feedback"?: Json,"p_input": Json,"p_operation": string,"p_request_id": string,"p_user_id": string }; Returns: Json
+                           },
+"opportunity_observations_for":
+{ Args: { "p_opportunity": string,"p_user": string }; Returns: Json
                            },
 "propose_learning_path":
 { Args: { "p_context_hash": string,"p_course_id"?: string,"p_expected_revision": number,"p_proposal": Json,"p_request_id": string,"p_selector_version": string,"p_user_id": string }; Returns: Json
@@ -727,6 +828,9 @@ isOneToOne: false
                            },
 "save_diagnostic_answers":
 { Args: { "p_answers": Json,"p_attempt_id": string,"p_expected_revision": number,"p_request_id": string,"p_user_id": string }; Returns: Json
+                           },
+"save_opportunity":
+{ Args: { "p_expected_saved": boolean,"p_opportunity": string,"p_request": string,"p_saved": boolean }; Returns: Json
                            },
 "save_passport":
 { Args: { "p_input": Json,"p_request_id": string }; Returns: undefined

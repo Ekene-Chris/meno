@@ -24,6 +24,12 @@ export default async function Practice({
       </div>
       <section className="form-section">
         <h2>{data.content.title}</h2>
+        {parsed.data.session && (
+          <p>
+            Focus requested: {parsed.data.session}. Work through this guided session to prepare;
+            independent project requirements remain separate.
+          </p>
+        )}
         <ol>
           {data.content.sessions.map((s) => (
             <li key={s.id}>{s.title}</li>
@@ -34,11 +40,14 @@ export default async function Practice({
           sessions. Read the rubric before submitting.
         </p>
         {data.draftId ? (
-          <Link className="button primary" href={`/practice/${data.draftId}`}>
+          <Link
+            className="button primary"
+            href={`/practice/${data.draftId}${parsed.data.session ? `#session-${parsed.data.session}` : ""}`}
+          >
             Resume saved practice
           </Link>
         ) : (
-          <StartPractice key={data.attempts[0]?.id ?? "first"} />
+          <StartPractice key={data.attempts[0]?.id ?? "first"} focusSession={parsed.data.session} />
         )}
         <p className="field-hint">
           Feedback checks fixed scaffold choices. Free-form code is unassessed. Passport evidence

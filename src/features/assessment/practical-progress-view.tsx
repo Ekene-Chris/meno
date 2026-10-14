@@ -158,6 +158,9 @@ export function PracticalProgressView({
             ))}
           </ul>
           <div className="course-actions">
+            <Link className="text-link" href="/opportunities/demo-frontend-api-v1">
+              Compare the changed example opportunity gaps
+            </Link>
             <Link className="text-link" href="/dashboard">
               Inspect updated Passport evidence
             </Link>

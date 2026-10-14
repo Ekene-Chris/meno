@@ -24,7 +24,9 @@ export function AppShell({
     | "assessment"
     | "learning-path"
     | "mentor"
-    | "practice";
+    | "practice"
+    | "opportunities"
+    | "journey";
 }) {
   return (
     <div className="app-layout">
@@ -73,6 +75,20 @@ export function AppShell({
             aria-current={active === "mentor" ? "page" : undefined}
           >
             <MessageCircle size={18} aria-hidden="true" /> My mentor
+          </Link>
+          <Link
+            href="/opportunities"
+            className={active === "opportunities" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "opportunities" ? "page" : undefined}
+          >
+            <ArrowUpRight size={18} aria-hidden="true" /> Opportunities
+          </Link>
+          <Link
+            href="/journey"
+            className={active === "journey" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "journey" ? "page" : undefined}
+          >
+            <Route size={18} aria-hidden="true" /> My journey
           </Link>
           <Link
             href="/onboarding"
