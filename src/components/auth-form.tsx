@@ -44,6 +44,9 @@ export function AuthForm() {
         <p id="password-hint" className="field-hint">
           Use 10–72 characters.
         </p>
+        {mode === "sign-up" && process.env.NEXT_PUBLIC_DEPLOYMENT_STAGE === "development" && (
+          <p className="field-hint">Email confirmation is off in this development preview.</p>
+        )}
         {state.error && (
           <p role="alert" className="form-error">
             {state.error}

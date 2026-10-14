@@ -2,7 +2,9 @@
 
 import { z } from "zod";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createDbClient } from "@/lib/db/server";
+import { getAppOrigin } from "@/lib/app-origin";
 
 export type AuthState = { error?: string; message?: string };
 const credentialsSchema = z.object({
@@ -24,7 +26,7 @@ export async function authenticate(_previous: AuthState, form: FormData): Promis
         options: {
           emailRedirectTo: new URL(
             "/auth/callback",
-            process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+            getAppOrigin((await headers()).get("origin")),
           ).toString(),
         },
       });

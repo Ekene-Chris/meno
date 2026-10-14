@@ -54,7 +54,11 @@ export function AppShell({
       </aside>
       <div className="app-body">
         <header className="app-topbar">
-          <span>Your journey, at your pace</span>
+          <span>
+            {process.env.NEXT_PUBLIC_DEPLOYMENT_STAGE === "development"
+              ? "Development preview"
+              : "Your journey, at your pace"}
+          </span>
           <span className="privacy-badge">
             <ShieldCheck size={15} aria-hidden="true" /> Private to you
           </span>

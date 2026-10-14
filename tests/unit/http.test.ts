@@ -12,6 +12,28 @@ function request(body: string, origin = "http://localhost:3000") {
 afterEach(() => vi.unstubAllEnvs());
 
 describe("mutation boundary", () => {
+  it("allows only exact trusted preview hosts and rejects forged request hosts", async () => {
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://meno.example.test");
+    vi.stubEnv("VERCEL", "1");
+    vi.stubEnv("VERCEL_URL", "meno-deployment-raven-energy.vercel.app");
+    vi.stubEnv("VERCEL_BRANCH_URL", "meno-git-feature-raven-energy.vercel.app");
+    await expect(
+      readMutation(request("{}", "https://meno-git-feature-raven-energy.vercel.app")),
+    ).resolves.toEqual({});
+    await expect(
+      readMutation(request("{}", "https://another-branch.vercel.app")),
+    ).rejects.toMatchObject({ status: 403 });
+    const forged = new Request("https://attacker.example.test/api/courses", {
+      method: "POST",
+      headers: {
+        origin: "https://attacker.example.test",
+        "content-type": "application/json",
+        "x-forwarded-host": "meno-git-feature-raven-energy.vercel.app",
+      },
+      body: "{}",
+    });
+    await expect(readMutation(forged)).rejects.toMatchObject({ status: 403 });
+  });
   it("checks the configured public origin when the internal server URL differs", async () => {
     vi.stubEnv("NEXT_PUBLIC_APP_URL", "http://127.0.0.1:3100");
     await expect(readMutation(request("{}", "http://127.0.0.1:3100"))).resolves.toEqual({});

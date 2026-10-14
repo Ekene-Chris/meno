@@ -1,0 +1,17 @@
+# Hosted development auth settings only. Local settings remain in config.toml.
+# Email confirmation is temporarily off by the founder's explicit choice.
+project_id = "meno-dev"
+
+[auth]
+site_url = "https://meno-ochre.vercel.app"
+additional_redirect_urls = [
+  "https://meno-ochre.vercel.app/auth/callback",
+  "https://meno-*-raven-energy.vercel.app/auth/callback",
+]
+enable_signup = true
+enable_anonymous_sign_ins = false
+minimum_password_length = 10
+
+[auth.email]
+enable_signup = true
+enable_confirmations = false
