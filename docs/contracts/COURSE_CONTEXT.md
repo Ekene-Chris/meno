@@ -1,6 +1,6 @@
 # Course context — C1/C2 contract
 
-C1 was implemented on `feat/course-context-foundation`; C2 adds the editor on feature branch `feat/course-editor`, 13 October 2026. [PR #1](https://github.com/Ekene-Chris/meno/pull/1) merged C1 with passing CI. C2 is based on that merged `main`. Manual entry and review are available; AI extraction follows in AI1.
+Course persistence, manual editing and explicit confirmation are implemented. Reviewed AI suggestions are also available through the separate [extraction contract](OUTLINE_EXTRACTION.md). C1/C2 history is retained in [PR #1](https://github.com/Ekene-Chris/meno/pull/1) and [PR #2](https://github.com/Ekene-Chris/meno/pull/2).
 
 ## Learner flow
 

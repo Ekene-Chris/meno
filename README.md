@@ -2,40 +2,25 @@
 
 **Learn anywhere. Get mentored here.**
 
-Meno is a persistent, course-agnostic AI learning and career mentor. It helps learners who have stalled regain momentum, demonstrate practical skills, and connect their progress to credible opportunities. Beginners and learners seeking opportunities share the same underlying learner context.
+Meno is a persistent, course-agnostic AI learning and career mentor. It helps people who have stalled reconnect with their existing learning, take a useful next step and understand how their progress relates to an opportunity direction. Beginners and opportunity seekers share the same private learner context.
 
-## Current implementation
+## What works today
 
-Application bootstrap and **Slice 1: Learner Passport** are implemented:
+The working frontend/JavaScript prototype connects:
 
-- Email/password account creation, sign-in, cookie sessions, and sign-out.
-- Four onboarding entries: beginning, returning or stuck, actively learning, and exploring opportunities.
-- A private, persistent goal, optional learning preferences, and Passport dashboard.
-- Fourteen shared frontend skills, initially **not assessed**, with evidence provenance enforced in the database.
-- Atomic, retry-safe Passport saves and tested database access controls.
-- Unit, database integration, and browser tests, plus a CI workflow.
+- Email/password signup, four learner entry states and a persistent Learner Passport.
+- Versioned course outlines, reviewed AI topic suggestions and a self-reported checkpoint.
+- Resumable JavaScript checks, scoped evidence and learner-approved next steps.
+- Course-aware mentor explanations with retained private history and provider fallbacks.
+- Guided practical work, explicit progress recording and suggested follow-ups.
+- Three clearly fictional opportunity briefs with saved before/after requirement comparisons.
+- In-app obstacle check-ins and optional, visibly simulated pauses with recovery proposals.
 
-**C1: Course-context persistence** is also implemented at the API/database layer. Authenticated learners can save versioned course drafts, ordered modules, topic mappings, and a checkpoint; confirm the revision they reviewed; and retrieve draft and confirmed context separately. Updates reject stale revisions, retries return their original result, and private course records are protected by grants and RLS. The [course API contract](docs/COURSE_CONTEXT.md) describes the endpoints and limits.
+Guided practice covers fixed code choices and traces; it does not verify an independently built app. Pasted code is stored as inert text. Opportunity entries are examples, not live listings. Accepting a plan changes intention, not skill evidence or course completion.
 
-**C2: Course editor and review** is implemented on `feat/course-editor`. Open **My courses** from the dashboard or navigation to add a course, arrange modules and topics, choose shared skills or leave topics unmapped, and keep your checkpoint. Save a draft, review it, then explicitly confirm it. Later edits retain the previous confirmed context. Conflicting saves preserve your form for comparison; uncertain saves can be retried without duplicates.
+## Run locally
 
-**AI1: Course outline suggestions** is implemented on `feat/course-outline-extraction`, with local and live preview acceptance verified. Learners can request candidate modules and uncertain skill matches, choose whether to use them, correct the form, and save/confirm through C2. Requests are bounded and retry-safe; provider failure preserves manual editing. See the [extraction contract](docs/OUTLINE_EXTRACTION.md) for server configuration and limitations.
-
-**D1/D2: JavaScript skill checks** adds eight versioned questions, server-only answer keys and deterministic correct/partial/incorrect/skipped observations. Open **Skill checks** to save answers, resume in another session, review results and inspect scoped evidence in the Passport. Exact retries cannot duplicate findings; skipped/incomplete retakes preserve earlier complete evidence. Findings describe fixed quiz examples, not certification or project readiness. See the [diagnostic contract](docs/DIAGNOSTIC.md).
-
-**P1: Recovery proposal APIs** selects and retains a small milestone from observed evidence, the goal, confirmed course context and study constraints. Each proposal includes rationale, source references, a reviewed resource and limits. Unassessed skills remain unknown; proposals do not activate a plan or award evidence. **P2: My next step** adds the review/edit/accept/decline screen, explicit confirmation, a separate accepted step and paginated history. Edits stay pending; declines preserve the active step; stale context and conflicting choices are rejected. Lost responses can be retried without duplicate decisions. See the [recovery proposal contract](docs/RECOVERY_PROPOSALS.md).
-
-**M1: Contextual mentor workspace** adds private saved questions, bounded explanations and vetted references grounded in the accepted step, confirmed course and observed evidence. Open **My mentor**; AI help does not grade work or change a plan. Provider failure keeps the task/references usable, and exact retries preserve saved conversation. Outline and mentor calls share request limits. See the [mentor contract](docs/MENTOR_WORKSPACE.md).
-
-Practical work (T1) is merged through PR #10: private resumable guided API-app scaffolds, versioned feedback, explicit submission and unassessed free-form text. See [the practical work contract](docs/PRACTICAL_WORK.md). T2 is merged through PR #11 with explicit, narrowly scoped guided evidence recording and suggested follow-ups; see [the progress contract](docs/PRACTICAL_PROGRESS.md). Accepted tasks and checkpoints remain separate.
-
-**Opportunity Radar** and **My journey** are merged through PR #12: three clearly fictional briefs with saved before/after comparisons and progress from actual saved records. The R1 demo slice adds a learner-initiated obstacle check-in and a five-minute pending recovery proposal, with simulated pauses visibly labeled. See [the opportunity contract](docs/OPPORTUNITY_RADAR.md), [recovery check-ins](docs/RECOVERY_CHECKINS.md) and [tonight’s demo runbook](docs/DEMO_RUNBOOK.md).
-
-Practical evaluation and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
-
-## Local development
-
-Use Node.js `22.23.2`, npm `10.9.8`, and a running Docker engine. From the repository root:
+Use Node.js **22.23.2**, npm **10.9.8** and a running Docker engine:
 
 ```sh
 nvm use
@@ -46,23 +31,21 @@ npm run db:env
 npm run dev
 ```
 
-Open [Meno locally](http://localhost:3000), choose **Create an account**, and complete onboarding. `nvm use` is optional if the required Node version is already installed. The Supabase CLI is a pinned project dependency; a global installation is unnecessary.
+Open [localhost:3000](http://localhost:3000), create an account and complete onboarding. Choose a returning JavaScript learner to explore the complete course → check → accepted step → mentor → guided work → Passport → opportunity comparison flow. Save an example before practice to retain a baseline; submission and **Record progress** are separate actions.
 
-`db:env` creates an ignored `.env.local` from the local Supabase stack without printing credentials. It refuses to overwrite an existing file: skip that step on an already configured checkout. [`.env.example`](.env.example) documents each variable. Keep `NEXT_PUBLIC_APP_URL` equal to the browser origin, including the port, when changing the development address.
+`db:env` writes an ignored local configuration without printing credentials and refuses to overwrite an existing `.env.local`. Skip it on an already configured checkout. It includes the server-only Supabase writer and local fixture keys. [`.env.example`](.env.example) explains the variables. Keep `NEXT_PUBLIC_APP_URL` equal to the browser origin, including its port.
 
-Diagnostics and proposal saves require the server-only `SUPABASE_SECRET_KEY`; new local setup writes it from the local stack. An older configured checkout must add its local service-role key under this name without exposing it in chat or a public variable. OpenAI settings are optional for manual course entry, deterministic checks and proposal APIs.
+Manual course editing, diagnostic scoring, plans, guided feedback, recovery and opportunity comparisons work without an OpenAI key. AI outline suggestions and mentor replies need server-only `OPENAI_API_KEY`, a configured model and the trusted Supabase writer. Review [their contracts](docs/INDEX.md#feature-contracts) for bounded context, quotas and failure behavior.
 
-The local stack uses API port `54321`, database port `54322`, and email preview port `54324`. Email confirmation is disabled locally and, by the founder’s choice, on the hosted development project. The [hosted guide](docs/HOSTED_DEVELOPMENT.md) records that configuration; verified pilot authentication and email delivery remain future work.
+Local Supabase uses API port `54321`, Postgres `54322` and email preview `54324`. Local and hosted development signup currently allow unverified email by the founder's choice. After pulling new migrations, run `npm run db:migrate`; it preserves existing data. `npm run db:stop` preserves the local stack. `npm run db:reset` deliberately erases all local learner data. Never reset the hosted database to deploy changes.
 
-After pulling a feature branch with new migrations, run `npm run db:migrate` against the running local stack. It applies pending migrations without resetting existing learner data. New checkouts also use this command; already-applied migrations are skipped.
+## Verify changes
 
-`npm run db:stop` stops the local stack and preserves its data. To intentionally erase **all local learner accounts and application data**, use `npm run db:reset`; it reapplies migrations and the shared skill seed. The reset command explicitly targets the local database. Automated tests instead remove or roll back their own temporary learners.
-
-## Verification
-
-With the local database running and `.env.local` configured:
+With the local database and configuration ready:
 
 ```sh
+npm run check:docs
+npm run test:tooling
 npm run check
 npm run test:integration
 npm run test:browser:install
@@ -70,80 +53,51 @@ npm run test:e2e
 npm run build
 ```
 
-`check` runs Biome lint, TypeScript, and unit tests. Integration tests exercise the real database, including anonymous and cross-user denial, evidence integrity, concurrent saves/evaluation, skipped retakes and retries. Browser tests start their own application on port `3100` and check persistence, session reentry, mobile onboarding/course editing/diagnostics, scoped results, Passport evidence, conflicts, lost responses, pagination and protected routes. Database and browser test setup rejects non-loopback database/API hosts.
+`check` runs lint, TypeScript and unit tests. Database tests exercise real ownership, evidence transitions, atomicity and retries; browser tests cover persistence, mobile use, session recovery and the connected journey. Their fixture setup rejects hosted targets. Browser tests start their own server on port `3100`; let them finish before a build. Regenerate types after schema changes with `npm run db:types`. [CI](.github/workflows/checks.yml) runs the same checks.
 
-Regenerate database types after schema changes with `npm run db:types`. [CI](.github/workflows/checks.yml) uses the same setup and verification commands; C1's checks passed on [PR #1](https://github.com/Ekene-Chris/meno/pull/1). CI does not deploy the application.
-
-## Repository layout
+## Structure and data boundaries
 
 ```text
 meno/
-├── AGENTS.md
-├── README.md
-├── docs/
-│   ├── PRODUCT_STRATEGY.md
-│   ├── TECHNICAL_DESIGN.md
-│   ├── PROJECT_REVIEW.md
-│   ├── IMPLEMENTATION_PLAN.md
-│   ├── COURSE_CONTEXT.md
-│   ├── assets/
-│   └── reference/
-│       └── Meno_Product_Strategy.docx
+├── AGENTS.md                  Codex project instructions
+├── .agents/skills/            Reusable repository workflows
+├── docs/                      Product, design, roadmap and indexed references
 ├── src/
-│   ├── app/
-│   ├── components/
-│   ├── features/
-│   ├── lib/
-│   ├── types/
-│   └── proxy.ts
-├── supabase/
-│   ├── migrations/
-│   ├── seed.sql
-│   ├── config.toml
-│   └── setup.mjs
-└── tests/
-    ├── unit/
-    ├── integration/
-    ├── e2e/
-    └── helpers/
+│   ├── app/                   Pages and authenticated route handlers
+│   ├── components/            Shared interface
+│   ├── features/              Learner and learning domain behavior
+│   ├── lib/                   Auth, database and AI adapters
+│   └── types/                 Generated database and shared types
+├── supabase/                  Migrations, shared catalog and local setup
+├── scripts/                   Repository documentation checks
+└── tests/                     Unit, database, browser and tooling checks
 ```
 
-This follows the agreed layout, with root tooling files and `.github/` supporting development. The temporary directory guides have been consolidated into this single README. Create further feature modules as their slices are implemented.
+This is a TypeScript modular monolith: Next.js, React, Tailwind, Zod, Supabase and one mentor orchestrator using the OpenAI API. Routes authenticate and validate; domain services choose bounded actions; database functions and RLS enforce owned reads, trusted writes and exact retries. Learner identity comes from authentication. Keys remain server-side.
 
-## Architecture and data boundaries
+Private stored data includes goals/preferences, permitted outlines and checkpoints, diagnostic answers, proposal/decision history, mentor questions/replies, practical drafts/submissions, scoped evidence, obstacle reports and saved opportunity baselines. Model processing differs by feature: outline suggestions receive permitted source text; mentor replies receive a bounded projection of owned context and the question. Chat, course confirmation and self-report cannot award mastery. See [the contracts](docs/INDEX.md#feature-contracts) for retention, source scope and validation details.
 
-The implemented stack is a TypeScript modular monolith using Next.js App Router, React, Tailwind, Supabase/Postgres, and Zod. Dependency versions are pinned in `package.json` and `package-lock.json`. Biome, Vitest, and Playwright cover lint, domain/database checks, and browser behavior.
+## Build with Codex
 
-Routes authenticate and validate requests, feature services load or save domain state, and the database enforces ownership and evidence rules. `save_passport` derives identity from authentication, serializes concurrent saves for each learner, and deduplicates request IDs. Clients cannot write assessed evidence or promote their own skills directly.
+Start with [AGENTS.md](AGENTS.md), the [product strategy](docs/PRODUCT_STRATEGY.md) and [technical design](docs/TECHNICAL_DESIGN.md). Plan against the [implementation roadmap](docs/IMPLEMENTATION_PLAN.md), use feature branches, verify coherent changes and open a PR for review.
 
-Stored data includes the authentication account, chosen entry state, goal, optional display name and learning preferences, skill summaries, scoped evidence and bounded history events. The course API stores permitted outlines, module/topic mappings, self-reported checkpoints and retained course revisions. Diagnostics store assigned question versions, saved answer choices/skips, feedback, evaluations and retry receipts. Course/diagnostic event receipts contain fingerprints and entity/revision IDs, not copies of outlines or answers. Recovery proposals retain minimal selection context, rationale, policy versions and source/evidence references. No practical task submissions, AI conversation logs or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
+The repository includes [meno-feature-review](.agents/skills/meno-feature-review/SKILL.md). In Codex:
 
-Passport/course services and diagnostic/proposal reads use the public Supabase key and the learner's session. AI accounting and trusted diagnostic/proposal mutations use a separate server-only `SUPABASE_SECRET_KEY` after session-scoped authorization and ownership checks. Private candidate proposals retain validated results and fingerprints, not duplicated source outlines. The separate test-key variable is for local fixture setup/cleanup. OpenAI receives only course titles/outlines plus the shared skill catalog when the learner requests suggestions; diagnostic responses are graded deterministically without a model call.
+```text
+Use $meno-feature-review to review this branch against origin/main.
+Trace evidence changes, authorization, retries and learner confirmation.
+```
 
-## Project documents
+Its credential-free helper collects changed paths, relevant contracts and test locations without executing tests or touching learner data:
 
-- [AGENTS.md](AGENTS.md): project instructions and product boundaries.
-- [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
-- [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
-- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness and later expansion. D2 is merged; P1 adds recovery proposal APIs, with P2 learner review and acceptance next.
-- [Outline extraction](docs/OUTLINE_EXTRACTION.md): suggestion review, provider/configuration limits, request accounting, privacy, and manual fallback.
-- [Diagnostic contract](docs/DIAGNOSTIC.md): versioned questions, narrow scoring, private attempts, save/retry behavior and scoped evidence precedence.
-- [Recovery proposals](docs/RECOVERY_PROPOSALS.md): next-step policy, curated resources, immutable proposals, context checks and acceptance boundaries.
-- [Course-context contract](docs/COURSE_CONTEXT.md): implemented API, draft/confirmation behavior, limits, and verification.
-- [Hosted development](docs/HOSTED_DEVELOPMENT.md): Vercel/Supabase targets, development sign-up choice, runtime settings, and deployment workflow.
-- [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.
-- [Original Word strategy](docs/reference/Meno_Product_Strategy.docx): preserved source reference.
+```sh
+node .agents/skills/meno-feature-review/scripts/review-context.mjs --base origin/main
+```
 
-Implementation references: [Next.js setup](https://nextjs.org/docs/app/getting-started/installation), [Supabase server-side authentication](https://supabase.com/docs/guides/auth/server-side/creating-a-client?framework=nextjs), [row-level security](https://supabase.com/docs/guides/database/postgres/row-level-security), and [local development](https://supabase.com/docs/guides/local-development/cli/getting-started).
+The helper provides review context, not an automatic safety verdict. Codex must inspect the actual code and report findings, validation and uncertainty. The workflow travels with the repository; it needs no personal paths or separate MCP service. For narrower work, invoke it with `--files` followed by repository-relative paths.
 
-## Contribution workflow
+## Documentation and production path
 
-Create or switch to a feature branch before changing files. Commit coherent, verified work on that branch; do not commit directly to `main`. Keep the implementation plan and relevant contracts current as each package is delivered.
+[Start with the documentation map](docs/INDEX.md). Product strategy explains why; technical design explains the architecture and proposed choices; feature contracts explain implemented behavior; operations cover setup and deployment. Historical source review is separated from current guidance.
 
-## Product boundaries
-
-- Track 2, learner engagement, and Track 3, guidance and opportunity, drive the product.
-- Record self-report, observed answers, assessed work, and AI inference distinctly.
-- Persist only authorized, validated changes; require appropriate learner confirmation for plan revisions.
-- Label fictional opportunities and simulated inactivity visibly as demo data.
-- Preserve learner agency, course independence, privacy, accessibility, and text-first mobile use.
+The hosted app is development infrastructure, even though Vercel calls its canonical target “Production.” A supported pilot needs verified email and account recovery, owner-scoped export/deletion, separate environment/data decisions, operational monitoring and restore procedures, maintained real opportunity sources, stronger artifact assessment and learner evaluation. The [roadmap's pilot release gate](docs/IMPLEMENTATION_PLAN.md#stage-7--prepare-a-real-learner-pilot) defines that work; this prototype does not establish long-term retention or employment outcomes.

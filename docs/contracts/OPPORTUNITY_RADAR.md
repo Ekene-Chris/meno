@@ -28,7 +28,7 @@ GET /api/opportunities reads the bounded catalog/current comparisons. GET /api/o
 
 /journey and the Passport’s next-step card use one authenticated database snapshot. Markers come from actual course confirmations, evaluated checks, accepted revisions, saved mentor explanations, current-goal submitted work/progress and privately saved examples. They are not skill percentages or invented activity. Courses and mentor help are optional; all steps remain available. “Comparison ready” means a baseline and recorded progress exist, not that an opportunity was applied for or a requirement fully verified.
 
-The guide connects existing features without creating fake learner results. It preserves returning-course context and offers an explicit path to shorter P2 proposals. Scheduled reminders/inactivity detection are not claimed. See [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md) for the live route and honest fallbacks.
+The guide connects existing features without creating fake learner results. It preserves returning-course context and offers an explicit path to shorter P2 proposals. Scheduled reminders/inactivity detection are not claimed.
 
 ## Verification
 

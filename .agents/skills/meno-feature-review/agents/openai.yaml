@@ -1,0 +1,4 @@
+interface:
+  display_name: "Meno Feature Review"
+  short_description: "Review evidence, privacy and plan changes in Meno"
+  default_prompt: "Use $meno-feature-review to review this change and identify the relevant contracts, risks and verification."

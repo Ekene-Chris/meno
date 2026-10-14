@@ -1,6 +1,6 @@
 # Meno project review
 
-Initial review on 13 October 2026, before application implementation. This historical audit records the starting repository state, handoff repair, and findings that affect implementation. For current functionality and setup, use the [root README](../README.md); for completed and upcoming work, use the [implementation plan](IMPLEMENTATION_PLAN.md). Bootstrap and Slice 1 have since been implemented, and the temporary directory READMEs were consolidated into the root README.
+Initial review on 13 October 2026, before application implementation. This historical audit records the starting repository state, handoff repair, and findings that affect implementation. For current functionality and setup, use the [root README](../../README.md); for completed and upcoming work, use the [implementation plan](../IMPLEMENTATION_PLAN.md). Bootstrap and Slice 1 have since been implemented, and the temporary directory READMEs were consolidated into the root README.
 
 ## Product understanding
 
@@ -23,7 +23,7 @@ The hero demonstration follows David, a fictional returning JavaScript learner. 
 | `Meno_Product_Strategy.docx` | Full text reviewed, including tables and research questions; consistent with the central strategy. Preserved unchanged as a reference. This was a content review, not a Word layout-editing task. |
 | Eight PNG diagrams | All inspected visually. They support the track priorities, course independence, mentorship loop, shared context, opportunity gaps, screen proposal, entry states, and David demo. |
 
-The source handoff remains at `/Users/ekenechris-oparah/Downloads/Meno_Codex_Handoff/`. The original Word file remains at `/Users/ekenechris-oparah/Downloads/Meno_Product_Strategy.docx`. The project now has its own copies and does not require those Downloads paths to navigate its documentation.
+The original handoff and Word file were preserved separately. The project carries its own source reference and diagrams, so another checkout does not depend on the founder’s personal filesystem paths.
 
 ## Initial structural changes
 
@@ -97,4 +97,4 @@ Bootstrap must verify compatible maintained dependencies against official docume
 
 ## Next action identified by the initial review
 
-Execute the bootstrap and Slice 1 tasks in the [implementation plan](IMPLEMENTATION_PLAN.md). The first product milestone is a learner who signs in, saves a goal and preferences, and returns to the same private Passport in another session, with database isolation proved using a second user.
+Execute the bootstrap and Slice 1 tasks in the [implementation plan](../IMPLEMENTATION_PLAN.md). The first product milestone is a learner who signs in, saves a goal and preferences, and returns to the same private Passport in another session, with database isolation proved using a second user.
