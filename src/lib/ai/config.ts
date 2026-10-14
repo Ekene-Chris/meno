@@ -8,14 +8,24 @@ const configSchema = z.object({
   reasoningEffort: z.enum(["none", "low"]).optional(),
 });
 
-export function getExtractionConfig() {
+export function getServerModelConfig(
+  model: string | undefined,
+  reasoningEffort: string | undefined,
+) {
   const result = configSchema.safeParse({
     key: process.env.OPENAI_API_KEY,
-    model: process.env.OPENAI_EXTRACTION_MODEL,
-    dailyLimit: process.env.OPENAI_EXTRACTION_DAILY_LIMIT,
-    reasoningEffort: process.env.OPENAI_EXTRACTION_REASONING_EFFORT,
+    model: model?.trim() || undefined,
+    dailyLimit: process.env.OPENAI_EXTRACTION_DAILY_LIMIT || undefined,
+    reasoningEffort: reasoningEffort?.trim() || undefined,
   });
   return result.success ? result.data : null;
+}
+
+export function getExtractionConfig() {
+  return getServerModelConfig(
+    process.env.OPENAI_EXTRACTION_MODEL,
+    process.env.OPENAI_EXTRACTION_REASONING_EFFORT,
+  );
 }
 
 export const EXTRACTION_TIMEOUT_MS = 25_000;

@@ -369,6 +369,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"mentor_turns": {
+                  Row: {
+                    "context": NonNullable<Json>,"context_hash": string,"course_id": string | null,"created_at": string,"error_code": string | null,"goal_id": string,"input_hash": string,"model": string,"policy_version": string,"question": string,"request_id": string,"result": Json | null,"status": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "context": NonNullable<Json>,"context_hash": string,"course_id"?: string | null,"created_at"?: string,"error_code"?: string | null,"goal_id": string,"input_hash": string,"model": string,"policy_version"?: string,"question": string,"request_id": string,"result"?: Json | null,"status"?: string,"user_id": string
+                  }
+                  Update: {
+                    "context"?: NonNullable<Json>,"context_hash"?: string,"course_id"?: string | null,"created_at"?: string,"error_code"?: string | null,"goal_id"?: string,"input_hash"?: string,"model"?: string,"policy_version"?: string,"question"?: string,"request_id"?: string,"result"?: Json | null,"status"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "mentor_turns_goal_id_user_id_fkey"
+      columns: ["goal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_goals"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "mentor_turns_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"outline_extractions": {
                   Row: {
                     "course_id": string | null,"created_at": string,"error_code": string | null,"expected_confirmed_revision": number | null,"expected_revision": number,"input_hash": string,"model": string,"request_id": string,"result": Json | null,"status": string,"user_id": string
@@ -478,7 +504,15 @@ isOneToOne: false
                 }
           }
           Views: {
-            "course_summaries": {
+            "ai_request_activity": {
+                  Row: {
+                    "created_at": string | null,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Relationships: [
+
+                  ]
+                },"course_summaries": {
                   Row: {
                     "confirmed_revision": number | null,"id": string | null,"revision": number | null,"source_type": string | null,"title": string | null,"updated_at": string | null,"user_id": string | null
                   }
@@ -513,6 +547,9 @@ isOneToOne: false
 "evaluate_diagnostic_attempt":
 { Args: { "p_answers": Json,"p_attempt_id": string,"p_evaluation": Json,"p_expected_revision": number,"p_request_id": string,"p_user_id": string }; Returns: Json
                            },
+"finish_mentor_turn":
+{ Args: { "p_error_code"?: string,"p_request_id": string,"p_result": Json,"p_user_id": string }; Returns: Json
+                           },
 "finish_outline_extraction":
 { Args: { "p_error_code"?: string,"p_request_id": string,"p_result": Json,"p_user_id": string }; Returns: Json
                            },
@@ -522,11 +559,20 @@ isOneToOne: false
 "get_learning_path_review":
 { Args: { "p_before_revision"?: number,"p_course_id"?: string,"p_use_saved_course"?: boolean }; Returns: Json
                            },
+"get_mentor_context":
+{ Args: { "p_course_id"?: string,"p_use_accepted_course"?: boolean }; Returns: Json
+                           },
 "learning_path_context_for":
+{ Args: { "p_course_id": string,"p_user_id": string }; Returns: Json
+                           },
+"mentor_context_for":
 { Args: { "p_course_id": string,"p_user_id": string }; Returns: Json
                            },
 "propose_learning_path":
 { Args: { "p_context_hash": string,"p_course_id"?: string,"p_expected_revision": number,"p_proposal": Json,"p_request_id": string,"p_selector_version": string,"p_user_id": string }; Returns: Json
+                           },
+"reserve_mentor_turn":
+{ Args: { "p_context_hash": string,"p_course_id"?: string,"p_daily_limit"?: number,"p_model": string,"p_question": string,"p_request_id": string,"p_user_id": string }; Returns: Json
                            },
 "reserve_outline_extraction":
 { Args: { "p_course_id"?: string,"p_daily_limit"?: number,"p_expected_confirmed_revision"?: number,"p_expected_revision"?: number,"p_input_hash": string,"p_model"?: string,"p_request_id": string,"p_user_id": string }; Returns: Json

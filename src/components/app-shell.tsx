@@ -7,6 +7,7 @@ import {
   LogOut,
   ShieldCheck,
   Route,
+  MessageCircle,
 } from "lucide-react";
 import { Brand } from "./brand";
 import { signOut } from "@/lib/auth/actions";
@@ -16,7 +17,7 @@ export function AppShell({
   active,
 }: {
   children: React.ReactNode;
-  active: "passport" | "onboarding" | "courses" | "assessment" | "learning-path";
+  active: "passport" | "onboarding" | "courses" | "assessment" | "learning-path" | "mentor";
 }) {
   return (
     <div className="app-layout">
@@ -51,6 +52,13 @@ export function AppShell({
             aria-current={active === "learning-path" ? "page" : undefined}
           >
             <Route size={18} aria-hidden="true" /> My next step
+          </Link>
+          <Link
+            href="/mentor"
+            className={active === "mentor" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "mentor" ? "page" : undefined}
+          >
+            <MessageCircle size={18} aria-hidden="true" /> My mentor
           </Link>
           <Link
             href="/onboarding"
