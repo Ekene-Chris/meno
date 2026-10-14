@@ -428,6 +428,7 @@ textarea {
   position: sticky;
   top: 0;
   height: 100svh;
+  overflow-y: auto;
 }
 .sidebar .brand {
   margin-left: 8px;
@@ -1965,4 +1966,26 @@ nav.course-actions {
     grid-template-columns: 1fr;
     grid-template-areas: "question" "context" "history";
   }
+}
+
+.practical-code {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: monospace;
+  font-size: .875rem;
+  line-height: 1.6;
+  background: #f4f5ef;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+}
+.practical-session .form-field { margin-top: 24px; }
+.practical-session select { width: 100%; min-width: 0; }
+.practical-feedback { border-top: 1px solid var(--line); padding-block: 16px; }
+@media (max-width: 600px) {
+  .practical-session select { font-size: .8rem; }
+  .practical-code { padding: 10px; }
 }

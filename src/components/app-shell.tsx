@@ -17,7 +17,14 @@ export function AppShell({
   active,
 }: {
   children: React.ReactNode;
-  active: "passport" | "onboarding" | "courses" | "assessment" | "learning-path" | "mentor";
+  active:
+    | "passport"
+    | "onboarding"
+    | "courses"
+    | "assessment"
+    | "learning-path"
+    | "mentor"
+    | "practice";
 }) {
   return (
     <div className="app-layout">
@@ -52,6 +59,13 @@ export function AppShell({
             aria-current={active === "learning-path" ? "page" : undefined}
           >
             <Route size={18} aria-hidden="true" /> My next step
+          </Link>
+          <Link
+            href="/practice"
+            className={active === "practice" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "practice" ? "page" : undefined}
+          >
+            <ClipboardCheck size={18} aria-hidden="true" /> Practical work
           </Link>
           <Link
             href="/mentor"

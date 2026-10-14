@@ -1,0 +1,278 @@
+{
+  "id": "api-mini-app-v1",
+  "rubricVersion": "guided-api-rubric-v1",
+  "title": "A small API app, one decision at a time",
+  "description": "Build three fixed JavaScript scaffolds using code choices, then trace their behavior. Save between sessions. This is guided practice, not an independently built or executed app.",
+  "sessions": [
+    {
+      "id": "promises",
+      "title": "1. Reconnect with promises",
+      "intro": "A local fixture replaces a network call. Assemble the chain, then trace a fulfilled promise. Nothing is executed here.",
+      "template": "console.log(\"start\");\nconst pending = Promise.resolve({ name: \"Amina\" });\npending\n  /* choose the callback */\n  /* choose the next step */\n  /* choose rejection handling */\nconsole.log(\"ready\");",
+      "slots": [
+        {
+          "id": "promise-return",
+          "label": "Return the name from the first callback",
+          "skillId": "js.promises",
+          "scope": "Returns a value through this fixed promise chain",
+          "options": [
+            {
+              "id": "return-name",
+              "text": ".then(person => person.name)"
+            },
+            {
+              "id": "log-name",
+              "text": ".then(person => { console.log(person.name); })"
+            },
+            {
+              "id": "read-pending",
+              "text": ".then(() => pending.name)"
+            }
+          ]
+        },
+        {
+          "id": "promise-next",
+          "label": "Display the value in the next callback",
+          "skillId": "js.promises",
+          "scope": "Uses the resolved value in a chained callback",
+          "options": [
+            {
+              "id": "log-value",
+              "text": ".then(name => console.log(name))"
+            },
+            {
+              "id": "log-promise",
+              "text": ".then(() => console.log(pending))"
+            },
+            {
+              "id": "return-console",
+              "text": ".then(console.log(\"Amina\"))"
+            }
+          ]
+        },
+        {
+          "id": "promise-reject",
+          "label": "Handle a rejected operation",
+          "skillId": "js.promises",
+          "scope": "Attaches a rejection handler to this fixed chain",
+          "options": [
+            {
+              "id": "catch-error",
+              "text": ".catch(() => console.log(\"unavailable\"));"
+            },
+            {
+              "id": "then-error",
+              "text": ".then(() => console.log(\"unavailable\"));"
+            },
+            {
+              "id": "no-handler",
+              "text": "; // no rejection handler"
+            }
+          ]
+        },
+        {
+          "id": "promise-trace",
+          "label": "For the intended chain, what is the console order?",
+          "skillId": "js.promises",
+          "scope": "Predicts synchronous and promise callback order in this fixture",
+          "options": [
+            {
+              "id": "start-ready-amina",
+              "text": "start → ready → Amina"
+            },
+            {
+              "id": "start-amina-ready",
+              "text": "start → Amina → ready"
+            },
+            {
+              "id": "amina-start-ready",
+              "text": "Amina → start → ready"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fetch",
+      "title": "2. Fetch and read a response",
+      "intro": "Use a fictional /people endpoint with fixed response cases. Choose each line for loadPerson, then check an HTTP error branch. No endpoint is fetched.",
+      "template": "async function loadPerson() {\n  const response = await fetch(\"/people\");\n  /* choose status handling */\n  /* choose body parsing */\n  /* choose the returned value */\n}",
+      "slots": [
+        {
+          "id": "fetch-status",
+          "label": "Handle an unsuccessful HTTP status",
+          "skillId": "web.fetch-api",
+          "scope": "Checks HTTP failure in a fixed fetch scaffold",
+          "options": [
+            {
+              "id": "check-ok",
+              "text": "if (!response.ok) throw new Error(\"unavailable\");"
+            },
+            {
+              "id": "skip-status",
+              "text": "// every response is treated as successful"
+            },
+            {
+              "id": "check-response",
+              "text": "if (!response) throw new Error(\"unavailable\");"
+            }
+          ]
+        },
+        {
+          "id": "fetch-json",
+          "label": "Read a JSON response body",
+          "skillId": "web.fetch-api",
+          "scope": "Awaits JSON parsing in this fixed scaffold",
+          "options": [
+            {
+              "id": "await-json",
+              "text": "const person = await response.json();"
+            },
+            {
+              "id": "unawaited-json",
+              "text": "const person = response.json();"
+            },
+            {
+              "id": "read-property",
+              "text": "const person = response.name;"
+            }
+          ]
+        },
+        {
+          "id": "fetch-return",
+          "label": "Return the parsed name",
+          "skillId": "web.fetch-api",
+          "scope": "Returns a parsed field from this fixed async function",
+          "options": [
+            {
+              "id": "return-parsed",
+              "text": "return person.name;"
+            },
+            {
+              "id": "return-raw",
+              "text": "return response.name;"
+            },
+            {
+              "id": "return-nothing",
+              "text": "return;"
+            }
+          ]
+        },
+        {
+          "id": "fetch-trace",
+          "label": "With the intended function and HTTP 404, what happens?",
+          "skillId": "web.fetch-api",
+          "scope": "Distinguishes HTTP-error handling from successful JSON parsing",
+          "options": [
+            {
+              "id": "throws-before-json",
+              "text": "Throws unavailable before reading JSON"
+            },
+            {
+              "id": "returns-name",
+              "text": "Returns the name"
+            },
+            {
+              "id": "fetch-rejects-status",
+              "text": "fetch itself always rejects for 404"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "display",
+      "title": "3. Display and review the result",
+      "intro": "Assume loadPerson from session 2 returns the name or rejects. output is a text container. Complete the display logic, then trace failure.",
+      "template": "async function showPerson(output) {\n  /* choose initial feedback */\n  try {\n    const name = await loadPerson();\n    /* choose safe display */\n  } catch {\n    /* choose failure feedback */\n  }\n}",
+      "slots": [
+        {
+          "id": "display-loading",
+          "label": "Tell the learner the request is pending",
+          "skillId": "web.dom",
+          "scope": "Provides a pending state in this fixed DOM scaffold",
+          "options": [
+            {
+              "id": "loading-text",
+              "text": "output.textContent = \"Loading…\";"
+            },
+            {
+              "id": "loading-empty",
+              "text": "output.textContent = \"\";"
+            },
+            {
+              "id": "loading-success",
+              "text": "output.textContent = \"Loaded\";"
+            }
+          ]
+        },
+        {
+          "id": "display-text",
+          "label": "Display an untrusted name as text",
+          "skillId": "web.dom",
+          "scope": "Chooses textContent for an untrusted field in this fixture",
+          "options": [
+            {
+              "id": "text-content",
+              "text": "output.textContent = name;"
+            },
+            {
+              "id": "inner-html",
+              "text": "output.innerHTML = name;"
+            },
+            {
+              "id": "document-write",
+              "text": "document.write(name);"
+            }
+          ]
+        },
+        {
+          "id": "display-error",
+          "label": "Keep failure visible",
+          "skillId": "web.dom",
+          "scope": "Provides an error state in this fixed DOM scaffold",
+          "options": [
+            {
+              "id": "error-text",
+              "text": "output.textContent = \"Could not load. Try again.\";"
+            },
+            {
+              "id": "hide-error",
+              "text": "output.textContent = \"\";"
+            },
+            {
+              "id": "false-success",
+              "text": "output.textContent = \"Loaded\";"
+            }
+          ]
+        },
+        {
+          "id": "display-trace",
+          "label": "With the intended display and a rejected load, what remains?",
+          "skillId": "web.dom",
+          "scope": "Predicts the rendered failure state in this fixture",
+          "options": [
+            {
+              "id": "visible-error",
+              "text": "Could not load. Try again."
+            },
+            {
+              "id": "still-loading",
+              "text": "Loading…"
+            },
+            {
+              "id": "visible-name",
+              "text": "Amina"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Only fixed scaffold choices and trace predictions are checked.",
+    "Submitted code and reflection are inert text; their quality, authorship and runtime behavior are not assessed.",
+    "No live API, deployed app, comprehensive skill mastery or career qualification is verified.",
+    "T1 feedback does not change your Passport evidence, accepted step or course checkpoint."
+  ]
+}

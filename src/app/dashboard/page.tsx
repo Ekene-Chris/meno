@@ -113,6 +113,9 @@ export default async function Dashboard() {
           <Link href="/learning-path" className="text-link">
             Review your next step <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
+          <Link href="/practice" className="text-link">
+            Open practical work
+          </Link>
           <Link href="/mentor" className="text-link">
             Work through a question with Meno <ArrowUpRight size={16} aria-hidden="true" />
           </Link>

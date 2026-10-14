@@ -1,0 +1,19 @@
+{
+  "mode": "guided",
+  "choices": {
+    "promise-return": "return-name",
+    "promise-next": "log-value",
+    "promise-reject": "catch-error",
+    "promise-trace": "start-ready-amina",
+    "fetch-status": "check-ok",
+    "fetch-json": "await-json",
+    "fetch-return": "return-parsed",
+    "fetch-trace": "throws-before-json",
+    "display-loading": "loading-text",
+    "display-text": "text-content",
+    "display-error": "error-text",
+    "display-trace": "visible-error"
+  },
+  "code": "",
+  "reflection": ""
+}
