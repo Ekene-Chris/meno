@@ -6,7 +6,7 @@
 **Companion document:** [`PRODUCT_STRATEGY.md`](PRODUCT_STRATEGY.md)  
 **Source of truth:** The product strategy explains **why** and **for whom**; this document explains **how** the hackathon proof of concept should work. Resolve conflicts explicitly with the founder rather than silently choosing one document.
 
-**Implementation update — 14 October 2026:** Bootstrap, Slice 1, C1's course-context API/database foundation, and C2's manual course editor/review are implemented. A [hosted development environment](HOSTED_DEVELOPMENT.md) now connects Supabase with the founder's Vercel project. See the [course-context contract](COURSE_CONTEXT.md) for the learner flow, versioned schema, and routes. Most of this document remains the broader blueprint; AI extraction/mentoring, diagnostics, and opportunity matching are not yet available. See Section 16 for adopted implementation choices and the [implementation plan](IMPLEMENTATION_PLAN.md) for verified progress.
+**Implementation update — 14 October 2026:** Bootstrap, Slice 1, C1's course-context API/database foundation, and C2's manual course editor/review are implemented. A [hosted development environment](HOSTED_DEVELOPMENT.md) now connects Supabase with the founder's Vercel project. See the [course-context contract](COURSE_CONTEXT.md) for the learner flow, versioned schema, and routes. Most of this document remains the broader blueprint; AI1 extraction is implemented on its feature branch with hosted acceptance pending; mentoring, diagnostics, and opportunity matching follow later. See Section 16 for adopted implementation choices and the [implementation plan](IMPLEMENTATION_PLAN.md) for verified progress.
 
 > **Meno's promise:** Learn anywhere. Get mentored here.  
 > **Technical north star:** Preserve a learner's context, detect their next useful step, validate actual skill progress, and connect progress to credible opportunities.
@@ -581,7 +581,7 @@ These are **questions Codex should surface briefly**, but they should not be use
 | 14 Oct 2026 | Allow email/password sign-up without verification temporarily on the development project; no anonymous sign-in; ten-character minimum password | Founder explicitly chose unverified development sign-up; hosted auth settings are separate from local config; verified pilot auth remains a later gate |
 | 14 Oct 2026 | Trust canonical and exact Vercel deployment/branch origins; exclude credentials from deployment uploads; label hosted development | Implemented and tested on `feat/hosted-dev-setup`; see hosted development documentation |
 
-AI extraction, OpenAI integration, pilot release readiness, diagnostic rubrics, recovery milestones, and opportunity matching remain future work. These implementation choices record what was built under the instruction to proceed; they do not relabel the remaining proposals as founder-approved decisions.
+AI1 is implemented on `feat/course-outline-extraction`, with live hosted acceptance pending. Candidate outlines are saved separately from courses until the learner chooses to apply them; see [the extraction contract](OUTLINE_EXTRACTION.md). This refines the earlier proposed import flow to preserve learner corrections before review. Pilot readiness, diagnostic rubrics, recovery milestones, and opportunity matching remain future work.
 
 ## 17. Codex start instruction
 

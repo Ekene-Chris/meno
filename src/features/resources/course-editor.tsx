@@ -8,6 +8,7 @@ import { courseInputSchema, courseMutationResultSchema, type CourseInput } from 
 import { emptyCourse, statusLabel, type CourseRecord, type CourseSkill } from "./course-view";
 import { CourseFields } from "./course-fields";
 import { CoursePreview } from "./course-preview";
+import { CourseSuggestions } from "./course-suggestions";
 
 export function CourseEditor({
   initial,
@@ -364,6 +365,20 @@ export function CourseEditor({
                 if (!conflict) setError("");
               }}
               skills={skills}
+              suggestions={
+                <CourseSuggestions
+                  value={form}
+                  saved={saved}
+                  skills={skills}
+                  onApply={(value) => {
+                    setForm(value);
+                    setNotice(
+                      "Suggested modules added to your form. Review every mapping, choose your checkpoint, then save the draft.",
+                    );
+                    if (!conflict) setError("");
+                  }}
+                />
+              }
             />
           </fieldset>
           <div className="course-save-bar">

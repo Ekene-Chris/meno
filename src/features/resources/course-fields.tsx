@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
+import type { ReactNode } from "react";
 import { courseSourceTypes, type CourseInput } from "./course-schema";
 import { sourceLabels, type CourseSkill } from "./course-view";
 
@@ -8,10 +9,12 @@ export function CourseFields({
   value,
   onChange,
   skills,
+  suggestions,
 }: {
   value: CourseInput;
   onChange: (value: CourseInput) => void;
   skills: CourseSkill[];
+  suggestions?: ReactNode;
 }) {
   function patch(patch: Partial<CourseInput>) {
     onChange({ ...value, ...patch });
@@ -82,7 +85,7 @@ export function CourseFields({
               aria-describedby="reference-help"
             />
             <p id="reference-help" className="field-help">
-              A link to return to. Add the topics below yourself.
+              A link to return to. Meno doesn’t fetch its contents.
             </p>
           </div>
           <div className="field wide">
@@ -104,6 +107,7 @@ export function CourseFields({
             </p>
           </div>
         </div>
+        {suggestions}
       </section>
       <section className="form-section">
         <div className="section-heading">

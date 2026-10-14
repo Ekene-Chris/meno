@@ -19,7 +19,9 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **C2: Course editor and review** is implemented on `feat/course-editor`. Open **My courses** from the dashboard or navigation to add a course, arrange modules and topics, choose shared skills or leave topics unmapped, and keep your checkpoint. Save a draft, review it, then explicitly confirm it. Later edits retain the previous confirmed context. Conflicting saves preserve your form for comparison; uncertain saves can be retried without duplicates.
 
-AI extraction, diagnostics, mentoring, recovery plans, and opportunity matching are subsequent packages in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project; no live AI provider is configured.
+**AI1: Course outline suggestions** is implemented on `feat/course-outline-extraction`, with hosted acceptance pending. Learners can request candidate modules and uncertain skill matches, choose whether to use them, correct the form, and save/confirm through C2. Requests are bounded and retry-safe; provider failure preserves manual editing. See the [extraction contract](docs/OUTLINE_EXTRACTION.md) for server configuration and limitations.
+
+Diagnostics, mentoring, recovery plans, and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
 
 ## Local development
 
@@ -104,14 +106,15 @@ Routes authenticate and validate requests, feature services load or save domain 
 
 Stored data includes the authentication account, chosen entry state, goal, optional display name and learning preferences, unassessed skill records, and bounded history events. The course API additionally stores permitted outlines, module/topic mappings, self-reported checkpoints, and retained course revisions. Course history receipts contain request fingerprints and revision IDs, not copies of the outline. No assessed task submissions, AI conversation logs, or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
 
-The application uses the public Supabase key and the learner's session. The privileged local test key is only for test setup and cleanup; it is not used by application code. Hosted development uses Supabase and Vercel; OpenAI remains a future integration.
+Passport and course services use the public Supabase key and the learner's session. AI request accounting uses a separate server-only `SUPABASE_SECRET_KEY` after session-scoped authorization. Private candidate proposals retain validated results and request fingerprints, not duplicated source outlines. The local test key remains limited to fixture setup/cleanup. OpenAI receives only course titles/outlines plus the shared skill catalog when the learner requests suggestions.
 
 ## Project documents
 
 - [AGENTS.md](AGENTS.md): project instructions and product boundaries.
 - [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
 - [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
-- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. C1 and C2 are complete; the next package is **AI1: bounded provider adapter and outline extraction**.
+- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. AI1 is implemented with hosted acceptance pending; D1/D2 diagnostics follow.
+- [Outline extraction](docs/OUTLINE_EXTRACTION.md): suggestion review, provider/configuration limits, request accounting, privacy, and manual fallback.
 - [Course-context contract](docs/COURSE_CONTEXT.md): implemented API, draft/confirmation behavior, limits, and verification.
 - [Hosted development](docs/HOSTED_DEVELOPMENT.md): Vercel/Supabase targets, development sign-up choice, runtime settings, and deployment workflow.
 - [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.

@@ -161,6 +161,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"outline_extractions": {
+                  Row: {
+                    "course_id": string | null,"created_at": string,"error_code": string | null,"expected_confirmed_revision": number | null,"expected_revision": number,"input_hash": string,"model": string,"request_id": string,"result": Json | null,"status": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "course_id"?: string | null,"created_at"?: string,"error_code"?: string | null,"expected_confirmed_revision"?: number | null,"expected_revision": number,"input_hash": string,"model": string,"request_id": string,"result"?: Json | null,"status"?: string,"user_id": string
+                  }
+                  Update: {
+                    "course_id"?: string | null,"created_at"?: string,"error_code"?: string | null,"expected_confirmed_revision"?: number | null,"expected_revision"?: number,"input_hash"?: string,"model"?: string,"request_id"?: string,"result"?: Json | null,"status"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "outline_extractions_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "bandwidth": string | null,"created_at": string,"device": string | null,"display_name": string | null,"entry_state": string,"id": string,"locale": string,"study_minutes_per_week": number | null,"updated_at": string
@@ -275,6 +295,12 @@ isOneToOne: false
           Functions: {
             "confirm_course":
 { Args: { "p_course_id": string,"p_expected_revision": number,"p_request_id": string }; Returns: Json
+                           },
+"finish_outline_extraction":
+{ Args: { "p_error_code"?: string,"p_request_id": string,"p_result": Json,"p_user_id": string }; Returns: Json
+                           },
+"reserve_outline_extraction":
+{ Args: { "p_course_id"?: string,"p_daily_limit"?: number,"p_expected_confirmed_revision"?: number,"p_expected_revision"?: number,"p_input_hash": string,"p_model"?: string,"p_request_id": string,"p_user_id": string }; Returns: Json
                            },
 "save_course_draft":
 { Args: { "p_course_id"?: string,"p_expected_revision": number,"p_input": Json,"p_request_id": string }; Returns: Json

@@ -1,6 +1,6 @@
 # Hosted development
 
-Configured on 14 October 2026. This is a public development app for trying the implemented Passport and course flow; AI extraction, diagnostics, and mentoring are still future work.
+Configured on 14 October 2026. This is a public development app for trying the implemented Passport and course flow. AI1 adds outline suggestions on its feature branch; live preview acceptance is pending. Diagnostics and mentoring follow later.
 
 | Service | Development target |
 |---|---|
@@ -22,14 +22,20 @@ Vercel Production and Preview have these variables:
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: its public key; RLS and authenticated identity control private data.
 - `NEXT_PUBLIC_APP_URL`: `https://meno-ochre.vercel.app`.
 - `NEXT_PUBLIC_DEPLOYMENT_STAGE`: `development`.
+- `OPENAI_API_KEY`: sensitive server-only key configured by the founder.
+- `OPENAI_EXTRACTION_MODEL`: `gpt-5.6-luna`, configurable for this bounded extraction task.
+- `OPENAI_EXTRACTION_REASONING_EFFORT`: `none`.
+- `OPENAI_EXTRACTION_DAILY_LIMIT`: `50`; Production and Preview share this quota.
 
-Database passwords, privileged API keys, `TEST_DATABASE_URL`, and `SUPABASE_TEST_SERVICE_ROLE_KEY` are not app runtime variables. Credentials used during setup are in ignored `.env.supabase.dev` with owner-only permissions. Local `.env.local` remains configured for local Supabase and the tests still reject hosted targets. `.vercelignore` excludes all environment files and generated output from deployment uploads.
+AI1 additionally requires a sensitive server-only `SUPABASE_SECRET_KEY` for proposal accounting. Its hosted setup requires separate approval because this key bypasses RLS. All ordinary course and Passport operations keep the learner's session client; browser sessions cannot invoke the accounting RPCs. See [the extraction contract](OUTLINE_EXTRACTION.md).
+
+Database passwords, `TEST_DATABASE_URL`, and `SUPABASE_TEST_SERVICE_ROLE_KEY` are not app runtime variables. Setup credentials are in ignored `.env.supabase.dev` with owner-only permissions. Local `.env.local` remains configured for local Supabase and the tests reject hosted targets. `.vercelignore` excludes all environment files and generated output from deployment uploads.
 
 The app accepts mutation origins only from its configured canonical URL and exact deployment/branch URLs provided by Vercel. Request Host and forwarded headers cannot expand that allowlist. Confirmation redirects use the requesting trusted origin so previews do not redirect through localhost or a different deployment. Supabase's callback allowlist covers the canonical callback and the Meno preview/deployment host pattern in the same Vercel team.
 
 ## Schema and future updates
 
-Both migrations in `supabase/migrations/` and the shared fourteen-skill seed have been applied. No learner accounts, assessed skills, or opportunities are seeded. Private Passport/course tables retain their grants, RLS, and authoritative save/confirm operations.
+All three migrations through `202610140001_outline_extraction.sql` and the shared fourteen-skill seed have been applied. No learner accounts, assessed skills, or opportunities are seeded. Private Passport/course tables retain their grants, RLS, and authoritative save/confirm operations. The new proposal table and server-only reservation/finalization functions are additive and do not change existing learner records.
 
 After reviewing a future schema change, authenticate with `npx supabase login`, link the intended development project, and preview/apply pending migrations:
 
