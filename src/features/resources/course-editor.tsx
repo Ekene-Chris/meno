@@ -279,14 +279,14 @@ export function CourseEditor({
         )}
       </div>
       {saved?.confirmed && !editing && (
-        <Link href={`/learning-path?courseId=${saved.id}`} className="text-link course-back">
-          Choose a step with this confirmed course
-        </Link>
-      )}
-      {saved?.confirmed && !editing && (
-        <Link href={`/mentor?courseId=${saved.id}`} className="text-link course-back">
-          Get help with this confirmed course
-        </Link>
+        <div className="course-actions">
+          <Link href={`/learning-path?courseId=${saved.id}`} className="text-link course-back">
+            Choose a step with this confirmed course
+          </Link>
+          <Link href={`/mentor?courseId=${saved.id}`} className="text-link course-back">
+            Get help with this confirmed course
+          </Link>
+        </div>
       )}
       {notice && (
         <p role="status" className="form-notice">
@@ -483,12 +483,14 @@ export function CourseEditor({
                   Return here whenever you’re ready. A short JavaScript check can help you see what
                   you remember while keeping this course and your place intact.
                 </p>
-                <Link className="text-link" href="/dashboard">
-                  Back to your Passport
-                </Link>
-                <Link className="text-link" href="/assessment">
-                  Check what you remember
-                </Link>
+                <div className="course-actions">
+                  <Link className="text-link" href="/dashboard">
+                    Back to your Passport
+                  </Link>
+                  <Link className="text-link" href="/assessment">
+                    Check what you remember
+                  </Link>
+                </div>
               </div>
             )}
             {saved.confirmed && saved.confirmedRevision !== saved.revision && (

@@ -176,7 +176,7 @@ export function PracticalEditor({ initial }: { initial: PracticalAttempt }) {
         </p>
         <ul>
           {saved.content.limitations.map((l) => (
-            <li key={l}>{l}</li>
+            <li key={l}>{l.replace(/^T1 feedback/, "Submission feedback")}</li>
           ))}
         </ul>
         <p>
