@@ -122,6 +122,7 @@ test("the mobile simulated pause survives editing and explicit acceptance", asyn
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto("/check-in");
   await page.getByLabel("Simulate a pause for the demo").check();
+  await expect(page.getByLabel("Learning obstacle")).toHaveValue("returning");
   await expect(page.getByText(/DEMO DATA — SIMULATED INACTIVITY/).first()).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath("recovery-mobile.png"), fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(

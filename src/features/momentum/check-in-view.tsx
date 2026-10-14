@@ -129,7 +129,7 @@ export function CheckInView({ initial }: { initial: CheckInWorkspace }) {
             </label>
             <select
               id="obstacle"
-              value={obstacle}
+              value={demo ? "returning" : obstacle}
               disabled={demo}
               onChange={(event) => setObstacle(event.target.value as CheckInInput["obstacle"])}
             >
