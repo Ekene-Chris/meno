@@ -56,7 +56,7 @@ Initial defaults proposed for implementation are a frontend JavaScript curriculu
 | 0. Repository organization | None | Canonical handoff paths, preserved sources, review and plan | Complete; initial source checksums passed. Temporary guides are now consolidated in the root README. |
 | 1. Application bootstrap | Stage 0 | Runnable application and reproducible development setup | Complete; clean install, lint, typecheck, unit tests, setup helper, and production build pass. |
 | 2. Slice 1: Passport foundation | Stage 1 | Authentication, goals, constraints, private persisted learner context | Implemented; session reentry, atomic saves, cross-user denial, and evidence restrictions pass database/browser tests. |
-| 3. Slice 2: Course, diagnostic, recovery | Stage 2 | Editable syllabus mapping, real assessment evidence, proposed/accepted milestone | In progress: C1/C2/AI1 are merged; D1 is merged and D2 adds the resumable check/evidence journey. Recovery proposals and acceptance remain. Full gate: different results yield different justified next steps. |
+| 3. Slice 2: Course, diagnostic, recovery | Stage 2 | Editable syllabus mapping, real assessment evidence, proposed/accepted milestone | In progress: C1/C2/AI1 are merged; D1/D2 are merged; P1 adds next-step selection and stored proposals on its feature branch. Learner review/acceptance remains P2. Full gate: different results yield different justified next steps. |
 | 4. Slice 3: Mentor and Momentum | Stage 3 | Contextual help, practical task, approved recovery revision | Evaluated work changes relevant evidence and the next action. |
 | 5. Slice 4: Opportunity Radar | Stage 4; requirements fixture can start in Stage 3 | Transparent skill gaps connected to learning | New evidence changes only the opportunity requirements it supports. |
 | 6. Slice 5: Demo and resilience | Stages 2–5 | Reproducible full journey, alternative entries, mobile/error validation | David's story completes without manual database changes between steps. |
@@ -117,7 +117,7 @@ Completed: restored root instructions, strategy/design documents, diagrams, orig
 
 ### Stage 3 — Slice 2: Course context, assessment, and first recovery plan
 
-**Status:** C1/C2 are complete; AI1 and D1 are merged through PRs #4/#5. D2 connects the resumable assessment and scoped Passport evidence on `feat/diagnostic-attempts`. Recovery packages P1/P2 follow. The [course-context contract](COURSE_CONTEXT.md) records the manual flow; the [diagnostic contract](DIAGNOSTIC.md) records attempts, deterministic evaluation, evidence precedence and limitations.
+**Status:** C1/C2 are complete; AI1 and D1 are merged through PRs #4/#5. D2 is merged through PR #6. P1 adds evidence- and constraint-based recovery proposals on `feat/recovery-proposals`; P2 will add learner review and acceptance. The [course-context contract](COURSE_CONTEXT.md) records the manual flow; the [diagnostic contract](DIAGNOSTIC.md) records attempts, deterministic evaluation, evidence precedence and limitations.
 
 **Directories:** `features/resources/`, `features/assessment/`, `features/learning-paths/`, `app/assessment/`, `app/learning-path/`, the necessary API routes, and the first `lib/ai/` schemas/provider adapter.
 
@@ -237,7 +237,7 @@ Added eight fixed JavaScript questions for variables, functions, arrays and prom
 
 Local lint, TypeScript and 88 unit tests pass, including 15 diagnostic checks for correct, incorrect, partial, skipped and rejected input. The production build passes. No new migration or provider credential is required.
 
-### D2 follow-up — implemented on a feature branch
+### D2 follow-up — merged through PR #6
 
 Added owned, versioned attempts, explicit partial saves and skips, fresh-session resume, review before evaluation, paginated history, and scoped Passport findings with their source. Authenticated services score only stored responses. One database transaction finalizes the attempt, creates evidence, updates supported summaries and stores an idempotent event/receipt. Client roles cannot grade, write evidence or invoke trusted assessment RPCs. Concurrent starts/submissions, stale edits and exact retries are covered.
 
@@ -245,7 +245,15 @@ Retakes preserve every prior evidence row. Skips create no negative evidence; in
 
 The existing server-only Supabase key also supports trusted diagnostic mutations after owner/session checks; OpenAI is unnecessary for this flow. Existing courses/checkpoints are unchanged. Local lint, TypeScript, 94 unit tests, 45 database checks and all 21 browser journeys are verified; the production build passes and compiled browser assets contain no privileged key values or answer keys. Mobile question/results/Passport layouts were inspected. The additive D2 migration has been applied to the authorized development project without resetting data. Remote CI and live preview acceptance results are tracked in the D2 PR.
 
-**Next work package:** P1 — evidence- and constraint-based next-step selection with revisioned milestone proposals. P2 adds accept/edit/decline so only the learner's accepted revision becomes active. First prepare a small vetted resource/requirements fixture; unassessed skills remain unknown rather than failed.
+### P1 follow-up — implemented on a feature branch
+
+Added a versioned deterministic next-step policy, six reviewed primary-source resources, a visibly fictional requirements fixture, strict proposal APIs, minimal owner-scoped context snapshots and immutable milestone revisions. Observed gaps, retained strengths, confirmed course/checkpoint context and study/device constraints produce different justified small tasks. Unassessed prerequisites remain unknown. No proposal activates a plan, advances a checkpoint, completes a task or awards skill evidence.
+
+Proposal saves use authenticated context/receipt reads before the existing trusted server client. The transaction serializes with Passport/course/assessment writes, rechecks the semantic context hash and path revision, validates source/evidence/anchor references and atomically stores the proposal/event/receipt. Exact retries return the original revision after later context changes. Unsupported domains or unavailable reviewed resources preserve saved work.
+
+See [RECOVERY_PROPOSALS.md](RECOVERY_PROPOSALS.md) for policy, resource review deadlines, API contracts, limits and P2 requirements. Local lint, TypeScript, 111 unit tests, 54 database checks and all 24 browser journeys are verified. The production build passes and compiled browser assets contain no privileged key values or answer keys. The additive migration is applied to the authorized development project without resetting data. Remote CI and live preview acceptance results are tracked in the P1 PR.
+
+**Next work package:** P2 — learner-facing path review and explicit accept/edit/decline. Only a confirmed, fresh revision can become active; older proposal/evidence history remains available.
 
 ## Work queue and reviewable changes
 
@@ -257,8 +265,8 @@ Use these IDs in commits or future issues to keep implementation tied to an obse
 | C2 | **Complete:** editable course UI and manual skill mapping | C1 | Verified manual mapped/unmapped topics, order and checkpoint edits, saved review/confirmation, cancel, conflicts, retries, mobile entry, and returning-session continuity |
 | AI1 | **Complete:** bounded provider adapter and outline extraction | C2; provider/cost configuration for live calls | Validated candidates appear separately for learner review; confirmed context/evidence are untouched; local/remote checks and real hosted acceptance pass |
 | D1 | **Complete:** versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side; PR #5 merged |
-| D2 | **Implemented on feature branch:** diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
-| P1 | Next-step selection and revisioned milestone proposals | D2; small resource/requirements fixture | Different evidence or study constraints produce different justified small milestones; unassessed skills are not treated as failures |
+| D2 | **Complete:** diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
+| P1 | **Implemented on feature branch:** next-step selection and revisioned milestone proposals | D2; small resource/requirements fixture | Different evidence or study constraints produce different justified small milestones; unassessed skills are not treated as failures |
 | P2 | Path UI and accept/edit/decline behavior | P1 | Only an accepted proposal replaces the active plan; stale or duplicate requests cannot overwrite a newer revision |
 | M1 | Course-aware mentor workspace and resource selection | P2, AI1 | Explanation and recommendations reference the learner's actual context and vetted resources; provider failure preserves saved work |
 | T1 | Bounded practical exercise, rubric, and submission UI | P2; exercise/rubric decisions | The learner can submit and inspect feedback; incomplete or unsupported work is explicitly inconclusive; arbitrary code is never executed in the app |

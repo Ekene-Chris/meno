@@ -1,6 +1,6 @@
 # Hosted development
 
-Configured on 14 October 2026. This is a public development app for trying the Passport and course flow, including merged AI outline suggestions. D2 adds resumable JavaScript checks and evidence on its PR preview. Recovery planning and mentoring follow later.
+Configured on 14 October 2026. This is a public development app for trying the Passport and course flow, including merged AI outline suggestions. D2 is merged and adds resumable JavaScript checks and evidence. P1 adds recovery proposal APIs on its feature preview; learner review/acceptance and mentoring follow later.
 
 | Service | Development target |
 |---|---|
@@ -27,7 +27,7 @@ Vercel Production and Preview have these variables:
 - `OPENAI_EXTRACTION_REASONING_EFFORT`: `none`.
 - `OPENAI_EXTRACTION_DAILY_LIMIT`: `50`; Production and Preview share this quota.
 
-The sensitive server-only `SUPABASE_SECRET_KEY`, configured in Production and Preview with the founder’s explicit approval, supports AI proposal accounting and trusted deterministic diagnostic mutations. This key bypasses RLS. Services authenticate and check profile/attempt ownership with the learner's session before trusted writes. Ordinary course/Passport operations and diagnostic reads retain the session client; browser sessions cannot invoke accounting or diagnostic mutation RPCs. See [extraction](OUTLINE_EXTRACTION.md) and [diagnostic](DIAGNOSTIC.md) contracts. Diagnostics do not call OpenAI.
+The sensitive server-only `SUPABASE_SECRET_KEY`, configured in Production and Preview with the founder’s explicit approval, supports AI proposal accounting, trusted deterministic diagnostic mutations and recovery proposal saves. This key bypasses RLS. Services authenticate and check profile/attempt/proposal context ownership with the learner's session before trusted writes. Ordinary course/Passport operations and diagnostic/proposal reads retain the session client; browser sessions cannot invoke accounting, diagnostic mutation or proposal-write RPCs. See [extraction](OUTLINE_EXTRACTION.md), [diagnostic](DIAGNOSTIC.md) and [recovery proposal](RECOVERY_PROPOSALS.md) contracts. Diagnostics and recovery selection do not call OpenAI.
 
 Database passwords, `TEST_DATABASE_URL`, and `SUPABASE_TEST_SERVICE_ROLE_KEY` are not app runtime variables. Setup credentials are in ignored `.env.supabase.dev` with owner-only permissions. Local `.env.local` remains configured for local Supabase and the tests reject hosted targets. `.vercelignore` excludes all environment files and generated output from deployment uploads.
 
@@ -35,7 +35,7 @@ The app accepts mutation origins only from its configured canonical URL and exac
 
 ## Schema and future updates
 
-All four migrations through `202610140002_diagnostic_attempts.sql` and the shared fourteen-skill seed have been applied. No learner accounts, assessed skills or opportunities are seeded. Private Passport/course tables retain their grants, RLS and save/confirm operations. D2 adds owner-readable attempt/receipt tables and server-only start/save/evaluation functions, nullable evidence provenance fields and bounded diagnostic events. Existing data is retained; deploying the schema does not assign grades or alter course checkpoints.
+All five migrations through `202610140003_recovery_proposals.sql` and the shared fourteen-skill seed have been applied. No learner accounts, assessed skills or opportunities are seeded. Private Passport/course tables retain their grants, RLS and save/confirm operations. D2 adds owner-readable attempt/receipt tables and server-only start/save/evaluation functions, nullable evidence provenance fields and bounded diagnostic events. P1 adds immutable owned proposal/context/receipt records and six reviewed shared resources. Existing data is retained; deploying the schema does not assign grades, activate plans or alter course checkpoints.
 
 After reviewing a future schema change, authenticate with `npx supabase login`, link the intended development project, and preview/apply pending migrations:
 
@@ -45,7 +45,7 @@ npx supabase db push --linked --dry-run
 npx supabase db push --linked
 ```
 
-Do not reset the hosted database to deploy a migration. The initial shared catalog came from `seed.sql`; deploy intentional catalog updates explicitly instead of rerunning demo fixtures indiscriminately.
+Do not reset the hosted database to deploy a migration. The initial hosted catalog came from `seed.sql`. P1 now initializes the same shared v1 catalog in its migration before resource foreign keys, preserving existing metadata, so fresh setup works before the seed stage. Deploy intentional catalog changes explicitly; do not mix them with learner or opportunity fixtures.
 
 Local auth settings remain in `supabase/config.toml`. The limited hosted auth settings are in `supabase/hosted-dev.toml`. To review/apply those settings without sending the local development configuration:
 

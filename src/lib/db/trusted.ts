@@ -4,7 +4,7 @@ import { getPublicConfig } from "@/lib/env";
 import { AppError } from "@/lib/http";
 import type { Database } from "@/types/database";
 
-// Trusted accounting/evaluation writes only, after identity and ownership checks.
+// Trusted accounting, assessment and proposal writes after identity/ownership checks.
 // Ordinary reads and learner-editable course/Passport writes retain RLS sessions.
 export function createTrustedDb() {
   const config = getPublicConfig();

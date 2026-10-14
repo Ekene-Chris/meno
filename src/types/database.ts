@@ -207,6 +207,110 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"learning_path_mutations": {
+                  Row: {
+                    "course_id": string | null,"expected_revision": number,"proposal_id": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "course_id"?: string | null,"expected_revision": number,"proposal_id": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  Update: {
+                    "course_id"?: string | null,"expected_revision"?: number,"proposal_id"?: string,"request_id"?: string,"result"?: NonNullable<Json>,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_path_mutations_proposal_id_user_id_fkey"
+      columns: ["proposal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "learning_path_mutations_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"learning_path_revisions": {
+                  Row: {
+                    "context": NonNullable<Json>,"context_hash": string,"created_at": string,"id": string,"path_id": string,"proposal": NonNullable<Json>,"revision": number,"selector_version": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "context": NonNullable<Json>,"context_hash": string,"created_at"?: string,"id"?: string,"path_id": string,"proposal": NonNullable<Json>,"revision": number,"selector_version": string,"user_id": string
+                  }
+                  Update: {
+                    "context"?: NonNullable<Json>,"context_hash"?: string,"created_at"?: string,"id"?: string,"path_id"?: string,"proposal"?: NonNullable<Json>,"revision"?: number,"selector_version"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_path_revisions_path_id_user_id_fkey"
+      columns: ["path_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_paths"
+      referencedColumns: ["id","user_id"]
+    }
+                  ]
+                },"learning_paths": {
+                  Row: {
+                    "active_revision": number | null,"created_at": string,"goal_id": string,"id": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active_revision"?: number | null,"created_at"?: string,"goal_id": string,"id"?: string,"revision": number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "active_revision"?: number | null,"created_at"?: string,"goal_id"?: string,"id"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "active_path_revision"
+      columns: ["id","active_revision","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["path_id","revision","user_id"]
+    },{
+      foreignKeyName: "latest_path_revision"
+      columns: ["id","revision","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["path_id","revision","user_id"]
+    },{
+      foreignKeyName: "learning_paths_goal_id_user_id_fkey"
+      columns: ["goal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_goals"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "learning_paths_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"learning_resources": {
+                  Row: {
+                    "checked_at": string,"data_cost": string,"duration_minutes": number | null,"format": string,"id": string,"language": string,"provider": string,"quality_status": string,"review_after": string,"skill_id": string,"source_url": string,"title": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "checked_at": string,"data_cost"?: string,"duration_minutes"?: number | null,"format"?: string,"id": string,"language"?: string,"provider"?: string,"quality_status"?: string,"review_after": string,"skill_id": string,"source_url": string,"title": string
+                  }
+                  Update: {
+                    "checked_at"?: string,"data_cost"?: string,"duration_minutes"?: number | null,"format"?: string,"id"?: string,"language"?: string,"provider"?: string,"quality_status"?: string,"review_after"?: string,"skill_id"?: string,"source_url"?: string,"title"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_resources_skill_id_fkey"
+      columns: ["skill_id"]
+isOneToOne: false
+      referencedRelation: "skills"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"outline_extractions": {
                   Row: {
                     "course_id": string | null,"created_at": string,"error_code": string | null,"expected_confirmed_revision": number | null,"expected_revision": number,"input_hash": string,"model": string,"request_id": string,"result": Json | null,"status": string,"user_id": string
@@ -353,6 +457,15 @@ isOneToOne: false
                            },
 "finish_outline_extraction":
 { Args: { "p_error_code"?: string,"p_request_id": string,"p_result": Json,"p_user_id": string }; Returns: Json
+                           },
+"get_learning_path_context":
+{ Args: { "p_course_id"?: string }; Returns: Json
+                           },
+"learning_path_context_for":
+{ Args: { "p_course_id": string,"p_user_id": string }; Returns: Json
+                           },
+"propose_learning_path":
+{ Args: { "p_context_hash": string,"p_course_id"?: string,"p_expected_revision": number,"p_proposal": Json,"p_request_id": string,"p_selector_version": string,"p_user_id": string }; Returns: Json
                            },
 "reserve_outline_extraction":
 { Args: { "p_course_id"?: string,"p_daily_limit"?: number,"p_expected_confirmed_revision"?: number,"p_expected_revision"?: number,"p_input_hash": string,"p_model"?: string,"p_request_id": string,"p_user_id": string }; Returns: Json
