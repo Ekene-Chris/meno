@@ -6,7 +6,7 @@
 **Companion document:** [`PRODUCT_STRATEGY.md`](PRODUCT_STRATEGY.md)  
 **Source of truth:** The product strategy explains **why** and **for whom**; this document explains **how** the hackathon proof of concept should work. Resolve conflicts explicitly with the founder rather than silently choosing one document.
 
-**Implementation update — 13 October 2026:** Bootstrap, Slice 1, C1's course-context API/database foundation, and C2's manual course editor/review are implemented. See the [course-context contract](COURSE_CONTEXT.md) for the learner flow, versioned schema, and routes. Most of this document remains the broader blueprint; AI extraction/mentoring, diagnostics, and opportunity matching are not yet available. See Section 16 for adopted implementation choices and the [implementation plan](IMPLEMENTATION_PLAN.md) for verified progress.
+**Implementation update — 14 October 2026:** Bootstrap, Slice 1, C1's course-context API/database foundation, and C2's manual course editor/review are implemented. A [hosted development environment](HOSTED_DEVELOPMENT.md) now connects Supabase with the founder's Vercel project. See the [course-context contract](COURSE_CONTEXT.md) for the learner flow, versioned schema, and routes. Most of this document remains the broader blueprint; AI extraction/mentoring, diagnostics, and opportunity matching are not yet available. See Section 16 for adopted implementation choices and the [implementation plan](IMPLEMENTATION_PLAN.md) for verified progress.
 
 > **Meno's promise:** Learn anywhere. Get mentored here.  
 > **Technical north star:** Preserve a learner's context, detect their next useful step, validate actual skill progress, and connect progress to credible opportunities.
@@ -577,8 +577,11 @@ These are **questions Codex should surface briefly**, but they should not be use
 | 13 Oct 2026 | `GET/POST /api/courses`, `GET/PUT /api/courses/{id}`, and `POST /api/courses/{id}/confirm` precede the course editor and extraction | Implemented; reference URLs are stored only, and course input does not create assessment evidence |
 | 13 Oct 2026 | C2 adds private course list/new/review pages, manual mapping, module order and checkpoint editing, and explicit saved-version confirmation | Implemented on `feat/course-editor`, based on merged C1; no schema migration or AI configuration required |
 | 13 Oct 2026 | Preserve unsaved form data on conflicts; require explicit comparison/replacement; reuse uncertain request IDs and reread current state after receipts | Browser checks cover competing saves/confirmations, lost responses with intervening edits, cancel, mobile entry, and returning sessions |
+| 14 Oct 2026 | Free Supabase `meno-dev` project in `eu-west-1`, existing Vercel `raven-energy/meno` project, and separate local test configuration | Hosted development setup authorized by founder; schema/catalog applied; public connection settings configured in Vercel |
+| 14 Oct 2026 | Allow email/password sign-up without verification temporarily on the development project; no anonymous sign-in; ten-character minimum password | Founder explicitly chose unverified development sign-up; hosted auth settings are separate from local config; verified pilot auth remains a later gate |
+| 14 Oct 2026 | Trust canonical and exact Vercel deployment/branch origins; exclude credentials from deployment uploads; label hosted development | Implemented and tested on `feat/hosted-dev-setup`; see hosted development documentation |
 
-AI extraction, OpenAI integration, hosting, diagnostic rubrics, recovery milestones, and opportunity matching remain future work. These implementation choices record what was built under the instruction to proceed; they do not relabel the remaining proposals as founder-approved decisions.
+AI extraction, OpenAI integration, pilot release readiness, diagnostic rubrics, recovery milestones, and opportunity matching remain future work. These implementation choices record what was built under the instruction to proceed; they do not relabel the remaining proposals as founder-approved decisions.
 
 ## 17. Codex start instruction
 

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getAppOrigins } from "./app-origin";
 
 export class AppError extends Error {
   constructor(
@@ -27,8 +28,8 @@ export function jsonError(error: unknown) {
 }
 
 export async function readMutation(request: Request, maxBytes = 8192) {
-  const expectedOrigin = new URL(process.env.NEXT_PUBLIC_APP_URL || request.url).origin;
-  if (request.headers.get("origin") !== expectedOrigin) {
+  const requestOrigin = request.headers.get("origin");
+  if (!requestOrigin || !getAppOrigins(request.url).includes(requestOrigin)) {
     throw new AppError(403, "INVALID_ORIGIN", "Please submit this form from Meno.");
   }
   if (!request.headers.get("content-type")?.startsWith("application/json")) {

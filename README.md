@@ -19,7 +19,7 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **C2: Course editor and review** is implemented on `feat/course-editor`. Open **My courses** from the dashboard or navigation to add a course, arrange modules and topics, choose shared skills or leave topics unmapped, and keep your checkpoint. Save a draft, review it, then explicitly confirm it. Later edits retain the previous confirmed context. Conflicting saves preserve your form for comparison; uncertain saves can be retried without duplicates.
 
-AI extraction, diagnostics, mentoring, recovery plans, and opportunity matching are subsequent packages in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). No hosted deployment or live AI provider is configured.
+AI extraction, diagnostics, mentoring, recovery plans, and opportunity matching are subsequent packages in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project; no live AI provider is configured.
 
 ## Local development
 
@@ -38,7 +38,7 @@ Open [Meno locally](http://localhost:3000), choose **Create an account**, and co
 
 `db:env` creates an ignored `.env.local` from the local Supabase stack without printing credentials. It refuses to overwrite an existing file: skip that step on an already configured checkout. [`.env.example`](.env.example) documents each variable. Keep `NEXT_PUBLIC_APP_URL` equal to the browser origin, including the port, when changing the development address.
 
-The local stack uses API port `54321`, database port `54322`, and email preview port `54324`. Email confirmation is disabled **only in the local development configuration**. Hosted authentication and email delivery will need separate configuration before deployment.
+The local stack uses API port `54321`, database port `54322`, and email preview port `54324`. Email confirmation is disabled locally and, by the founder’s choice, on the hosted development project. The [hosted guide](docs/HOSTED_DEVELOPMENT.md) records that configuration; verified pilot authentication and email delivery remain future work.
 
 After pulling a feature branch with new migrations, run `npm run db:migrate` against the running local stack. It applies pending migrations without resetting existing learner data. New checkouts also use this command; already-applied migrations are skipped.
 
@@ -104,7 +104,7 @@ Routes authenticate and validate requests, feature services load or save domain 
 
 Stored data includes the authentication account, chosen entry state, goal, optional display name and learning preferences, unassessed skill records, and bounded history events. The course API additionally stores permitted outlines, module/topic mappings, self-reported checkpoints, and retained course revisions. Course history receipts contain request fingerprints and revision IDs, not copies of the outline. No assessed task submissions, AI conversation logs, or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
 
-The application uses the public Supabase key and the learner's session. The privileged local test key is only for test setup and cleanup; it is not used by application code. OpenAI and hosting remain future integrations.
+The application uses the public Supabase key and the learner's session. The privileged local test key is only for test setup and cleanup; it is not used by application code. Hosted development uses Supabase and Vercel; OpenAI remains a future integration.
 
 ## Project documents
 
@@ -113,6 +113,7 @@ The application uses the public Supabase key and the learner's session. The priv
 - [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
 - [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. C1 and C2 are complete; the next package is **AI1: bounded provider adapter and outline extraction**.
 - [Course-context contract](docs/COURSE_CONTEXT.md): implemented API, draft/confirmation behavior, limits, and verification.
+- [Hosted development](docs/HOSTED_DEVELOPMENT.md): Vercel/Supabase targets, development sign-up choice, runtime settings, and deployment workflow.
 - [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.
 - [Original Word strategy](docs/reference/Meno_Product_Strategy.docx): preserved source reference.
 
