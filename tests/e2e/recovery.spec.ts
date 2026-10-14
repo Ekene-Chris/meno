@@ -233,10 +233,9 @@ test("beginner and stronger quiz learner get different scoped starting/practice 
   expect(first.proposal.reasons[0]).toContain("no assessed finding");
   expect((await (await page.request.get("/api/me")).json()).recentEvidence).toHaveLength(0);
   expect((await (await page.request.get("/api/learning-path")).json()).activeRevision).toBeNull();
-  await page.goto("/sign-in");
   // Sign out before entering the independent stronger-quiz fixture.
-  await page.goto("/dashboard");
   await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page).toHaveURL(/\/sign-in$/);
   await signIn(page, 2);
   await diagnostic(page);
   const result = await page.request.post("/api/learning-path/proposals", {
