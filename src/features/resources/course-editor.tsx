@@ -137,6 +137,7 @@ export function CourseEditor({
         : { expectedRevision: saved?.revision };
     const key = JSON.stringify({ url, method, payload });
     if (attempt.current?.key !== key) attempt.current = { key, id: crypto.randomUUID() };
+    let navigating = false;
     try {
       const response = await fetch(url, {
         method,
@@ -172,6 +173,14 @@ export function CourseEditor({
       const current = await fetch(`/api/courses/${receipt.courseId}`, { cache: "no-store" });
       if (!current.ok) throw new Error("unverified");
       const record: CourseRecord = await current.json();
+      if (!saved) {
+        // Keep the new-course form locked until the saved route mounts. Showing
+        // an editable review here can lose edits when the pending navigation ends.
+        navigating = true;
+        allowLeave.current = true;
+        router.replace(`/courses/${receipt.courseId}`);
+        return;
+      }
       setSaved(record);
       setForm(record.draft.content);
       setEditing(false);
@@ -182,10 +191,6 @@ export function CourseEditor({
             ? "Draft saved. Review the details below before confirming."
             : "Course confirmed. Your topics and checkpoint are saved for your return.",
       );
-      if (!saved) {
-        allowLeave.current = true;
-        router.replace(`/courses/${receipt.courseId}`);
-      }
       setUncertain(false);
       setConflict(false);
       setLatest(null);
@@ -198,8 +203,10 @@ export function CourseEditor({
         "We couldn’t verify the save. Your input is still here. Retry the same request to check its result before making more changes.",
       );
     } finally {
-      working.current = false;
-      setBusy(false);
+      if (!navigating) {
+        working.current = false;
+        setBusy(false);
+      }
     }
   }
 
