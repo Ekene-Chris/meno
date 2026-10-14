@@ -138,3 +138,51 @@ export const pathReceiptSchema = z.strictObject({
 export type PathContext = z.infer<typeof pathContextSchema>;
 export type PathProposal = z.infer<typeof proposalSchema>;
 export type ProposePathInput = z.infer<typeof proposePathSchema>;
+
+export const pathAdjustmentSchema = z.strictObject({
+  title: text(160),
+  estimatedMinutes: z.union([z.literal(5), z.literal(15), z.literal(25)]),
+  steps: z.array(text(400)).min(2).max(4),
+});
+const reviewBase = {
+  requestId: pathIdSchema,
+  expectedRevision: z.number().int().min(1).max(2147483646),
+};
+export const reviewPathSchema = z.discriminatedUnion("operation", [
+  z.strictObject({ ...reviewBase, operation: z.literal("edit"), adjustment: pathAdjustmentSchema }),
+  z.strictObject({ ...reviewBase, operation: z.enum(["accept", "decline"]) }),
+]);
+export const pathDecisionReceiptSchema = pathReceiptSchema.extend({
+  decision: z.enum(["accepted", "declined"]),
+});
+export const reviewReceiptSchema = z.union([pathDecisionReceiptSchema, pathReceiptSchema]);
+export const reviewQuerySchema = z.strictObject({
+  courseId: z.union([pathIdSchema, z.literal("none")]).optional(),
+  before: z.coerce.number().int().positive().optional(),
+});
+export const reviewedProposalSchema = z.strictObject({
+  id: pathIdSchema,
+  pathId: pathIdSchema,
+  revision: z.number().int().positive(),
+  createdAt: z.iso.datetime({ offset: true }),
+  contextHash: z.string().regex(/^[a-f0-9]{64}$/),
+  context: pathContextSchema,
+  proposal: proposalSchema,
+  editedFrom: pathIdSchema.nullable(),
+  decision: z.enum(["accepted", "declined"]).nullable(),
+});
+export const pathReviewSchema = z.strictObject({
+  pathId: pathIdSchema.nullable(),
+  revision: z.number().int().min(0),
+  activeRevision: z.number().int().positive().nullable(),
+  latest: reviewedProposalSchema.nullable(),
+  active: reviewedProposalSchema.nullable(),
+  history: z.array(reviewedProposalSchema).max(20),
+  courseId: pathIdSchema.nullable(),
+  contextAvailable: z.boolean(),
+  contextCurrent: z.boolean(),
+});
+export type PathAdjustment = z.infer<typeof pathAdjustmentSchema>;
+export type ReviewPathInput = z.infer<typeof reviewPathSchema>;
+export type PathReview = z.infer<typeof pathReviewSchema>;
+export type ReviewedProposal = z.infer<typeof reviewedProposalSchema>;

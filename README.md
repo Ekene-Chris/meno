@@ -23,9 +23,9 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **D1/D2: JavaScript skill checks** adds eight versioned questions, server-only answer keys and deterministic correct/partial/incorrect/skipped observations. Open **Skill checks** to save answers, resume in another session, review results and inspect scoped evidence in the Passport. Exact retries cannot duplicate findings; skipped/incomplete retakes preserve earlier complete evidence. Findings describe fixed quiz examples, not certification or project readiness. See the [diagnostic contract](docs/DIAGNOSTIC.md).
 
-**P1: Recovery proposal APIs** selects and retains a small milestone from observed evidence, the goal, confirmed course context and study constraints. Each proposal includes rationale, source references, a reviewed resource and limits. Unassessed skills remain unknown; proposals do not activate a plan or award evidence. P2 will add the review/edit/accept/decline screen. See the [recovery proposal contract](docs/RECOVERY_PROPOSALS.md).
+**P1: Recovery proposal APIs** selects and retains a small milestone from observed evidence, the goal, confirmed course context and study constraints. Each proposal includes rationale, source references, a reviewed resource and limits. Unassessed skills remain unknown; proposals do not activate a plan or award evidence. **P2: My next step** adds the review/edit/accept/decline screen, explicit confirmation, a separate accepted step and paginated history. Edits stay pending; declines preserve the active step; stale context and conflicting choices are rejected. Lost responses can be retried without duplicate decisions. See the [recovery proposal contract](docs/RECOVERY_PROPOSALS.md).
 
-Mentoring, plan acceptance and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
+Mentoring, practical evaluation and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
 
 ## Local development
 

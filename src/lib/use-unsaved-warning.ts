@@ -1,10 +1,13 @@
 "use client";
 import { useEffect } from "react";
 
-export function useUnsavedWarning(guarded: boolean, formId: string) {
+export function useUnsavedWarning(
+  guarded: boolean,
+  formId: string,
+  message = "You have unsaved or unverified answers. Leave this page?",
+) {
   useEffect(() => {
     if (!guarded) return;
-    const message = "You have unsaved or unverified answers. Leave this page?";
     function unload(event: BeforeUnloadEvent) {
       event.preventDefault();
     }
@@ -49,5 +52,5 @@ export function useUnsavedWarning(guarded: boolean, formId: string) {
       document.removeEventListener("click", click, true);
       document.removeEventListener("submit", submit, true);
     };
-  }, [guarded, formId]);
+  }, [guarded, formId, message]);
 }
