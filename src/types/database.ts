@@ -493,6 +493,58 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"practical_progress": {
+                  Row: {
+                    "attempt_id": string,"created_at": string,"id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempt_id": string,"created_at"?: string,"id"?: string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  Update: {
+                    "attempt_id"?: string,"created_at"?: string,"id"?: string,"result"?: NonNullable<Json>,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "practical_progress_attempt_id_user_id_fkey"
+      columns: ["attempt_id","user_id"]
+isOneToOne: false
+      referencedRelation: "practical_attempts"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "practical_progress_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"practical_progress_receipts": {
+                  Row: {
+                    "attempt_id": string,"content_hash": string,"progress_id": string,"request_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempt_id": string,"content_hash": string,"progress_id": string,"request_id": string,"user_id": string
+                  }
+                  Update: {
+                    "attempt_id"?: string,"content_hash"?: string,"progress_id"?: string,"request_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "practical_progress_receipts_progress_id_user_id_fkey"
+      columns: ["progress_id","user_id"]
+isOneToOne: false
+      referencedRelation: "practical_progress"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "practical_progress_receipts_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "bandwidth": string | null,"created_at": string,"device": string | null,"display_name": string | null,"entry_state": string,"id": string,"locale": string,"study_minutes_per_week": number | null,"updated_at": string
@@ -509,14 +561,14 @@ isOneToOne: false
                   ]
                 },"skill_evidence": {
                   Row: {
-                    "assessment_attempt_id": string | null,"caveat": string | null,"evaluated_at": string,"id": string,"kind": string,"outcome": string,"rubric_version": string | null,"scope": string | null,"skill_id": string,"source_id": string,"user_id": string
+                    "assessment_attempt_id": string | null,"assessment_method": string | null,"caveat": string | null,"evaluated_at": string,"id": string,"kind": string,"outcome": string,"practical_attempt_id": string | null,"rubric_version": string | null,"scope": string | null,"skill_id": string,"source_id": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "assessment_attempt_id"?: string | null,"caveat"?: string | null,"evaluated_at"?: string,"id"?: string,"kind": string,"outcome": string,"rubric_version"?: string | null,"scope"?: string | null,"skill_id": string,"source_id": string,"user_id": string
+                    "assessment_attempt_id"?: string | null,"assessment_method"?: string | null,"caveat"?: string | null,"evaluated_at"?: string,"id"?: string,"kind": string,"outcome": string,"practical_attempt_id"?: string | null,"rubric_version"?: string | null,"scope"?: string | null,"skill_id": string,"source_id": string,"user_id": string
                   }
                   Update: {
-                    "assessment_attempt_id"?: string | null,"caveat"?: string | null,"evaluated_at"?: string,"id"?: string,"kind"?: string,"outcome"?: string,"rubric_version"?: string | null,"scope"?: string | null,"skill_id"?: string,"source_id"?: string,"user_id"?: string
+                    "assessment_attempt_id"?: string | null,"assessment_method"?: string | null,"caveat"?: string | null,"evaluated_at"?: string,"id"?: string,"kind"?: string,"outcome"?: string,"practical_attempt_id"?: string | null,"rubric_version"?: string | null,"scope"?: string | null,"skill_id"?: string,"source_id"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -524,6 +576,12 @@ isOneToOne: false
       columns: ["assessment_attempt_id","user_id"]
 isOneToOne: false
       referencedRelation: "diagnostic_attempts"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "practical_evidence_owner"
+      columns: ["practical_attempt_id","user_id"]
+isOneToOne: false
+      referencedRelation: "practical_attempts"
       referencedColumns: ["id","user_id"]
     },{
       foreignKeyName: "skill_evidence_skill_id_fkey"
@@ -651,6 +709,9 @@ isOneToOne: false
                            },
 "propose_learning_path":
 { Args: { "p_context_hash": string,"p_course_id"?: string,"p_expected_revision": number,"p_proposal": Json,"p_request_id": string,"p_selector_version": string,"p_user_id": string }; Returns: Json
+                           },
+"record_practical_progress":
+{ Args: { "p_attempt_id": string,"p_content_hash": string,"p_feedback": Json,"p_request_id": string,"p_user_id": string }; Returns: Json
                            },
 "reserve_mentor_turn":
 { Args: { "p_context_hash": string,"p_course_id"?: string,"p_daily_limit"?: number,"p_model": string,"p_question": string,"p_request_id": string,"p_user_id": string }; Returns: Json

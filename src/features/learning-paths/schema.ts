@@ -57,6 +57,7 @@ export const pathContextSchema = z.strictObject({
             scope: text(400).nullable(),
             rubricVersion: text(120).nullable(),
             attemptId: pathIdSchema.nullable(),
+            method: z.literal("guided_scaffold").optional(),
           })
           .nullable(),
       }),

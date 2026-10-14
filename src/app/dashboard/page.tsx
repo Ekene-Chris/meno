@@ -144,9 +144,12 @@ export default async function Dashboard() {
                 <p>{skill.description}</p>
               </div>
               <span className={`skill-status status-${skill.finding?.status ?? "not_assessed"}`}>
-                {skill.evidence?.kind === "quiz" && skill.finding?.status === "demonstrated"
-                  ? "Shown in quiz examples"
-                  : statusLabels[skill.finding?.status ?? "not_assessed"]}
+                {skill.evidence?.assessment_method === "guided_scaffold" &&
+                skill.finding?.status === "demonstrated"
+                  ? "Shown in guided scaffold"
+                  : skill.evidence?.kind === "quiz" && skill.finding?.status === "demonstrated"
+                    ? "Shown in quiz examples"
+                    : statusLabels[skill.finding?.status ?? "not_assessed"]}
               </span>
               {skill.evidence && (
                 <div className="skill-evidence">
@@ -156,11 +159,21 @@ export default async function Dashboard() {
                       "An observation is recorded for this skill."}
                   </p>
                   <p className="field-help">
-                    {skill.evidence.kind === "quiz"
-                      ? "Quiz observation"
-                      : skill.evidence.kind.replaceAll("_", " ")}{" "}
+                    {skill.evidence.assessment_method === "guided_scaffold"
+                      ? "Guided scaffold observation"
+                      : skill.evidence.kind === "quiz"
+                        ? "Quiz observation"
+                        : skill.evidence.kind.replaceAll("_", " ")}{" "}
                     · {skill.evidence.rubric_version ?? "Unassessed source"}
                   </p>
+                  {skill.evidence.practical_attempt_id && (
+                    <Link
+                      href={`/practice/${skill.evidence.practical_attempt_id}`}
+                      className="text-link"
+                    >
+                      Review the guided choices and evidence
+                    </Link>
+                  )}
                   {skill.evidence.assessment_attempt_id && (
                     <Link
                       href={`/assessment/${skill.evidence.assessment_attempt_id}`}
@@ -179,8 +192,8 @@ export default async function Dashboard() {
         <section className="form-section" aria-label="Recent skill evidence">
           <h2>Your observed learning</h2>
           <p>
-            Previous observations stay in your history. A short quiz supports only its stated scope;
-            it doesn’t certify project or career readiness.
+            Previous observations stay in your history. Quiz and guided scaffold evidence support
+            only their stated scopes; it doesn’t certify project or career readiness.
           </p>
           <ul className="evidence-history">
             {recentEvidence.map((evidence) => (
@@ -191,7 +204,12 @@ export default async function Dashboard() {
                 </strong>
                 <p>{evidence.scope ?? evidence.caveat}</p>
                 <span className="field-help">
-                  {evidence.kind === "quiz" ? "Quiz" : evidence.kind.replaceAll("_", " ")} ·{" "}
+                  {evidence.assessment_method === "guided_scaffold"
+                    ? "Guided scaffold observation"
+                    : evidence.kind === "quiz"
+                      ? "Quiz"
+                      : evidence.kind.replaceAll("_", " ")}{" "}
+                  ·{" "}
                   {evidence.outcome === "meets_criteria"
                     ? "Met the scoped criteria"
                     : evidence.outcome === "needs_practice"
@@ -203,6 +221,11 @@ export default async function Dashboard() {
                     timeZone: "Africa/Lagos",
                   }).format(new Date(evidence.evaluated_at))}
                 </span>
+                {evidence.practical_attempt_id && (
+                  <Link href={`/practice/${evidence.practical_attempt_id}`} className="text-link">
+                    Review guided exercise
+                  </Link>
+                )}
                 {evidence.assessment_attempt_id && (
                   <Link
                     href={`/assessment/${evidence.assessment_attempt_id}`}
@@ -226,25 +249,31 @@ export default async function Dashboard() {
             <li key={event.id}>
               <span className="event-dot" aria-hidden="true" />
               <span>
-                {event.type === "onboarding_completed"
-                  ? "Your Learner Passport began"
-                  : event.type === "course_draft_saved"
-                    ? "You saved a course draft"
-                    : event.type === "course_confirmed"
-                      ? "You confirmed your course context"
-                      : event.type === "diagnostic_started"
-                        ? "You began a JavaScript check"
-                        : event.type === "diagnostic_evaluated"
-                          ? "You saved observed skill evidence"
-                          : event.type === "path_proposed"
-                            ? "You saved a proposed next step"
-                            : event.type === "path_accepted"
-                              ? "You accepted your next step"
-                              : event.type === "path_declined"
-                                ? "You declined a proposed step"
-                                : event.type === "path_edited"
-                                  ? "You adjusted a proposed step"
-                                  : "You updated your learning context"}
+                {event.type === "practical_progress_recorded"
+                  ? "You recorded scoped guided evidence"
+                  : event.type === "practical_submitted"
+                    ? "You submitted practical work"
+                    : event.type === "practical_started"
+                      ? "You began guided practice"
+                      : event.type === "onboarding_completed"
+                        ? "Your Learner Passport began"
+                        : event.type === "course_draft_saved"
+                          ? "You saved a course draft"
+                          : event.type === "course_confirmed"
+                            ? "You confirmed your course context"
+                            : event.type === "diagnostic_started"
+                              ? "You began a JavaScript check"
+                              : event.type === "diagnostic_evaluated"
+                                ? "You saved observed skill evidence"
+                                : event.type === "path_proposed"
+                                  ? "You saved a proposed next step"
+                                  : event.type === "path_accepted"
+                                    ? "You accepted your next step"
+                                    : event.type === "path_declined"
+                                      ? "You declined a proposed step"
+                                      : event.type === "path_edited"
+                                        ? "You adjusted a proposed step"
+                                        : "You updated your learning context"}
               </span>
               <time dateTime={event.occurred_at}>
                 {new Intl.DateTimeFormat("en", {

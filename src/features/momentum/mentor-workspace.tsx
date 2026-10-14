@@ -463,7 +463,9 @@ export function MentorWorkspaceView({
                     return skill ? (
                       <p className="field-help" key={id}>
                         {skill.name}: {skill.evidence?.scope} ·{" "}
-                        {skill.evidence?.kind.replaceAll("_", " ")}
+                        {skill.evidence?.method === "guided_scaffold"
+                          ? "Guided scaffold observation"
+                          : skill.evidence?.kind.replaceAll("_", " ")}
                       </p>
                     ) : null;
                   })}
