@@ -21,7 +21,9 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **AI1: Course outline suggestions** is implemented on `feat/course-outline-extraction`, with local and live preview acceptance verified. Learners can request candidate modules and uncertain skill matches, choose whether to use them, correct the form, and save/confirm through C2. Requests are bounded and retry-safe; provider failure preserves manual editing. See the [extraction contract](docs/OUTLINE_EXTRACTION.md) for server configuration and limitations.
 
-Diagnostics, mentoring, recovery plans, and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
+**D1: Diagnostic content and scoring** adds eight versioned JavaScript questions, server-only answer keys, and deterministic correct/partial/incorrect/skipped observations. Findings are limited to the actual question scope and do not write evidence. See the [diagnostic contract](docs/DIAGNOSTIC.md). D2 will add resumable attempts, the assessment UI, and persistent evidence.
+
+Mentoring, recovery plans, and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
 
 ## Local development
 
@@ -113,8 +115,9 @@ Passport and course services use the public Supabase key and the learner's sessi
 - [AGENTS.md](AGENTS.md): project instructions and product boundaries.
 - [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
 - [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
-- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. AI1 is verified; D1/D2 diagnostics follow.
+- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. AI1 is merged and live; D1 content/scoring is implemented on its feature branch, with D2 next.
 - [Outline extraction](docs/OUTLINE_EXTRACTION.md): suggestion review, provider/configuration limits, request accounting, privacy, and manual fallback.
+- [Diagnostic contract](docs/DIAGNOSTIC.md): versioned questions, narrow scoring rules, skip/partial behavior, and D2 persistence boundaries.
 - [Course-context contract](docs/COURSE_CONTEXT.md): implemented API, draft/confirmation behavior, limits, and verification.
 - [Hosted development](docs/HOSTED_DEVELOPMENT.md): Vercel/Supabase targets, development sign-up choice, runtime settings, and deployment workflow.
 - [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.
