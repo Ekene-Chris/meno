@@ -1,6 +1,6 @@
 # Meno implementation plan
 
-Updated on 13 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence is complete on `feat/course-context-foundation`; C2's editor is next.** The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
+Updated on 13 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1's bounded extraction is next.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 is on `feat/course-editor`, based on that merged `main`. The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
 
 Build a persistent mentor that helps a returning learner take a useful next step and see why it matters. The first complete demonstration runs from existing course context to diagnostic evidence, accepted recovery work, evaluated submission, and a changed opportunity requirement gap.
 
@@ -56,7 +56,7 @@ Initial defaults proposed for implementation are a frontend JavaScript curriculu
 | 0. Repository organization | None | Canonical handoff paths, preserved sources, review and plan | Complete; initial source checksums passed. Temporary guides are now consolidated in the root README. |
 | 1. Application bootstrap | Stage 0 | Runnable application and reproducible development setup | Complete; clean install, lint, typecheck, unit tests, setup helper, and production build pass. |
 | 2. Slice 1: Passport foundation | Stage 1 | Authentication, goals, constraints, private persisted learner context | Implemented; session reentry, atomic saves, cross-user denial, and evidence restrictions pass database/browser tests. |
-| 3. Slice 2: Course, diagnostic, recovery | Stage 2 | Editable syllabus mapping, real assessment evidence, proposed/accepted milestone | In progress: C1 API/database foundation verified; editor, extraction, diagnostic, and recovery milestone remain. Full gate: different results yield different justified next steps. |
+| 3. Slice 2: Course, diagnostic, recovery | Stage 2 | Editable syllabus mapping, real assessment evidence, proposed/accepted milestone | In progress: C1 persistence and C2 manual editor/review verified; extraction, diagnostic, and recovery milestone remain. Full gate: different results yield different justified next steps. |
 | 4. Slice 3: Mentor and Momentum | Stage 3 | Contextual help, practical task, approved recovery revision | Evaluated work changes relevant evidence and the next action. |
 | 5. Slice 4: Opportunity Radar | Stage 4; requirements fixture can start in Stage 3 | Transparent skill gaps connected to learning | New evidence changes only the opportunity requirements it supports. |
 | 6. Slice 5: Demo and resilience | Stages 2–5 | Reproducible full journey, alternative entries, mobile/error validation | David's story completes without manual database changes between steps. |
@@ -117,7 +117,7 @@ Completed: restored root instructions, strategy/design documents, diagrams, orig
 
 ### Stage 3 — Slice 2: Course context, assessment, and first recovery plan
 
-**Status:** C1 is implemented; subsequent packages remain planned. The [course-context contract](COURSE_CONTEXT.md) records the shipped endpoints, version model, retry semantics, and initial limits. There is no course editing screen or live extraction yet.
+**Status:** C1 and C2 are implemented; subsequent packages remain planned. The [course-context contract](COURSE_CONTEXT.md) records the manual editor/review flow, endpoints, version model, retry semantics, and initial limits. There is no live extraction yet.
 
 **Directories:** `features/resources/`, `features/assessment/`, `features/learning-paths/`, `app/assessment/`, `app/learning-path/`, the necessary API routes, and the first `lib/ai/` schemas/provider adapter.
 
@@ -217,9 +217,15 @@ Local verification on 13 October 2026: clean `npm ci` completed with no reported
 
 Added owned course records, retained content revisions and ordered modules, explicit unmapped topics, and a self-reported checkpoint. Draft saves and confirmations are separate authenticated operations. New drafts preserve prior confirmed context, stale requests fail without changes, exact retries return their original receipts, and cross-user reads/writes are denied. Course context does not create skill findings. An additive local migration and generated types support the API without resetting learner data.
 
-Local verification: lint, TypeScript, 45 unit tests, 26 database integration tests, 6 browser journeys, and the production build pass, including the original Passport regressions. The database checks cover concurrent retries/edits, rollback, grants/RLS, nested ownership, and account-removal cascades. Browser checks cover real sessions, course persistence, confirmation, validation, and private pagination. The documented migration command also skips already-applied migrations without resetting data. Remote CI has not run.
+Local verification: lint, TypeScript, 45 unit tests, 26 database integration tests, 6 browser journeys, and the production build pass, including the original Passport regressions. The database checks cover concurrent retries/edits, rollback, grants/RLS, nested ownership, and account-removal cascades. Browser checks cover real sessions, course persistence, confirmation, validation, and private pagination. The documented migration command also skips already-applied migrations without resetting data. Remote CI passed for C1 on PR #1.
 
-**Next work package:** C2 — use the implemented APIs for a reachable import/review screen, manual mapping, persisted confirmation, and checkpoint selection. Then add bounded extraction (AI1), the versioned diagnostic (D1/D2), and an accepted recovery milestone (P1/P2).
+### C2 follow-up — delivered on a feature branch
+
+Added `/courses`, `/courses/new`, and `/courses/{id}`, reachable from the dashboard and navigation. Learners can enter course context, reorder modules, map topics manually or leave them unmapped, preserve a checkpoint, save and review drafts, and confirm a saved version. Cancel keeps saved content intact. Competing saves preserve the form and require explicit comparison; uncertain requests retain their IDs, and successful retries read current state before presenting it. Confirmed history remains available through later edits. Course pages also refresh cookie sessions through the proxy.
+
+Local verification: lint, TypeScript, 45 unit tests, 26 database integration tests, 11 browser journeys, and the production build pass. The browser journeys cover the mobile editor, keyboard reordering, returning-session persistence, unchanged assessed skills, checkpoint removal, cancellation, conflicts, lost-response retries with intervening edits, incomplete drafts, untrusted outline text, private page access, and pagination. Desktop review and mobile editor screenshots were inspected. A separate mobile browser check against the production build verified course entry, save, confirmation, reload, and checkpoint persistence; its temporary learner was removed. No new migration or provider configuration is needed; AI extraction remains unimplemented.
+
+**Next work package:** AI1 — bounded provider configuration and outline extraction with schema validation, review, and manual fallback. Then implement the versioned diagnostic (D1/D2) and an accepted recovery milestone (P1/P2). Live-provider credentials gate live extraction checks, not independent deterministic work.
 
 ## Work queue and reviewable changes
 
@@ -228,7 +234,7 @@ Use these IDs in commits or future issues to keep implementation tied to an obse
 | ID | Work package | Depends on | Acceptance gate |
 |---|---|---|---|
 | C1 | **Complete:** course draft, modules, checkpoint, and ownership model | Foundation | Verified authenticated saves, reads, edits, confirmation, ownership isolation, retries, and concurrency; see the course-context contract |
-| C2 | Editable course UI and manual skill mapping | C1 | Unknown topics stay visibly unmapped; the learner can correct order, topics, and checkpoint without losing the original draft |
+| C2 | **Complete:** editable course UI and manual skill mapping | C1 | Verified manual mapped/unmapped topics, order and checkpoint edits, saved review/confirmation, cancel, conflicts, retries, mobile entry, and returning-session continuity |
 | AI1 | Bounded provider adapter and outline extraction | C2; provider/cost configuration for live calls | Validated candidate topics appear as a draft; injected text, provider failure, and unknown skills cannot alter confirmed context; manual mapping still works |
 | D1 | Versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side |
 | D2 | Diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
@@ -251,7 +257,7 @@ Research participant availability does not block the local prototype. Keep unper
 ### Course-context implementation sequence
 
 1. **C1 — Complete: persist existing course context.** The schema, strict request contracts, typed services, owner-scoped API, revision-aware confirmation, and database/browser verification are implemented. See the contract for exact behavior and limits.
-2. **C2 — Next: let learners review and continue their course.** Add a reachable import/review flow from onboarding or the dashboard. Capture title/source, optional reference URL, outline, modules, and where the learner stopped. Support manual mapping to canonical skills, explicit unmapped topics, edit/cancel/retry, and a persisted confirmation step. Preserve unsaved form input when a revision conflict occurs. Verify a returning learner can reload without being forced back to the beginning.
+2. **C2 — Complete: let learners review and continue their course.** The dashboard and navigation lead to a private course list and editor for title/source, reference URL, outline, modules, manual mapped/unmapped topics, and checkpoint. Saved review and confirmation are separate. Browser checks verify edit/cancel/retry, preserved input on revision conflicts, and a returning learner's saved place after a new session.
 3. **AI1 — Suggest topics safely.** Add server-only provider configuration, a narrow extraction contract, time/size limits, response validation, and uncertainty labels. Call the provider outside database transactions, then validate and save only the draft for the authenticated learner. Confirmed course context changes only after learner review. Exercise real extraction when configuration is available; otherwise retain the manual path and continue to D1.
 
 These changes complete the course-context portion of Slice 2. They do not yet claim that a learner's skills were assessed or that a recovery plan was generated.

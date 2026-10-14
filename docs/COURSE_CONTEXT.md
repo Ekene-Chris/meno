@@ -1,6 +1,19 @@
-# Course context — C1 contract
+# Course context — C1/C2 contract
 
-Implemented on `feat/course-context-foundation`, 13 October 2026. This is the backend foundation for [C2's course editor](IMPLEMENTATION_PLAN.md), not a completed import screen or AI extractor.
+C1 was implemented on `feat/course-context-foundation`; C2 adds the editor on feature branch `feat/course-editor`, 13 October 2026. [PR #1](https://github.com/Ekene-Chris/meno/pull/1) merged C1 with passing CI. C2 is based on that merged `main`. Manual entry and review are available; AI extraction follows in AI1.
+
+## Learner flow
+
+Open **My courses** from the dashboard or navigation. `/courses` lists private drafts and confirmed courses, 20 per page; `/courses/new` starts a draft; `/courses/{id}` opens its saved review. These routes require an authenticated learner with a Passport, and refresh the cookie session through the proxy.
+
+1. Add the title, source type, optional reference URL, and permitted outline/notes. Enter modules and topics in course order. Choose a canonical frontend skill when it fits, or keep a topic explicitly unmapped. The URL is a reference link, and outline text is displayed as text.
+2. Reorder modules with keyboard-accessible buttons, select where you paused, and add an optional return note. Removing the selected module clears its checkpoint after a warning. This never marks earlier modules complete.
+3. **Save draft & review** persists the draft and opens its review. Incomplete drafts can be saved; confirmation requires a module and a topic in every module. Confirmation is a separate action on the saved version.
+4. Return to the same course and checkpoint after reloading or signing in again. Editing confirmed context creates a new draft, with the previous confirmed version available below the review. Cancel discards unsaved edits after a warning and leaves the saved course intact.
+
+Conflicting saves keep the form unchanged. **Load latest saved version** displays current saved content for comparison; the learner explicitly chooses to keep their edits over that version or discard them in favor of the saved version. A second concurrent change is checked again on save. A stale confirmation loads a fresh review and requires another explicit confirmation.
+
+Network errors and server failures retain the input and original request ID. Editing pauses until **Retry save** or **Retry confirmation** resolves the uncertain outcome. Every successful receipt is followed by a current-state read, so an older retry cannot appear to confirm a newer draft. Unsaved text stays in memory in the current tab, not browser storage; cancel, ordinary link navigation/sign-out, and browser unload have warnings. This is not offline autosave: a browser crash or navigation outside these guards may lose unsaved input.
 
 ## Behavior
 
@@ -55,7 +68,7 @@ Course writes serialize for each learner and compare `expectedRevision` with the
 
 Confirmation itself does not increment the content revision. Confirming a revision again with a new request ID returns 409; retrying the original confirmation with its original ID returns its receipt. A current draft cannot be confirmed while containing empty modules/topics.
 
-The editor should preserve unsaved form input on a 409 and offer to reload/reconcile changes. It must not silently resubmit using a newer expected revision. A save failure never partially replaces a course's content, modules, checkpoint, or receipt.
+The editor preserves unsaved form input on a 409 and offers comparison/reconciliation. It never silently resubmits using a newer expected revision. A save failure never partially replaces a course's content, modules, checkpoint, or receipt.
 
 | Status | Meaning |
 |---|---|
@@ -86,3 +99,7 @@ Deleting the owning authentication account cascades to its course data and recei
 Run `npm run db:migrate` to apply pending local migrations without resetting learners. Then run `npm run check`, `npm run test:integration`, `npm run test:e2e`, and `npm run build`.
 
 C1's database checks cover nested ownership, RLS/grants, read-only summaries, confirmation, historical context, retry collisions, concurrent saves, invalid direct-RPC input, rollback, and account deletion. Browser checks cover actual cookie authentication, save/reentry, draft-versus-confirmed content, cross-user denial, route validation, and private pagination. The existing Passport journeys are included as regressions. No test requires an AI key or a hosted service.
+
+C2 adds browser journeys for mobile course entry, mapped/unmapped topics, keyboard reordering, checkpoint removal, cancel/navigation warnings, persisted confirmation and session reentry, conflicting edits and confirmations, lost-response retries (including an intervening newer draft), incomplete drafts, injection-shaped text, page-level ownership denial, and list pagination. Desktop review and mobile editor screenshots are generated in ignored `test-results/` and were visually inspected. C2 needs no additional migration or provider configuration.
+
+14 October follow-up: the first saved draft stays locked until its saved-course route mounts. This prevents edits in a temporary review from being lost during slow navigation. A browser regression holds that navigation open, verifies no editing is available, and then checks that subsequent edits survive reload. Browser assertions allow ten seconds for cold development-route compilation on CI.

@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
 import { AppError } from "@/lib/http";
 import { courseMutationResultSchema, type CourseInput } from "./course-schema";
+import type { CourseRecord } from "./course-view";
 
 type Db = SupabaseClient<Database>;
 const headers = { "Cache-Control": "private, no-store" };
@@ -98,7 +99,7 @@ const storedTopics = z.array(
   z.strictObject({ label: z.string(), skill_id: z.string().nullable() }),
 );
 
-export async function getCourse(db: Db, courseId: string) {
+export async function getCourse(db: Db, courseId: string): Promise<CourseRecord> {
   const { data: course, error } = await db
     .from("courses")
     .select("*")
