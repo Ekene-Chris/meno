@@ -14,7 +14,21 @@ function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "meno-review-context-"));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const git = (...args) =>
-    execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+    execFileSync(
+      "git",
+      [
+        "-c",
+        "commit.gpgsign=false",
+        "-c",
+        `core.hooksPath=${path.join(root, ".git", "fixture-hooks-disabled")}`,
+        ...args,
+      ],
+      {
+        cwd: root,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      },
+    );
   const write = (file, content = "fixture") => {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
     fs.writeFileSync(path.join(root, file), content);
