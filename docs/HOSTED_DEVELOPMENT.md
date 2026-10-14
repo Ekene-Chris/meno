@@ -1,6 +1,6 @@
 # Hosted development
 
-Configured on 14 October 2026. This is a public development app for trying the implemented Passport and course flow. AI1 adds outline suggestions on its feature branch; live preview acceptance is pending. Diagnostics and mentoring follow later.
+Configured on 14 October 2026. This is a public development app for trying the implemented Passport and course flow. AI1 adds outline suggestions on its feature branch; live preview acceptance passed. Diagnostics and mentoring follow later.
 
 | Service | Development target |
 |---|---|
@@ -27,7 +27,7 @@ Vercel Production and Preview have these variables:
 - `OPENAI_EXTRACTION_REASONING_EFFORT`: `none`.
 - `OPENAI_EXTRACTION_DAILY_LIMIT`: `50`; Production and Preview share this quota.
 
-AI1 additionally requires a sensitive server-only `SUPABASE_SECRET_KEY` for proposal accounting. Its hosted setup requires separate approval because this key bypasses RLS. All ordinary course and Passport operations keep the learner's session client; browser sessions cannot invoke the accounting RPCs. See [the extraction contract](OUTLINE_EXTRACTION.md).
+AI1 additionally uses a sensitive server-only `SUPABASE_SECRET_KEY` for proposal accounting, configured in Production and Preview with the founder’s explicit approval. This key bypasses RLS. All ordinary course and Passport operations keep the learner's session client; browser sessions cannot invoke the accounting RPCs. See [the extraction contract](OUTLINE_EXTRACTION.md).
 
 Database passwords, `TEST_DATABASE_URL`, and `SUPABASE_TEST_SERVICE_ROLE_KEY` are not app runtime variables. Setup credentials are in ignored `.env.supabase.dev` with owner-only permissions. Local `.env.local` remains configured for local Supabase and the tests reject hosted targets. `.vercelignore` excludes all environment files and generated output from deployment uploads.
 
@@ -76,3 +76,5 @@ Local lint, typecheck, fifty unit tests, and twelve browser journeys pass, inclu
 The live check passed public sign-up without confirmation, Passport creation, course save/confirmation, checkpoint reload, sign-out/reentry, mobile layout, and cross-user API/page denial. Both temporary hosted accounts and their associated course/Passport data were removed. The authenticated catalog contains fourteen skills, and course mapping leaves assessed skill findings unchanged. Sign-up reached onboarding in approximately four and two seconds for the two checked accounts.
 
 Official references: [Supabase migrations](https://supabase.com/docs/guides/deployment/database-migrations), [Auth configuration](https://supabase.com/docs/guides/auth/general-configuration), [SMTP restrictions](https://supabase.com/docs/guides/auth/auth-smtp), and [Vercel system environment variables](https://vercel.com/docs/environment-variables/system-environment-variables).
+
+AI1 live acceptance passed on the protected preview `meno-133v9qt6u-raven-energy.vercel.app`, using the configured OpenAI key, `gpt-5.6-luna` with reasoning `none`, and the shared 50-request daily ceiling. Real candidate output, exact retries, unchanged confirmed course/checkpoint/skill evidence, and private/anonymous boundaries passed. Temporary test accounts and their cascaded proposals/courses were removed. PR #4 remains the source-to-main gate for making this feature available on the canonical development app.

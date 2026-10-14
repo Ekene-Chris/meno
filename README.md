@@ -19,7 +19,7 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **C2: Course editor and review** is implemented on `feat/course-editor`. Open **My courses** from the dashboard or navigation to add a course, arrange modules and topics, choose shared skills or leave topics unmapped, and keep your checkpoint. Save a draft, review it, then explicitly confirm it. Later edits retain the previous confirmed context. Conflicting saves preserve your form for comparison; uncertain saves can be retried without duplicates.
 
-**AI1: Course outline suggestions** is implemented on `feat/course-outline-extraction`, with hosted acceptance pending. Learners can request candidate modules and uncertain skill matches, choose whether to use them, correct the form, and save/confirm through C2. Requests are bounded and retry-safe; provider failure preserves manual editing. See the [extraction contract](docs/OUTLINE_EXTRACTION.md) for server configuration and limitations.
+**AI1: Course outline suggestions** is implemented on `feat/course-outline-extraction`, with local and live preview acceptance verified. Learners can request candidate modules and uncertain skill matches, choose whether to use them, correct the form, and save/confirm through C2. Requests are bounded and retry-safe; provider failure preserves manual editing. See the [extraction contract](docs/OUTLINE_EXTRACTION.md) for server configuration and limitations.
 
 Diagnostics, mentoring, recovery plans, and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
 
@@ -113,7 +113,7 @@ Passport and course services use the public Supabase key and the learner's sessi
 - [AGENTS.md](AGENTS.md): project instructions and product boundaries.
 - [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
 - [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
-- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. AI1 is implemented with hosted acceptance pending; D1/D2 diagnostics follow.
+- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness, and later expansion. AI1 is verified; D1/D2 diagnostics follow.
 - [Outline extraction](docs/OUTLINE_EXTRACTION.md): suggestion review, provider/configuration limits, request accounting, privacy, and manual fallback.
 - [Course-context contract](docs/COURSE_CONTEXT.md): implemented API, draft/confirmation behavior, limits, and verification.
 - [Hosted development](docs/HOSTED_DEVELOPMENT.md): Vercel/Supabase targets, development sign-up choice, runtime settings, and deployment workflow.

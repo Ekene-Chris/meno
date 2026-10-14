@@ -1,6 +1,6 @@
 # Course outline suggestions — AI1
 
-Implemented on `feat/course-outline-extraction`. Live acceptance is pending the hosted server-key setup and preview check; the manual course path remains available.
+Implemented on `feat/course-outline-extraction`. Live acceptance passed against a Vercel preview connected to `meno-dev`; the manual course path remains available.
 
 ## Learner flow
 
@@ -78,4 +78,6 @@ For local paid-provider checks, set the server key from the local stack's servic
 
 Verification covers strict output/known IDs, injected assessment fields, refusals, incomplete JSON, tool calls, rate limits, stream size, timeout, minimal provider context, retry accounting, two-connection reservations, direct RPC/write denial, private reads, course revision/confirmation races, deletion cascades, mobile review/correction/confirmation, replacement choice, stale previews, lost responses, and real manual fallback.
 
-Official implementation references: [OpenAI structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses) and [GPT-5.6 Luna configuration](https://developers.openai.com/api/docs/models/gpt-5.6-luna). Model selection remains configurable and live acceptance is required before calling the hosted extraction complete.
+Official implementation references: [OpenAI structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses) and [GPT-5.6 Luna configuration](https://developers.openai.com/api/docs/models/gpt-5.6-luna). Model selection remains configurable.
+
+Live acceptance on 14 October 2026 passed real extraction of a JavaScript outline containing injection-shaped instructions, known-ID validation, exact retry without another reservation, unchanged confirmed course/checkpoint and unassessed skills, private proposal reads, cross-user course rejection, and anonymous rejection. Two temporary hosted learners and their cascaded data were removed. The normal CI suite also passed 73 unit, 35 database, and 16 browser checks, plus the production build. The preview check used the actual configured provider; UI review/correction was separately exercised with explicit browser fixtures.

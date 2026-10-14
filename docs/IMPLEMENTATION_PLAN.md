@@ -1,6 +1,6 @@
 # Meno implementation plan
 
-Updated on 14 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1 is implemented on a feature branch with live acceptance pending.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 was merged through [PR #2](https://github.com/Ekene-Chris/meno/pull/2) with passing CI. Hosted development setup is recorded in [HOSTED_DEVELOPMENT.md](HOSTED_DEVELOPMENT.md). The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
+Updated on 14 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1 is verified on its feature branch.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 was merged through [PR #2](https://github.com/Ekene-Chris/meno/pull/2) with passing CI. Hosted development setup is recorded in [HOSTED_DEVELOPMENT.md](HOSTED_DEVELOPMENT.md). The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
 
 Build a persistent mentor that helps a returning learner take a useful next step and see why it matters. The first complete demonstration runs from existing course context to diagnostic evidence, accepted recovery work, evaluated submission, and a changed opportunity requirement gap.
 
@@ -117,7 +117,7 @@ Completed: restored root instructions, strategy/design documents, diagrams, orig
 
 ### Stage 3 — Slice 2: Course context, assessment, and first recovery plan
 
-**Status:** C1 and C2 are complete; AI1 is implemented with live acceptance pending. Diagnostics and recovery packages remain planned. The [course-context contract](COURSE_CONTEXT.md) records the manual editor/review flow, endpoints, version model, retry semantics, and initial limits. There is no live extraction yet.
+**Status:** C1 and C2 are complete; AI1 is verified on its feature branch. Diagnostics and recovery packages remain planned. The [course-context contract](COURSE_CONTEXT.md) records the manual editor/review flow, endpoints, version model, retry semantics, and initial limits. Live extraction is verified on the AI1 preview; diagnostics and recovery remain pending.
 
 **Directories:** `features/resources/`, `features/assessment/`, `features/learning-paths/`, `app/assessment/`, `app/learning-path/`, the necessary API routes, and the first `lib/ai/` schemas/provider adapter.
 
@@ -225,13 +225,13 @@ Added `/courses`, `/courses/new`, and `/courses/{id}`, reachable from the dashbo
 
 Local verification: lint, TypeScript, 45 unit tests, 26 database integration tests, 11 browser journeys, and the production build pass. The browser journeys cover the mobile editor, keyboard reordering, returning-session persistence, unchanged assessed skills, checkpoint removal, cancellation, conflicts, lost-response retries with intervening edits, incomplete drafts, untrusted outline text, private page access, and pagination. Desktop review and mobile editor screenshots were inspected. A separate mobile browser check against the production build verified course entry, save, confirmation, reload, and checkpoint persistence; its temporary learner was removed. No new migration or provider configuration is needed; AI extraction remains unimplemented.
 
-### AI1 follow-up — implemented, live acceptance pending
+### AI1 follow-up — delivered on a feature branch
 
 Added a bounded OpenAI Responses adapter and private candidate proposals, strict catalog/schema validation, persistent quotas and retry receipts, revision checks around provider calls, uncertainty labels, editable suggestions, and manual fallback. Extraction never saves course context or evidence directly; using a proposal changes the form, and C2 still requires draft save/review/confirmation. See [OUTLINE_EXTRACTION.md](OUTLINE_EXTRACTION.md) for the precise contract and limitations.
 
-Local verification: lint, TypeScript, 73 unit tests and 35 database tests pass, including two-connection reservation deduplication. All four new browser journeys pass; the existing twelve journeys passed in the broader run. The production build passes, and compiled browser assets contain no privileged key values. Hosted provider acceptance remains pending. The founder configured the OpenAI API key; adding the separate privileged server accounting key to Vercel requires explicit approval after automatic review rejected that export. No hosted extraction is claimed complete yet.
+Local lint, TypeScript, 73 unit tests, 35 database tests and all 16 browser journeys pass, including concurrent reservations, source/ownership validation, review/correction and manual fallback. The production build passes and privileged key values are absent from compiled browser assets. Remote CI passed. The additive migration and sensitive server configuration are applied to development with founder authorization. Real preview extraction, exact retries, preserved confirmed context/checkpoint/skill evidence, and anonymous/cross-user privacy passed; temporary hosted learners were removed. [PR #4](https://github.com/Ekene-Chris/meno/pull/4) is the feature-to-main review gate.
 
-**Next work package:** D1 — versioned JavaScript diagnostic content and deterministic scoring, followed by the resumable D2 UI/evidence flow and accepted recovery milestones (P1/P2). Hosted acceptance of AI1 can be finished independently when server credentials are configured.
+**Next work package:** D1 — versioned JavaScript diagnostic content and deterministic scoring, followed by the resumable D2 UI/evidence flow and accepted recovery milestones (P1/P2). These deterministic packages do not need additional live AI calls.
 
 ## Work queue and reviewable changes
 
@@ -241,7 +241,7 @@ Use these IDs in commits or future issues to keep implementation tied to an obse
 |---|---|---|---|
 | C1 | **Complete:** course draft, modules, checkpoint, and ownership model | Foundation | Verified authenticated saves, reads, edits, confirmation, ownership isolation, retries, and concurrency; see the course-context contract |
 | C2 | **Complete:** editable course UI and manual skill mapping | C1 | Verified manual mapped/unmapped topics, order and checkpoint edits, saved review/confirmation, cancel, conflicts, retries, mobile entry, and returning-session continuity |
-| AI1 | **Implemented; live acceptance pending:** bounded provider adapter and outline extraction | C2; provider/cost configuration for live calls | Validated candidates appear separately for learner review; confirmed context/evidence are untouched; local checks pass, hosted acceptance pending |
+| AI1 | **Verified on feature branch:** bounded provider adapter and outline extraction | C2; provider/cost configuration for live calls | Validated candidates appear separately for learner review; confirmed context/evidence are untouched; local/remote checks and real hosted acceptance pass |
 | D1 | Versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side |
 | D2 | Diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
 | P1 | Next-step selection and revisioned milestone proposals | D2; small resource/requirements fixture | Different evidence or study constraints produce different justified small milestones; unassessed skills are not treated as failures |
