@@ -173,7 +173,7 @@ async function diagnostic(page: Page) {
 test("returning learner reviews course-aligned evidence, edits and accepts a persisted task, and declining a later proposal keeps it", async ({
   page,
   browser,
-}) => {
+}, testInfo) => {
   await signIn(page, 0);
   const attemptId = await diagnostic(page);
   await page.goto(`/assessment/${attemptId}`);
@@ -264,7 +264,7 @@ test("returning learner reviews course-aligned evidence, edits and accepts a per
   }
   await page.setViewportSize({ width: 320, height: 800 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
-  await page.screenshot({ path: "/private/tmp/meno-p2-mobile.png", fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("mobile-review.png"), fullPage: true });
 });
 test("conflicting tabs keep local edits for comparison and stale preferences cannot activate a proposal", async ({
   page,
