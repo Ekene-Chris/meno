@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { ArrowUpRight, BookOpen, LayoutDashboard, LogOut, ShieldCheck } from "lucide-react";
+import {
+  ArrowUpRight,
+  BookOpen,
+  ClipboardCheck,
+  LayoutDashboard,
+  LogOut,
+  ShieldCheck,
+} from "lucide-react";
 import { Brand } from "./brand";
 import { signOut } from "@/lib/auth/actions";
 
@@ -8,7 +15,7 @@ export function AppShell({
   active,
 }: {
   children: React.ReactNode;
-  active: "passport" | "onboarding" | "courses";
+  active: "passport" | "onboarding" | "courses" | "assessment";
 }) {
   return (
     <div className="app-layout">
@@ -29,6 +36,13 @@ export function AppShell({
             aria-current={active === "courses" ? "page" : undefined}
           >
             <BookOpen size={18} aria-hidden="true" /> My courses
+          </Link>
+          <Link
+            href="/assessment"
+            className={active === "assessment" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "assessment" ? "page" : undefined}
+          >
+            <ClipboardCheck size={18} aria-hidden="true" /> Skill checks
           </Link>
           <Link
             href="/onboarding"

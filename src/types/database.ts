@@ -89,6 +89,52 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"diagnostic_attempts": {
+                  Row: {
+                    "answers": NonNullable<Json>,"content_hash": string,"content_version": string,"created_at": string,"evaluated_at": string | null,"evaluation": Json | null,"id": string,"public_content": NonNullable<Json>,"revision": number,"rubric_version": string,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "answers"?: NonNullable<Json>,"content_hash": string,"content_version": string,"created_at"?: string,"evaluated_at"?: string | null,"evaluation"?: Json | null,"id"?: string,"public_content": NonNullable<Json>,"revision"?: number,"rubric_version": string,"status"?: string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "answers"?: NonNullable<Json>,"content_hash"?: string,"content_version"?: string,"created_at"?: string,"evaluated_at"?: string | null,"evaluation"?: Json | null,"id"?: string,"public_content"?: NonNullable<Json>,"revision"?: number,"rubric_version"?: string,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "diagnostic_attempts_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"diagnostic_mutations": {
+                  Row: {
+                    "attempt_id": string,"request_hash": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempt_id": string,"request_hash": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  Update: {
+                    "attempt_id"?: string,"request_hash"?: string,"request_id"?: string,"result"?: NonNullable<Json>,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "diagnostic_mutations_attempt_id_user_id_fkey"
+      columns: ["attempt_id","user_id"]
+isOneToOne: false
+      referencedRelation: "diagnostic_attempts"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "diagnostic_mutations_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"learner_skills": {
                   Row: {
                     "last_evidence_id": string | null,"skill_id": string,"status": string,"updated_at": string,"user_id": string
@@ -197,17 +243,23 @@ isOneToOne: false
                   ]
                 },"skill_evidence": {
                   Row: {
-                    "caveat": string | null,"evaluated_at": string,"id": string,"kind": string,"outcome": string,"rubric_version": string | null,"skill_id": string,"source_id": string,"user_id": string
+                    "assessment_attempt_id": string | null,"caveat": string | null,"evaluated_at": string,"id": string,"kind": string,"outcome": string,"rubric_version": string | null,"scope": string | null,"skill_id": string,"source_id": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "caveat"?: string | null,"evaluated_at"?: string,"id"?: string,"kind": string,"outcome": string,"rubric_version"?: string | null,"skill_id": string,"source_id": string,"user_id": string
+                    "assessment_attempt_id"?: string | null,"caveat"?: string | null,"evaluated_at"?: string,"id"?: string,"kind": string,"outcome": string,"rubric_version"?: string | null,"scope"?: string | null,"skill_id": string,"source_id": string,"user_id": string
                   }
                   Update: {
-                    "caveat"?: string | null,"evaluated_at"?: string,"id"?: string,"kind"?: string,"outcome"?: string,"rubric_version"?: string | null,"skill_id"?: string,"source_id"?: string,"user_id"?: string
+                    "assessment_attempt_id"?: string | null,"caveat"?: string | null,"evaluated_at"?: string,"id"?: string,"kind"?: string,"outcome"?: string,"rubric_version"?: string | null,"scope"?: string | null,"skill_id"?: string,"source_id"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
+      foreignKeyName: "evidence_diagnostic_owner"
+      columns: ["assessment_attempt_id","user_id"]
+isOneToOne: false
+      referencedRelation: "diagnostic_attempts"
+      referencedColumns: ["id","user_id"]
+    },{
       foreignKeyName: "skill_evidence_skill_id_fkey"
       columns: ["skill_id"]
 isOneToOne: false
@@ -296,6 +348,9 @@ isOneToOne: false
             "confirm_course":
 { Args: { "p_course_id": string,"p_expected_revision": number,"p_request_id": string }; Returns: Json
                            },
+"evaluate_diagnostic_attempt":
+{ Args: { "p_answers": Json,"p_attempt_id": string,"p_evaluation": Json,"p_expected_revision": number,"p_request_id": string,"p_user_id": string }; Returns: Json
+                           },
 "finish_outline_extraction":
 { Args: { "p_error_code"?: string,"p_request_id": string,"p_result": Json,"p_user_id": string }; Returns: Json
                            },
@@ -305,8 +360,14 @@ isOneToOne: false
 "save_course_draft":
 { Args: { "p_course_id"?: string,"p_expected_revision": number,"p_input": Json,"p_request_id": string }; Returns: Json
                            },
+"save_diagnostic_answers":
+{ Args: { "p_answers": Json,"p_attempt_id": string,"p_expected_revision": number,"p_request_id": string,"p_user_id": string }; Returns: Json
+                           },
 "save_passport":
 { Args: { "p_input": Json,"p_request_id": string }; Returns: undefined
+                           },
+"start_diagnostic_attempt":
+{ Args: { "p_content_hash": string,"p_public_content": Json,"p_request_id": string,"p_rubric_version": string,"p_user_id": string }; Returns: Json
                            }
           }
           Enums: {
