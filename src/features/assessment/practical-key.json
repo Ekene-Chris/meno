@@ -1,0 +1,50 @@
+{
+  "promise-return": {
+    "choiceId": "return-name",
+    "feedback": "The next callback receives the previous callback’s returned value. Logging without returning loses that value."
+  },
+  "promise-next": {
+    "choiceId": "log-value",
+    "feedback": "Pass a callback that receives the name. Calling console.log while constructing the chain does not install that callback."
+  },
+  "promise-reject": {
+    "choiceId": "catch-error",
+    "feedback": "A catch callback handles rejection. A fulfillment-only then does not cover the failure branch."
+  },
+  "promise-trace": {
+    "choiceId": "start-ready-amina",
+    "feedback": "Synchronous start and ready are logged before the queued fulfillment callbacks. This is a fixture, not a timing claim about arbitrary networks."
+  },
+  "fetch-status": {
+    "choiceId": "check-ok",
+    "feedback": "An HTTP error can still produce a response. Check response.ok before treating it as successful."
+  },
+  "fetch-json": {
+    "choiceId": "await-json",
+    "feedback": "response.json() returns a promise. Await the parsed body before using its fields."
+  },
+  "fetch-return": {
+    "choiceId": "return-parsed",
+    "feedback": "Use the parsed body rather than a response object property. This fixture assumes the documented { name } shape; broader validation is outside its scope."
+  },
+  "fetch-trace": {
+    "choiceId": "throws-before-json",
+    "feedback": "The explicit response.ok guard throws. fetch does not automatically reject solely because the HTTP status is 404."
+  },
+  "display-loading": {
+    "choiceId": "loading-text",
+    "feedback": "A loading message distinguishes a pending request from an empty or successful result."
+  },
+  "display-text": {
+    "choiceId": "text-content",
+    "feedback": "textContent displays the name as text rather than parsing it as markup. This does not establish broader application security."
+  },
+  "display-error": {
+    "choiceId": "error-text",
+    "feedback": "Keep an honest error message instead of silence or a success message when loading fails."
+  },
+  "display-trace": {
+    "choiceId": "visible-error",
+    "feedback": "The catch branch replaces the pending message with a visible failure message. This fixed trace does not test a deployed UI."
+  }
+}

@@ -352,6 +352,9 @@ export function PathReviewEditor({
         <section className="form-section path-active" aria-label="Your accepted step">
           <p className="eyebrow">YOUR ACCEPTED STEP</p>
           <h2>Ready when you are.</h2>
+          <Link href="/practice" className="text-link">
+            Try guided API-app practice
+          </Link>
           <Link href="/mentor" className="text-link">
             Work through this with Meno
           </Link>

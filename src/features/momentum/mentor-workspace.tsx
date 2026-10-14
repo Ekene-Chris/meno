@@ -326,6 +326,9 @@ export function MentorWorkspaceView({
           <Link href="/learning-path" className="text-link">
             Review your next step
           </Link>
+          <Link href="/practice" className="text-link">
+            Open guided API-app practice
+          </Link>
           <div className="field">
             <label htmlFor="mentor-course">Confirmed course for this conversation</label>
             <select

@@ -415,6 +415,84 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"practical_attempts": {
+                  Row: {
+                    "accepted_proposal_id": string | null,"catalog_id": string,"content_hash": string,"created_at": string,"feedback": Json | null,"goal_id": string,"id": string,"input": NonNullable<Json>,"public_content": NonNullable<Json>,"revision": number,"rubric_version": string,"status": string,"submitted_at": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accepted_proposal_id"?: string | null,"catalog_id": string,"content_hash": string,"created_at"?: string,"feedback"?: Json | null,"goal_id": string,"id"?: string,"input"?: NonNullable<Json>,"public_content": NonNullable<Json>,"revision"?: number,"rubric_version": string,"status"?: string,"submitted_at"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "accepted_proposal_id"?: string | null,"catalog_id"?: string,"content_hash"?: string,"created_at"?: string,"feedback"?: Json | null,"goal_id"?: string,"id"?: string,"input"?: NonNullable<Json>,"public_content"?: NonNullable<Json>,"revision"?: number,"rubric_version"?: string,"status"?: string,"submitted_at"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "practical_attempts_accepted_proposal_id_user_id_fkey"
+      columns: ["accepted_proposal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "practical_attempts_catalog_id_fkey"
+      columns: ["catalog_id"]
+isOneToOne: false
+      referencedRelation: "practical_catalog"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "practical_attempts_goal_id_user_id_fkey"
+      columns: ["goal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_goals"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "practical_attempts_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"practical_catalog": {
+                  Row: {
+                    "content_hash": string,"id": string,"public_content": NonNullable<Json>,"rubric_version": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "content_hash": string,"id": string,"public_content": NonNullable<Json>,"rubric_version": string
+                  }
+                  Update: {
+                    "content_hash"?: string,"id"?: string,"public_content"?: NonNullable<Json>,"rubric_version"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"practical_mutations": {
+                  Row: {
+                    "attempt_id": string,"request_hash": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempt_id": string,"request_hash": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  Update: {
+                    "attempt_id"?: string,"request_hash"?: string,"request_id"?: string,"result"?: NonNullable<Json>,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "practical_mutations_attempt_id_user_id_fkey"
+      columns: ["attempt_id","user_id"]
+isOneToOne: false
+      referencedRelation: "practical_attempts"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "practical_mutations_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "bandwidth": string | null,"created_at": string,"device": string | null,"display_name": string | null,"entry_state": string,"id": string,"locale": string,"study_minutes_per_week": number | null,"updated_at": string
@@ -568,6 +646,9 @@ isOneToOne: false
 "mentor_context_for":
 { Args: { "p_course_id": string,"p_user_id": string }; Returns: Json
                            },
+"mutate_practical_attempt":
+{ Args: { "p_attempt_id": string,"p_expected_revision": number,"p_feedback"?: Json,"p_input": Json,"p_operation": string,"p_request_id": string,"p_user_id": string }; Returns: Json
+                           },
 "propose_learning_path":
 { Args: { "p_context_hash": string,"p_course_id"?: string,"p_expected_revision": number,"p_proposal": Json,"p_request_id": string,"p_selector_version": string,"p_user_id": string }; Returns: Json
                            },
@@ -591,6 +672,9 @@ isOneToOne: false
                            },
 "start_diagnostic_attempt":
 { Args: { "p_content_hash": string,"p_public_content": Json,"p_request_id": string,"p_rubric_version": string,"p_user_id": string }; Returns: Json
+                           },
+"start_practical_attempt":
+{ Args: { "p_request_id": string,"p_user_id": string }; Returns: Json
                            }
           }
           Enums: {
