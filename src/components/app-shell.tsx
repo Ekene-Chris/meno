@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LogOut,
   ShieldCheck,
+  Route,
 } from "lucide-react";
 import { Brand } from "./brand";
 import { signOut } from "@/lib/auth/actions";
@@ -15,7 +16,7 @@ export function AppShell({
   active,
 }: {
   children: React.ReactNode;
-  active: "passport" | "onboarding" | "courses" | "assessment";
+  active: "passport" | "onboarding" | "courses" | "assessment" | "learning-path";
 }) {
   return (
     <div className="app-layout">
@@ -43,6 +44,13 @@ export function AppShell({
             aria-current={active === "assessment" ? "page" : undefined}
           >
             <ClipboardCheck size={18} aria-hidden="true" /> Skill checks
+          </Link>
+          <Link
+            href="/learning-path"
+            className={active === "learning-path" ? "nav-link selected" : "nav-link"}
+            aria-current={active === "learning-path" ? "page" : undefined}
+          >
+            <Route size={18} aria-hidden="true" /> My next step
           </Link>
           <Link
             href="/onboarding"

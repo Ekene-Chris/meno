@@ -278,6 +278,11 @@ export function CourseEditor({
           </span>
         )}
       </div>
+      {saved?.confirmed && !editing && (
+        <Link href={`/learning-path?courseId=${saved.id}`} className="text-link course-back">
+          Choose a step with this confirmed course
+        </Link>
+      )}
       {notice && (
         <p role="status" className="form-notice">
           {notice}

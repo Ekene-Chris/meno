@@ -101,13 +101,17 @@ export default async function Dashboard() {
           <h2>Pick up where you left off.</h2>
           <p className="chapter-description">
             Bring a course or class, arrange its topics, and save your place. Your progress belongs
-            here, even after a pause. A short JavaScript check can show what you remember.
+            here, even after a pause. A short JavaScript check can show what you remember. Then
+            choose a manageable next step.
           </p>
           <Link href="/courses" className="text-link">
             Continue with your courses <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
           <Link href="/assessment" className="text-link">
             Check what you remember <ArrowUpRight size={16} aria-hidden="true" />
+          </Link>
+          <Link href="/learning-path" className="text-link">
+            Review your next step <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
         </div>
       </section>
@@ -228,7 +232,13 @@ export default async function Dashboard() {
                           ? "You saved observed skill evidence"
                           : event.type === "path_proposed"
                             ? "You saved a proposed next step"
-                            : "You updated your learning context"}
+                            : event.type === "path_accepted"
+                              ? "You accepted your next step"
+                              : event.type === "path_declined"
+                                ? "You declined a proposed step"
+                                : event.type === "path_edited"
+                                  ? "You adjusted a proposed step"
+                                  : "You updated your learning context"}
               </span>
               <time dateTime={event.occurred_at}>
                 {new Intl.DateTimeFormat("en", {

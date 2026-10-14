@@ -1701,3 +1701,174 @@ nav.course-actions {
     padding: 0.7rem 0.8rem;
   }
 }
+
+.path-workspace {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.path-workspace h2 {
+  font:
+    400 26px / 1.3 Georgia,
+    serif;
+}
+.path-workspace h3 {
+  font:
+    400 24px / 1.4 Georgia,
+    serif;
+  margin: 12px 0 18px;
+  overflow-wrap: anywhere;
+}
+.path-workspace h4 {
+  font-size: 15px;
+  margin: 20px 0 10px;
+}
+.path-course .field {
+  margin: 20px 0;
+}
+.path-course select {
+  width: 100%;
+}
+.path-active {
+  border-color: #9db39c;
+  background: #f2f6ed;
+}
+.path-proposal .section-title {
+  margin-bottom: 22px;
+}
+.path-steps {
+  padding-left: 22px;
+  margin: 22px 0;
+}
+.path-steps li {
+  padding: 8px 0 8px 8px;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.path-reasons {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+.path-reasons p,
+.path-reasons li {
+  font-size: 13px;
+  margin: 12px 0;
+  color: var(--muted);
+}
+.path-reasons ul {
+  padding-left: 20px;
+}
+.path-resource,
+.path-demo,
+.path-confirm,
+.path-stale {
+  padding: 18px 20px;
+  border-radius: 8px;
+  background: var(--soft);
+  margin: 22px 0;
+}
+.path-resource h4 {
+  margin-top: 0;
+}
+.path-demo {
+  background: #fff5e6;
+  font-size: 13px;
+}
+.path-demo strong {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.path-demo p {
+  margin-top: 10px;
+}
+.path-stale {
+  border-left: 3px solid #b97732;
+  font-size: 13px;
+}
+.path-evidence {
+  margin: 20px 0;
+  font-size: 13px;
+}
+.path-evidence summary,
+.path-history summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.path-observation {
+  margin: 16px 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.path-evidence p {
+  margin-top: 8px;
+}
+.path-evidence li {
+  margin: 10px 0;
+}
+.path-refresh {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding-top: 24px;
+}
+.path-edit {
+  border-top: 1px solid var(--line);
+  margin: 24px 0;
+  padding-top: 16px;
+}
+.path-edit fieldset {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.path-edit .field {
+  margin: 20px 0;
+}
+.path-edit-step textarea {
+  width: 100%;
+}
+.path-edit-step .text-link {
+  align-self: flex-start;
+}
+.path-confirm {
+  border: 1px solid var(--line);
+  min-width: 0;
+}
+.path-confirm h3 {
+  margin-top: 0;
+}
+.path-confirm p {
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.path-history {
+  border-top: 1px solid var(--line);
+  padding: 18px 0;
+}
+.path-history summary {
+  overflow-wrap: anywhere;
+}
+.path-history summary span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+  margin: 8px 0;
+}
+@media (max-width: 640px) {
+  .path-workspace h2 {
+    font-size: 23px;
+  }
+  .path-workspace h3 {
+    font-size: 22px;
+  }
+  .path-workspace .course-actions {
+    align-items: stretch;
+  }
+  .path-workspace .course-actions .button {
+    width: 100%;
+  }
+  .path-proposal .section-title {
+    flex-direction: column;
+  }
+}

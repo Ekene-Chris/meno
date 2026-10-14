@@ -104,9 +104,13 @@ export function DiagnosticResults({
         <h2>Keep the evidence, keep going.</h2>
         <p>
           You can review your courses or take another check. A retake keeps previous observations.
-          Learning recommendations are coming next.
+          Your next suggestion uses current Passport observations, so a newer check or stronger
+          evidence stays authoritative.
         </p>
         <div className="course-actions">
+          <Link href="/learning-path" className="button primary">
+            Choose your next step
+          </Link>
           <Link href="/assessment" className="text-link">
             All your checks & retakes
           </Link>

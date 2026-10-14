@@ -207,6 +207,58 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"learning_path_actions": {
+                  Row: {
+                    "input": NonNullable<Json>,"proposal_id": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "input": NonNullable<Json>,"proposal_id": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  Update: {
+                    "input"?: NonNullable<Json>,"proposal_id"?: string,"request_id"?: string,"result"?: NonNullable<Json>,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_path_actions_proposal_id_user_id_fkey"
+      columns: ["proposal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "learning_path_actions_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"learning_path_decisions": {
+                  Row: {
+                    "decided_at": string,"decision": string,"proposal_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "decided_at"?: string,"decision": string,"proposal_id": string,"user_id": string
+                  }
+                  Update: {
+                    "decided_at"?: string,"decision"?: string,"proposal_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_path_decisions_proposal_id_user_id_fkey"
+      columns: ["proposal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "learning_path_decisions_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"learning_path_mutations": {
                   Row: {
                     "course_id": string | null,"expected_revision": number,"proposal_id": string,"request_id": string,"result": NonNullable<Json>,"user_id": string
@@ -235,17 +287,23 @@ isOneToOne: false
                   ]
                 },"learning_path_revisions": {
                   Row: {
-                    "context": NonNullable<Json>,"context_hash": string,"created_at": string,"id": string,"path_id": string,"proposal": NonNullable<Json>,"revision": number,"selector_version": string,"user_id": string
+                    "context": NonNullable<Json>,"context_hash": string,"created_at": string,"edited_from": string | null,"id": string,"path_id": string,"proposal": NonNullable<Json>,"revision": number,"selector_version": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "context": NonNullable<Json>,"context_hash": string,"created_at"?: string,"id"?: string,"path_id": string,"proposal": NonNullable<Json>,"revision": number,"selector_version": string,"user_id": string
+                    "context": NonNullable<Json>,"context_hash": string,"created_at"?: string,"edited_from"?: string | null,"id"?: string,"path_id": string,"proposal": NonNullable<Json>,"revision": number,"selector_version": string,"user_id": string
                   }
                   Update: {
-                    "context"?: NonNullable<Json>,"context_hash"?: string,"created_at"?: string,"id"?: string,"path_id"?: string,"proposal"?: NonNullable<Json>,"revision"?: number,"selector_version"?: string,"user_id"?: string
+                    "context"?: NonNullable<Json>,"context_hash"?: string,"created_at"?: string,"edited_from"?: string | null,"id"?: string,"path_id"?: string,"proposal"?: NonNullable<Json>,"revision"?: number,"selector_version"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
+      foreignKeyName: "edited_path_owner"
+      columns: ["edited_from","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["id","user_id"]
+    },{
       foreignKeyName: "learning_path_revisions_path_id_user_id_fkey"
       columns: ["path_id","user_id"]
 isOneToOne: false
@@ -461,6 +519,9 @@ isOneToOne: false
 "get_learning_path_context":
 { Args: { "p_course_id"?: string }; Returns: Json
                            },
+"get_learning_path_review":
+{ Args: { "p_before_revision"?: number,"p_course_id"?: string,"p_use_saved_course"?: boolean }; Returns: Json
+                           },
 "learning_path_context_for":
 { Args: { "p_course_id": string,"p_user_id": string }; Returns: Json
                            },
@@ -469,6 +530,9 @@ isOneToOne: false
                            },
 "reserve_outline_extraction":
 { Args: { "p_course_id"?: string,"p_daily_limit"?: number,"p_expected_confirmed_revision"?: number,"p_expected_revision"?: number,"p_input_hash": string,"p_model"?: string,"p_request_id": string,"p_user_id": string }; Returns: Json
+                           },
+"review_learning_path":
+{ Args: { "p_adjustment": Json,"p_expected_revision": number,"p_operation": string,"p_proposal_id": string,"p_request_id": string,"p_user_id": string }; Returns: Json
                            },
 "save_course_draft":
 { Args: { "p_course_id"?: string,"p_expected_revision": number,"p_input": Json,"p_request_id": string }; Returns: Json
