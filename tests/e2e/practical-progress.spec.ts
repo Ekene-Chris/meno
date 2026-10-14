@@ -191,6 +191,7 @@ test("course-linked returning learner records narrow progress and gets a changed
   ).json();
   expect(nextState.proposal.mode).toBe("practice");
   await page.goto(`/practice/${id}`);
+  await expect(page.getByRole("heading", { name: "Guided exercise completed." })).toBeVisible();
   await page.setViewportSize({ width: 320, height: 820 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({
