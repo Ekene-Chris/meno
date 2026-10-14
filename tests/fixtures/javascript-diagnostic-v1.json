@@ -1,0 +1,13 @@
+{
+  "version": "javascript-foundations-v1",
+  "answers": [
+    { "questionId": "values-addition", "choiceIds": ["seven"] },
+    { "questionId": "values-strings", "choiceIds": ["first", "third"] },
+    { "questionId": "functions-return", "choiceIds": ["five"] },
+    { "questionId": "functions-arguments", "choiceIds": ["hello"] },
+    { "questionId": "arrays-map", "choiceIds": ["new-array"] },
+    { "questionId": "arrays-filter", "choiceIds": ["three-four"] },
+    { "questionId": "promises-order", "choiceIds": ["now-done"] },
+    { "questionId": "promises-behavior", "choiceIds": ["settles", "new-promise"] }
+  ]
+}

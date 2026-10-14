@@ -1,6 +1,6 @@
 # Meno implementation plan
 
-Updated on 14 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1 is verified on its feature branch.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 was merged through [PR #2](https://github.com/Ekene-Chris/meno/pull/2) with passing CI. Hosted development setup is recorded in [HOSTED_DEVELOPMENT.md](HOSTED_DEVELOPMENT.md). The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
+Updated on 14 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1 is merged through PR #4; D1 content/scoring is implemented on its feature branch.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 was merged through [PR #2](https://github.com/Ekene-Chris/meno/pull/2) with passing CI. Hosted development setup is recorded in [HOSTED_DEVELOPMENT.md](HOSTED_DEVELOPMENT.md). The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
 
 Build a persistent mentor that helps a returning learner take a useful next step and see why it matters. The first complete demonstration runs from existing course context to diagnostic evidence, accepted recovery work, evaluated submission, and a changed opportunity requirement gap.
 
@@ -117,7 +117,7 @@ Completed: restored root instructions, strategy/design documents, diagrams, orig
 
 ### Stage 3 — Slice 2: Course context, assessment, and first recovery plan
 
-**Status:** C1 and C2 are complete; AI1 is verified on its feature branch. Diagnostics and recovery packages remain planned. The [course-context contract](COURSE_CONTEXT.md) records the manual editor/review flow, endpoints, version model, retry semantics, and initial limits. Live extraction is verified on the AI1 preview; diagnostics and recovery remain pending.
+**Status:** C1 and C2 are complete; AI1 is merged through PR #4; D1 content/scoring is implemented on its feature branch. The D2 assessment journey and recovery packages remain planned. The [course-context contract](COURSE_CONTEXT.md) records the manual editor/review flow, endpoints, version model, retry semantics, and initial limits. Live extraction is available on the development app; assessment UI/evidence and recovery remain pending.
 
 **Directories:** `features/resources/`, `features/assessment/`, `features/learning-paths/`, `app/assessment/`, `app/learning-path/`, the necessary API routes, and the first `lib/ai/` schemas/provider adapter.
 
@@ -229,9 +229,15 @@ Local verification: lint, TypeScript, 45 unit tests, 26 database integration tes
 
 Added a bounded OpenAI Responses adapter and private candidate proposals, strict catalog/schema validation, persistent quotas and retry receipts, revision checks around provider calls, uncertainty labels, editable suggestions, and manual fallback. Extraction never saves course context or evidence directly; using a proposal changes the form, and C2 still requires draft save/review/confirmation. See [OUTLINE_EXTRACTION.md](OUTLINE_EXTRACTION.md) for the precise contract and limitations.
 
-Local lint, TypeScript, 73 unit tests, 35 database tests and all 16 browser journeys pass, including concurrent reservations, source/ownership validation, review/correction and manual fallback. The production build passes and privileged key values are absent from compiled browser assets. Remote CI passed. The additive migration and sensitive server configuration are applied to development with founder authorization. Real preview extraction, exact retries, preserved confirmed context/checkpoint/skill evidence, and anonymous/cross-user privacy passed; temporary hosted learners were removed. [PR #4](https://github.com/Ekene-Chris/meno/pull/4) is the feature-to-main review gate.
+Local lint, TypeScript, 73 unit tests, 35 database tests and all 16 browser journeys pass, including concurrent reservations, source/ownership validation, review/correction and manual fallback. The production build passes and privileged key values are absent from compiled browser assets. Remote CI passed. The additive migration and sensitive server configuration are applied to development with founder authorization. Real preview extraction, exact retries, preserved confirmed context/checkpoint/skill evidence, and anonymous/cross-user privacy passed; temporary hosted learners were removed. [PR #4](https://github.com/Ekene-Chris/meno/pull/4) is merged. A further real mobile check on the canonical development app passed extraction, correction, checkpoint selection, save, confirmation, reload and unchanged skill evidence; its temporary learner was removed.
 
-**Next work package:** D1 — versioned JavaScript diagnostic content and deterministic scoring, followed by the resumable D2 UI/evidence flow and accepted recovery milestones (P1/P2). These deterministic packages do not need additional live AI calls.
+### D1 follow-up — implemented on a feature branch
+
+Added eight fixed JavaScript questions for variables, functions, arrays and promises, server-only answer keys, a public content projection, strict submissions, explicit skips, deterministic partial scoring, and scoped findings. The returning-learner fixture distinguishes observed functions/arrays results from promise gaps and unsupported API integration. Version/rubric identifiers and a pinned content fingerprint protect question provenance. D1 has no evidence/database write path or learner UI. See [DIAGNOSTIC.md](DIAGNOSTIC.md).
+
+Local lint, TypeScript and 88 unit tests pass, including 15 diagnostic checks for correct, incorrect, partial, skipped and rejected input. The production build passes. No new migration or provider credential is required.
+
+**Next work package:** D2 — owned, resumable diagnostic attempts, atomic evaluation/evidence receipts and the learner-facing assessment/Passport flow. Then P1/P2 add accepted recovery milestones.
 
 ## Work queue and reviewable changes
 
@@ -241,8 +247,8 @@ Use these IDs in commits or future issues to keep implementation tied to an obse
 |---|---|---|---|
 | C1 | **Complete:** course draft, modules, checkpoint, and ownership model | Foundation | Verified authenticated saves, reads, edits, confirmation, ownership isolation, retries, and concurrency; see the course-context contract |
 | C2 | **Complete:** editable course UI and manual skill mapping | C1 | Verified manual mapped/unmapped topics, order and checkpoint edits, saved review/confirmation, cancel, conflicts, retries, mobile entry, and returning-session continuity |
-| AI1 | **Verified on feature branch:** bounded provider adapter and outline extraction | C2; provider/cost configuration for live calls | Validated candidates appear separately for learner review; confirmed context/evidence are untouched; local/remote checks and real hosted acceptance pass |
-| D1 | Versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side |
+| AI1 | **Complete:** bounded provider adapter and outline extraction | C2; provider/cost configuration for live calls | Validated candidates appear separately for learner review; confirmed context/evidence are untouched; local/remote checks and real hosted acceptance pass |
+| D1 | **Implemented on feature branch:** versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side |
 | D2 | Diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
 | P1 | Next-step selection and revisioned milestone proposals | D2; small resource/requirements fixture | Different evidence or study constraints produce different justified small milestones; unassessed skills are not treated as failures |
 | P2 | Path UI and accept/edit/decline behavior | P1 | Only an accepted proposal replaces the active plan; stale or duplicate requests cannot overwrite a newer revision |
