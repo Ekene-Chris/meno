@@ -45,7 +45,7 @@ npx supabase db push --linked --dry-run
 npx supabase db push --linked
 ```
 
-Do not reset the hosted database to deploy a migration. The initial shared catalog came from `seed.sql`; deploy intentional catalog updates explicitly instead of rerunning demo fixtures indiscriminately.
+Do not reset the hosted database to deploy a migration. The initial hosted catalog came from `seed.sql`. P1 now initializes the same shared v1 catalog in its migration before resource foreign keys, preserving existing metadata, so fresh setup works before the seed stage. Deploy intentional catalog changes explicitly; do not mix them with learner or opportunity fixtures.
 
 Local auth settings remain in `supabase/config.toml`. The limited hosted auth settings are in `supabase/hosted-dev.toml`. To review/apply those settings without sending the local development configuration:
 

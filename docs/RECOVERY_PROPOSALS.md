@@ -30,6 +30,8 @@ These durations are prototype effort estimates, not measured reading times or pr
 
 ## Curated resources and fictional requirements
 
+Fresh setup initializes the shared v1 skill/prerequisite catalog in the P1 migration before resources reference it. Existing catalog metadata is preserved; seed.sql contains no learner or opportunity fixtures.
+
 The six English MDN articles below were opened and reviewed on **14 October 2026**. Their titles, links, skill mapping and review dates are stored in learning_resources; no lesson bodies are ingested. Article duration and download size remain unknown. Own course notes are an alternative when resource access is difficult.
 
 | Skill | Primary source |
