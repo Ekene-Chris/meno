@@ -20,6 +20,8 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - run: npm run check:docs
+      - run: npm run test:tooling
       - run: npm run db:start
       - run: npm run db:migrate
       - run: npm run db:env

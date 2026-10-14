@@ -47,6 +47,10 @@ Prefer an end-to-end thin slice with actual persistent state and tested behavior
 7. Add or update decisions explicitly in documentation when the founder approves changes; never quietly present working proposals as approved commitments.
 8. Use feature branches for changes. Create or switch to the appropriate feature branch before editing; do not commit directly to `main`.
 
+For a review of learner state, evidence, AI boundaries or opportunity changes, use the repository's [meno-feature-review skill](.agents/skills/meno-feature-review/SKILL.md). Its helper collects changed paths, contracts and tests; inspect the source before making a review conclusion. Keep contract details in `docs/contracts/` and use [the documentation map](docs/INDEX.md) to find them. Run `npm run check:docs` after documentation moves or link changes.
+
+Keep presenter scripts and demo runbooks outside the repository. Checked-in documentation is for understanding, running and extending the product; the founder maintains presentation material separately.
+
 **The outcome, not the chatter, matters:** demonstrate Meno helping a specific learner take a genuinely useful next step.
 
 <!-- BEGIN:nextjs-agent-rules -->

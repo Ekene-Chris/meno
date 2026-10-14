@@ -1,6 +1,6 @@
 # Hosted development
 
-Configured on 14 October 2026. This is a public development app for trying the Passport and course flow, including merged AI outline suggestions. D2 is merged and adds resumable JavaScript checks and evidence. P1 adds recovery proposal APIs on its feature preview; learner review/acceptance and mentoring follow later.
+Configured on 14 October 2026. The canonical development app includes the Passport, course import/review, diagnostics, accepted next steps, mentor explanations, guided practical work/evidence, example opportunity comparisons and in-app recovery. These features and usability polish are merged through PR #14. The target remains development infrastructure, not a completed production release.
 
 | Service | Development target |
 |---|---|
@@ -27,7 +27,7 @@ Vercel Production and Preview have these variables:
 - `OPENAI_EXTRACTION_REASONING_EFFORT`: `none`.
 - `OPENAI_EXTRACTION_DAILY_LIMIT`: `50`; Production and Preview share this quota.
 
-The sensitive server-only `SUPABASE_SECRET_KEY`, configured in Production and Preview with the founder’s explicit approval, supports AI proposal accounting, trusted deterministic diagnostic mutations and recovery proposal saves. This key bypasses RLS. Services authenticate and check profile/attempt/proposal context ownership with the learner's session before trusted writes. Ordinary course/Passport operations and diagnostic/proposal reads retain the session client; browser sessions cannot invoke accounting, diagnostic mutation or proposal-write RPCs. See [extraction](OUTLINE_EXTRACTION.md), [diagnostic](DIAGNOSTIC.md) and [recovery proposal](RECOVERY_PROPOSALS.md) contracts. Diagnostics and recovery selection do not call OpenAI.
+The sensitive server-only `SUPABASE_SECRET_KEY`, configured in Production and Preview with the founder’s explicit approval, supports AI proposal accounting, trusted deterministic diagnostic mutations and recovery proposal saves. This key bypasses RLS. Services authenticate and check profile/attempt/proposal context ownership with the learner's session before trusted writes. Ordinary course/Passport operations and diagnostic/proposal reads retain the session client; browser sessions cannot invoke accounting, diagnostic mutation or proposal-write RPCs. See [extraction](../contracts/OUTLINE_EXTRACTION.md), [diagnostic](../contracts/DIAGNOSTIC.md) and [recovery proposal](../contracts/RECOVERY_PROPOSALS.md) contracts. Diagnostics and recovery selection do not call OpenAI.
 
 Database passwords, `TEST_DATABASE_URL`, and `SUPABASE_TEST_SERVICE_ROLE_KEY` are not app runtime variables. Setup credentials are in ignored `.env.supabase.dev` with owner-only permissions. Local `.env.local` remains configured for local Supabase and the tests reject hosted targets. `.vercelignore` excludes all environment files and generated output from deployment uploads.
 
@@ -35,7 +35,7 @@ The app accepts mutation origins only from its configured canonical URL and exac
 
 ## Schema and future updates
 
-All seven migrations through `202610140005_mentor_workspace.sql` and the shared fourteen-skill seed have been applied. No learner accounts, assessed skills or opportunities are seeded. Private Passport/course tables retain their grants, RLS and save/confirm operations. D2 adds owner-readable attempt/receipt tables and server-only start/save/evaluation functions, nullable evidence provenance fields and bounded diagnostic events. P1 adds immutable owned proposal/context/receipt records and six reviewed shared resources. Existing data is retained; deploying the schema does not assign grades, activate plans or alter course checkpoints.
+All eleven migrations through `202610140009_recovery_checkins.sql` and the shared fourteen-skill seed have been applied. Shared resources and three visibly fictional opportunities are initialized; learner accounts and assessed skill findings are not seeded. Private Passport/course tables retain their grants, RLS and save/confirm operations. D2 adds owner-readable attempt/receipt tables and server-only start/save/evaluation functions, nullable evidence provenance fields and bounded diagnostic events. P1 adds immutable owned proposal/context/receipt records and six reviewed shared resources. Existing data is retained; deploying the schema does not assign grades, activate plans or alter course checkpoints.
 
 After reviewing a future schema change, authenticate with `npx supabase login`, link the intended development project, and preview/apply pending migrations:
 
@@ -71,7 +71,7 @@ vercel deploy --prod
 
 ## Verification
 
-Local lint, typecheck, fifty unit tests, and twelve browser journeys pass, including exact hosted-origin boundaries and the first-save navigation regression. The existing database authorization checks remain part of CI. Hosted verification uses only temporary, explicitly identified development learners and removes them afterward; the regular test suite is never pointed at the hosted project.
+The latest feature branch checks include lint/types, 147 unit tests, 98 real-database checks, all 52 browser journeys and the production build. Both final PR #14 CI runs pass. The following earlier hosted-setup checks remain historical evidence, including exact hosted-origin boundaries and the first-save navigation regression. The existing database authorization checks remain part of CI. Hosted verification uses only temporary, explicitly identified development learners and removes them afterward; the regular test suite is never pointed at the hosted project.
 
 The live check passed public sign-up without confirmation, Passport creation, course save/confirmation, checkpoint reload, sign-out/reentry, mobile layout, and cross-user API/page denial. Both temporary hosted accounts and their associated course/Passport data were removed. The authenticated catalog contains fourteen skills, and course mapping leaves assessed skill findings unchanged. Sign-up reached onboarding in approximately four and two seconds for the two checked accounts.
 
@@ -81,10 +81,12 @@ AI1 live acceptance passed on the protected preview `meno-133v9qt6u-raven-energy
 
 P2 adds the additive 202610140004_recovery_review.sql migration for immutable adjustments, owner-scoped decisions/action receipts, trusted review writes and stable learner-session reads. It has been applied to meno-dev without resetting learner data. It reuses the explicitly authorized server-only Supabase key and requires no new service or model credentials.
 
-M1 adds 202610140005_mentor_workspace.sql for private conversation history, session-derived context, trusted reservations/finalization and combined outline/mentor quotas. It is applied to meno-dev without resetting data. Mentor model/reasoning settings optionally override existing extraction settings; both features use the same approved keys and shared daily limit. See [MENTOR_WORKSPACE.md](MENTOR_WORKSPACE.md).
+M1 adds 202610140005_mentor_workspace.sql for private conversation history, session-derived context, trusted reservations/finalization and combined outline/mentor quotas. It is applied to meno-dev without resetting data. Mentor model/reasoning settings optionally override existing extraction settings; both features use the same approved keys and shared daily limit. See [MENTOR_WORKSPACE.md](../contracts/MENTOR_WORKSPACE.md).
 
-T1 adds 202610140006_practical_exercises.sql for an authenticated public exercise catalog, owner-only draft/submitted work and trusted retry-safe persistence. No provider call or new environment setting is needed. Free-form work is stored as inert text and remains inconclusive; T1 does not write skill evidence. See [PRACTICAL_WORK.md](PRACTICAL_WORK.md). Its development migration and live acceptance results are recorded in the T1 PR.
+T1 adds 202610140006_practical_exercises.sql for an authenticated public exercise catalog, owner-only draft/submitted work and trusted retry-safe persistence. No provider call or new environment setting is needed. Free-form work is stored as inert text and remains inconclusive; T1 does not write skill evidence. See [PRACTICAL_WORK.md](../contracts/PRACTICAL_WORK.md). Its development migration and live acceptance results are recorded in the T1 PR.
 
-T2 adds 202610140007_practical_progress.sql for owner-only progress results/receipts, guided-source evidence constraints, atomic summary/follow-up recording and method-aware context. No new key or provider call is needed. Development rollout and hosted acceptance are tracked in the T2 PR; see [PRACTICAL_PROGRESS.md](PRACTICAL_PROGRESS.md).
+T2 adds 202610140007_practical_progress.sql for owner-only progress results/receipts, guided-source evidence constraints, atomic summary/follow-up recording and method-aware context. No new key or provider call is needed. Development rollout and hosted acceptance are tracked in the T2 PR; see [PRACTICAL_PROGRESS.md](../contracts/PRACTICAL_PROGRESS.md).
 
 Tonight’s demo adds 202610140008_demo_opportunities.sql for fictional catalog/skill requirements, private saved baselines and authenticated journey state. No new credential/provider setting is required. All opportunity entries are DEMO — NOT A LIVE LISTING; rollout and live rehearsal are tracked in the feature PR.
+
+R1 adds `202610140009_recovery_checkins.sql` for owned obstacle reports and atomic pending recovery revisions. Canonical acceptance covers labeled simulation/self-report, explicit acceptance/decline, old-request replay, unchanged evidence/course checkpoint and private boundaries. PR #14 also passed canonical course/practical page rendering and unchanged exercise-version checks. Fresh unverified development signup was verified. All temporary verification learners and their cascaded data were removed.

@@ -24,7 +24,9 @@
     "db:env": "node supabase/setup.mjs",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset --local",
-    "db:types": "supabase gen types typescript --local > src/types/database.ts"
+    "db:types": "supabase gen types typescript --local > src/types/database.ts",
+    "check:docs": "node scripts/check-doc-links.mjs",
+    "test:tooling": "node --test tests/tooling/*.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
