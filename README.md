@@ -23,7 +23,9 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 **D1/D2: JavaScript skill checks** adds eight versioned questions, server-only answer keys and deterministic correct/partial/incorrect/skipped observations. Open **Skill checks** to save answers, resume in another session, review results and inspect scoped evidence in the Passport. Exact retries cannot duplicate findings; skipped/incomplete retakes preserve earlier complete evidence. Findings describe fixed quiz examples, not certification or project readiness. See the [diagnostic contract](docs/DIAGNOSTIC.md).
 
-Mentoring, recovery plans, and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
+**P1: Recovery proposal APIs** selects and retains a small milestone from observed evidence, the goal, confirmed course context and study constraints. Each proposal includes rationale, source references, a reviewed resource and limits. Unassessed skills remain unknown; proposals do not activate a plan or award evidence. P2 will add the review/edit/accept/decline screen. See the [recovery proposal contract](docs/RECOVERY_PROPOSALS.md).
+
+Mentoring, plan acceptance and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
 
 ## Local development
 
@@ -42,7 +44,7 @@ Open [Meno locally](http://localhost:3000), choose **Create an account**, and co
 
 `db:env` creates an ignored `.env.local` from the local Supabase stack without printing credentials. It refuses to overwrite an existing file: skip that step on an already configured checkout. [`.env.example`](.env.example) documents each variable. Keep `NEXT_PUBLIC_APP_URL` equal to the browser origin, including the port, when changing the development address.
 
-Diagnostics require the server-only `SUPABASE_SECRET_KEY`; new local setup writes it from the local stack. An older configured checkout must add its local service-role key under this name without exposing it in chat or a public variable. OpenAI settings are optional for manual course entry and deterministic checks.
+Diagnostics and proposal saves require the server-only `SUPABASE_SECRET_KEY`; new local setup writes it from the local stack. An older configured checkout must add its local service-role key under this name without exposing it in chat or a public variable. OpenAI settings are optional for manual course entry, deterministic checks and proposal APIs.
 
 The local stack uses API port `54321`, database port `54322`, and email preview port `54324`. Email confirmation is disabled locally and, by the founder’s choice, on the hosted development project. The [hosted guide](docs/HOSTED_DEVELOPMENT.md) records that configuration; verified pilot authentication and email delivery remain future work.
 
@@ -108,18 +110,19 @@ The implemented stack is a TypeScript modular monolith using Next.js App Router,
 
 Routes authenticate and validate requests, feature services load or save domain state, and the database enforces ownership and evidence rules. `save_passport` derives identity from authentication, serializes concurrent saves for each learner, and deduplicates request IDs. Clients cannot write assessed evidence or promote their own skills directly.
 
-Stored data includes the authentication account, chosen entry state, goal, optional display name and learning preferences, skill summaries, scoped evidence and bounded history events. The course API stores permitted outlines, module/topic mappings, self-reported checkpoints and retained course revisions. Diagnostics store assigned question versions, saved answer choices/skips, feedback, evaluations and retry receipts. Course/diagnostic event receipts contain fingerprints and entity/revision IDs, not copies of outlines or answers. No practical task submissions, AI conversation logs or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
+Stored data includes the authentication account, chosen entry state, goal, optional display name and learning preferences, skill summaries, scoped evidence and bounded history events. The course API stores permitted outlines, module/topic mappings, self-reported checkpoints and retained course revisions. Diagnostics store assigned question versions, saved answer choices/skips, feedback, evaluations and retry receipts. Course/diagnostic event receipts contain fingerprints and entity/revision IDs, not copies of outlines or answers. Recovery proposals retain minimal selection context, rationale, policy versions and source/evidence references. No practical task submissions, AI conversation logs or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
 
-Passport/course services and diagnostic reads use the public Supabase key and the learner's session. AI accounting and trusted diagnostic mutations use a separate server-only `SUPABASE_SECRET_KEY` after session-scoped authorization and ownership checks. Private candidate proposals retain validated results and fingerprints, not duplicated source outlines. The separate test-key variable is for local fixture setup/cleanup. OpenAI receives only course titles/outlines plus the shared skill catalog when the learner requests suggestions; diagnostic responses are graded deterministically without a model call.
+Passport/course services and diagnostic/proposal reads use the public Supabase key and the learner's session. AI accounting and trusted diagnostic/proposal mutations use a separate server-only `SUPABASE_SECRET_KEY` after session-scoped authorization and ownership checks. Private candidate proposals retain validated results and fingerprints, not duplicated source outlines. The separate test-key variable is for local fixture setup/cleanup. OpenAI receives only course titles/outlines plus the shared skill catalog when the learner requests suggestions; diagnostic responses are graded deterministically without a model call.
 
 ## Project documents
 
 - [AGENTS.md](AGENTS.md): project instructions and product boundaries.
 - [Product strategy](docs/PRODUCT_STRATEGY.md): users, scope, and confirmed product decisions.
 - [Technical design](docs/TECHNICAL_DESIGN.md): architecture blueprint and implementation decision log.
-- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness and later expansion. D1 is merged; D2 adds the assessment journey, with recovery proposals next.
+- [Implementation plan](docs/IMPLEMENTATION_PLAN.md): full product roadmap, ordered work queue, acceptance gates, pilot readiness and later expansion. D2 is merged; P1 adds recovery proposal APIs, with P2 learner review and acceptance next.
 - [Outline extraction](docs/OUTLINE_EXTRACTION.md): suggestion review, provider/configuration limits, request accounting, privacy, and manual fallback.
 - [Diagnostic contract](docs/DIAGNOSTIC.md): versioned questions, narrow scoring, private attempts, save/retry behavior and scoped evidence precedence.
+- [Recovery proposals](docs/RECOVERY_PROPOSALS.md): next-step policy, curated resources, immutable proposals, context checks and acceptance boundaries.
 - [Course-context contract](docs/COURSE_CONTEXT.md): implemented API, draft/confirmation behavior, limits, and verification.
 - [Hosted development](docs/HOSTED_DEVELOPMENT.md): Vercel/Supabase targets, development sign-up choice, runtime settings, and deployment workflow.
 - [Initial project review](docs/PROJECT_REVIEW.md): source audit, folder repair, and findings to carry forward.

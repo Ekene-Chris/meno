@@ -226,7 +226,9 @@ export default async function Dashboard() {
                         ? "You began a JavaScript check"
                         : event.type === "diagnostic_evaluated"
                           ? "You saved observed skill evidence"
-                          : "You updated your learning context"}
+                          : event.type === "path_proposed"
+                            ? "You saved a proposed next step"
+                            : "You updated your learning context"}
               </span>
               <time dateTime={event.occurred_at}>
                 {new Intl.DateTimeFormat("en", {
