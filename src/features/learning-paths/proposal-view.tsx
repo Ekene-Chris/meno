@@ -25,6 +25,22 @@ export function ProposalView({
         {names([p.skillId])} · {p.estimatedMinutes} MINUTE ESTIMATE · v{record.revision}
       </p>
       <h3>{p.title}</h3>
+      {record.checkIn && (
+        <aside className="path-demo">
+          <strong>
+            {record.checkIn.source === "demo_pause"
+              ? "DEMO DATA — SIMULATED INACTIVITY"
+              : "YOUR SELF-REPORTED CHECK-IN"}
+          </strong>
+          <p>
+            {record.checkIn.source === "demo_pause"
+              ? "You chose to simulate a pause for the demo. Meno did not detect a missed session."
+              : "You asked for a smaller activity after reporting a learning obstacle."}{" "}
+            This recovery activity is partial work, not proof of mastery or completion of the larger
+            task. Earlier observations and your course checkpoint are kept.
+          </p>
+        </aside>
+      )}
       {record.editedFrom && (
         <p className="field-help">
           Adjusted by you. Your wording is a task preference; its learning quality has not been

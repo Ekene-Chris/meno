@@ -1995,3 +1995,5 @@ nav.course-actions {
 .opportunity-change { border-left: 3px solid var(--green); padding: 10px 14px; background: var(--soft); }
 .journey-steps { list-style: none; padding: 0; }
 .journey-steps .form-section { margin-top: 20px; }
+.check-in-choice { display: flex; align-items: center; gap: 10px; margin-block: 16px; }
+.check-in-choice input[type="checkbox"] { width: 20px; height: 20px; min-height: 0; padding: 0; margin: 0; flex: 0 0 20px; accent-color: var(--green); }

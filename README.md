@@ -29,7 +29,7 @@ Application bootstrap and **Slice 1: Learner Passport** are implemented:
 
 Practical work (T1) is merged through PR #10: private resumable guided API-app scaffolds, versioned feedback, explicit submission and unassessed free-form text. See [the practical work contract](docs/PRACTICAL_WORK.md). T2 is merged through PR #11 with explicit, narrowly scoped guided evidence recording and suggested follow-ups; see [the progress contract](docs/PRACTICAL_PROGRESS.md). Accepted tasks and checkpoints remain separate.
 
-Tonight’s demo branch adds **Opportunity Radar** (three clearly fictional briefs with saved before/after comparisons) and **My journey** (progress from actual saved records). See [the opportunity contract](docs/OPPORTUNITY_RADAR.md) and [tonight’s demo runbook](docs/DEMO_RUNBOOK.md).
+**Opportunity Radar** and **My journey** are merged through PR #12: three clearly fictional briefs with saved before/after comparisons and progress from actual saved records. The R1 demo slice adds a learner-initiated obstacle check-in and a five-minute pending recovery proposal, with simulated pauses visibly labeled. See [the opportunity contract](docs/OPPORTUNITY_RADAR.md), [recovery check-ins](docs/RECOVERY_CHECKINS.md) and [tonight’s demo runbook](docs/DEMO_RUNBOOK.md).
 
 Practical evaluation and opportunity matching follow in the [implementation plan](docs/IMPLEMENTATION_PLAN.md). A [hosted development environment](docs/HOSTED_DEVELOPMENT.md) uses Supabase and the connected Vercel project.
 

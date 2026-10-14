@@ -415,3 +415,9 @@ No question in this table blocks unrelated local work. Record a working default 
 Stage 8 captures the wider ambition. Defer broad curriculum coverage, automatic crawling, paid-course integrations, arbitrary-code grading infrastructure, a vector database, microservices, external notification delivery, billing, full offline sync, and production multilingual coverage from the core prototype.
 
 Before each affected stage, resolve only what is needed: stack/auth/database configuration at bootstrap; diagnostic/rubric and fixture reconciliation before assessment; model/cost limits before live mentor integration; real source verification before live listings; hosting and access settings before deployment. Record approved changes in the existing decision logs. These checkpoints do not delay independent local development.
+
+### R1 demo slice — in-app recovery check-ins
+
+The founder-prioritized opportunity/journey slice is merged through PR #12 and the canonical deployment is ready. A separate recovery branch adds explicit obstacle choices, a visibly simulated demo pause and an atomic five-minute pending proposal using existing P1/P2 rules. Prior evidence and the accepted step are retained; the learner can accept, edit or decline. No outbound reminders or automatic inactivity detection are implemented. See [RECOVERY_CHECKINS.md](RECOVERY_CHECKINS.md).
+
+R1 local verification: lint/types, 147 unit tests, 98 real-database checks and all 52 browser journeys pass. The 320-pixel check-in layout was visually inspected; the additive development migration is applied without a hosted reset. Production build and compiled browser exclusion of configured privileged keys/private grading markers pass. Remote CI and preview acceptance are tracked with the feature PR. Presenter notes are in [DEMO_TALK_TRACK.md](DEMO_TALK_TRACK.md).

@@ -625,6 +625,38 @@ isOneToOne: false
                   Relationships: [
 
                   ]
+                },"recovery_checkins": {
+                  Row: {
+                    "accepted_proposal_id": string,"created_at": string,"id": string,"input": NonNullable<Json>,"obstacle": string,"proposal_id": string,"request_id": string,"result": NonNullable<Json>,"source": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accepted_proposal_id": string,"created_at"?: string,"id"?: string,"input": NonNullable<Json>,"obstacle": string,"proposal_id": string,"request_id": string,"result": NonNullable<Json>,"source": string,"user_id": string
+                  }
+                  Update: {
+                    "accepted_proposal_id"?: string,"created_at"?: string,"id"?: string,"input"?: NonNullable<Json>,"obstacle"?: string,"proposal_id"?: string,"request_id"?: string,"result"?: NonNullable<Json>,"source"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "recovery_checkins_accepted_proposal_id_user_id_fkey"
+      columns: ["accepted_proposal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "recovery_checkins_proposal_id_user_id_fkey"
+      columns: ["proposal_id","user_id"]
+isOneToOne: false
+      referencedRelation: "learning_path_revisions"
+      referencedColumns: ["id","user_id"]
+    },{
+      foreignKeyName: "recovery_checkins_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"saved_opportunities": {
                   Row: {
                     "baseline": NonNullable<Json>,"opportunity_id": string,"saved_at": string,"user_id": string
@@ -781,6 +813,9 @@ isOneToOne: false
 "finish_outline_extraction":
 { Args: { "p_error_code"?: string,"p_request_id": string,"p_result": Json,"p_user_id": string }; Returns: Json
                            },
+"get_checkin_provenance":
+{ Args: { "p_proposal_ids": (string)[] }; Returns: Json
+                           },
 "get_journey_state":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -807,6 +842,9 @@ isOneToOne: false
                            },
 "opportunity_observations_for":
 { Args: { "p_opportunity": string,"p_user": string }; Returns: Json
+                           },
+"propose_checkin_recovery":
+{ Args: { "p_accepted_proposal_id": string,"p_adjustment": Json,"p_context_hash": string,"p_expected_revision": number,"p_obstacle": string,"p_proposal": Json,"p_request_id": string,"p_source": string,"p_user_id": string }; Returns: Json
                            },
 "propose_learning_path":
 { Args: { "p_context_hash": string,"p_course_id"?: string,"p_expected_revision": number,"p_proposal": Json,"p_request_id": string,"p_selector_version": string,"p_user_id": string }; Returns: Json

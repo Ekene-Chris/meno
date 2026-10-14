@@ -114,12 +114,12 @@ export default async function Journey() {
       <section className="form-section">
         <h2>Need a smaller step?</h2>
         <p>
-          Your accepted step and prior evidence stay intact. Open My next step to propose, edit,
-          accept or decline a shorter activity at your pace. Scheduled reminders and automatic
+          Your accepted step and prior evidence stay intact. Share an obstacle and review a
+          five-minute return at your pace. Scheduled reminders and automatic
           inactivity detection are not running.
         </p>
-        <Link className="text-link" href="/learning-path">
-          Review your next step
+        <Link className="text-link" href="/check-in">
+          Check in and choose a smaller step
         </Link>
       </section>
     </AppShell>

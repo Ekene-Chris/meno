@@ -77,13 +77,23 @@ export async function getPathReview(db: Db, courseId?: string | "none", before?:
   });
   if (result.error) reviewError(result.error.code);
   const state = rawState.parse(result.data);
+  const ids = [
+    ...new Set([state.latest, state.active, ...state.history].flatMap((r) => (r ? [r.id] : []))),
+  ];
+  const provenance = await db.rpc("get_checkin_provenance", { p_proposal_ids: ids });
+  if (provenance.error) reviewError(provenance.error.code);
+  const checkIns = z.record(z.uuid(), z.unknown()).parse(provenance.data);
+  const withCheckIn = (row: z.infer<typeof stored>) => ({
+    ...record(row),
+    checkIn: checkIns[row.id] ?? null,
+  });
   return pathReviewSchema.parse({
     pathId: state.pathId,
     revision: state.revision,
     activeRevision: state.activeRevision,
-    latest: state.latest ? record(state.latest) : null,
-    active: state.active ? record(state.active) : null,
-    history: state.history.map(record),
+    latest: state.latest ? withCheckIn(state.latest) : null,
+    active: state.active ? withCheckIn(state.active) : null,
+    history: state.history.map(withCheckIn),
     courseId: state.courseId,
     contextAvailable: state.contextAvailable,
     contextCurrent: state.latest !== null && state.latest.context_hash === state.contextHash,

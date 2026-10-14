@@ -134,7 +134,7 @@ export function PathReviewEditor({
         current.revision !== receipt.revision
           ? "Your request succeeded. A newer saved proposal is shown; review it before deciding."
           : request.operation === "accept"
-            ? "Step accepted. Your skill evidence is unchanged; practical work has not been assessed yet."
+            ? "Step accepted. Accepting changes your plan; it does not add or erase skill evidence."
             : request.operation === "decline"
               ? "Proposal declined. Your previously accepted step and evidence are kept."
               : request.operation === "edit"
@@ -357,6 +357,9 @@ export function PathReviewEditor({
           </Link>
           <Link href="/mentor" className="text-link">
             Work through this with Meno
+          </Link>
+          <Link href="/check-in" className="text-link">
+            Check in and choose a smaller step
           </Link>
           <ProposalView record={saved.active} compact />
           <p className="field-help">
