@@ -35,6 +35,7 @@ export const config = {
     "/practice/:path*",
     "/opportunities/:path*",
     "/journey/:path*",
+    "/check-in/:path*",
     "/sign-in",
     "/auth/:path*",
     "/api/:path*",

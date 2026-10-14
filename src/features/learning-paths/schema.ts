@@ -162,6 +162,15 @@ export const reviewQuerySchema = z.strictObject({
   before: z.coerce.number().int().positive().optional(),
 });
 export const reviewedProposalSchema = z.strictObject({
+  checkIn: z
+    .strictObject({
+      id: pathIdSchema,
+      source: z.enum(["user_report", "demo_pause"]),
+      obstacle: z.enum(["time", "confused", "access", "returning"]),
+      createdAt: z.string(),
+    })
+    .nullable()
+    .optional(),
   id: pathIdSchema,
   pathId: pathIdSchema,
   revision: z.number().int().positive(),

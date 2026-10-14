@@ -7,5 +7,8 @@ export default defineConfig({
     environment: "node",
     include: ["tests/unit/**/*.test.ts", "tests/integration/**/*.test.ts"],
     testTimeout: 15000,
+    // Integration files share global AI quota tables and committed concurrency fixtures.
+    // Run files sequentially so another suite cannot consume a quota under test.
+    fileParallelism: false,
   },
 });
