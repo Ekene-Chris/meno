@@ -9,6 +9,7 @@ import {
   type PracticalInput,
 } from "./practical-schema";
 import { StartPractice } from "./start-practice";
+import { PracticalProgressView } from "./practical-progress-view";
 type Pending = {
   requestId: string;
   expectedRevision: number;
@@ -105,7 +106,7 @@ export function PracticalEditor({ initial }: { initial: PracticalAttempt }) {
       setReview(false);
       setMessage(
         current.status === "submitted"
-          ? "Submitted work and rubric feedback are saved. Your Passport evidence is unchanged."
+          ? "Submitted work and rubric feedback are saved. Recording progress is a separate action."
           : "Draft saved. You can return later.",
       );
     } catch {
@@ -446,6 +447,13 @@ export function PracticalEditor({ initial }: { initial: PracticalAttempt }) {
         )}
       </form>
       {saved.feedback && (
+        <PracticalProgressView
+          attemptId={saved.id}
+          contentHash={saved.contentHash}
+          initial={saved.progress}
+        />
+      )}
+      {saved.feedback && (
         <section className="form-section" aria-label="Saved rubric feedback">
           <p className="eyebrow">SAVED RUBRIC FEEDBACK</p>
           <h2>
@@ -457,7 +465,9 @@ export function PracticalEditor({ initial }: { initial: PracticalAttempt }) {
           </h2>
           <p>
             This is feedback on the saved scaffold choices. Submission, skill demonstration and
-            accepted-step completion are separate. No Passport evidence or checkpoint changed.
+            accepted-step completion are separate. Submission itself does not change Passport
+            evidence. Recording progress above is a separate action; your accepted task and
+            checkpoint stay unchanged.
           </p>
           {saved.feedback.criteria.map((c) => (
             <article key={c.id} className="practical-feedback">

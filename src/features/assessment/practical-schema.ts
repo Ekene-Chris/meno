@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { practicalProgressSchema, type PracticalProgress } from "./practical-progress-schema";
 export const practicalId = z.uuid().transform((id) => id.toLowerCase());
 export const practicalInputSchema = z
   .strictObject({
@@ -91,6 +92,7 @@ export type PracticalAttempt = {
   acceptedProposalId: string | null;
   createdAt: string;
   submittedAt: string | null;
+  progress: PracticalProgress | null;
 };
 export function validatePracticalChoices(input: PracticalInput, content: PracticalContent) {
   const slots = content.sessions.flatMap((s) => s.slots);
@@ -112,4 +114,5 @@ export const practicalAttemptSchema = z.strictObject({
   acceptedProposalId: practicalId.nullable(),
   createdAt: z.string(),
   submittedAt: z.string().nullable(),
+  progress: practicalProgressSchema.nullable(),
 });

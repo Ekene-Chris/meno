@@ -14,6 +14,7 @@ import {
   type practicalMutationSchema,
 } from "./practical-schema";
 import type { z } from "zod";
+import { practicalProgressSchema, type recordPracticalSchema } from "./practical-progress-schema";
 type Db = SupabaseClient<Database>;
 export const practicalResponseOptions = { headers: { "Cache-Control": "private, no-store" } };
 function failed(code: string): never {
@@ -80,6 +81,12 @@ export async function getPractical(db: Db, id: string): Promise<PracticalAttempt
   const result = await db.from("practical_attempts").select("*").eq("id", id).maybeSingle();
   if (result.error) failed(result.error.code);
   if (!result.data) failed("PT404");
+  const recorded = await db
+    .from("practical_progress")
+    .select("result")
+    .eq("attempt_id", id)
+    .maybeSingle();
+  if (recorded.error) failed(recorded.error.code);
   const row = result.data;
   if (row.status !== "draft" && row.status !== "submitted")
     throw new Error("Invalid practice status");
@@ -96,6 +103,7 @@ export async function getPractical(db: Db, id: string): Promise<PracticalAttempt
     acceptedProposalId: row.accepted_proposal_id,
     createdAt: row.created_at,
     submittedAt: row.submitted_at,
+    progress: recorded.data ? practicalProgressSchema.parse(recorded.data.result) : null,
   };
 }
 export async function mutatePractical(
@@ -131,4 +139,50 @@ export async function mutatePractical(
   });
   if (result.error) failed(result.error.code);
   return practicalReceiptSchema.parse(result.data);
+}
+
+export async function recordPracticalProgress(
+  db: Db,
+  userId: string,
+  id: string,
+  input: z.infer<typeof recordPracticalSchema>,
+) {
+  const attempt = await getPractical(db, id);
+  const prior = await db
+    .from("practical_progress_receipts")
+    .select("attempt_id,content_hash,progress_id")
+    .eq("user_id", userId)
+    .eq("request_id", input.requestId)
+    .maybeSingle();
+  if (prior.error) failed(prior.error.code);
+  if (prior.data) {
+    if (
+      prior.data.attempt_id !== id ||
+      prior.data.content_hash !== input.contentHash ||
+      !attempt.progress ||
+      attempt.progress.assessmentId !== prior.data.progress_id
+    )
+      failed("PT409");
+    return attempt.progress;
+  }
+  if (attempt.contentHash !== input.contentHash || attempt.status !== "submitted") failed("PT409");
+  if (
+    !attempt.progress &&
+    (attempt.contentHash !== practicalContentHash ||
+      attempt.content.rubricVersion !== getPracticalContent().rubricVersion)
+  )
+    throw new AppError(
+      503,
+      "PRACTICAL_VERSION_UNAVAILABLE",
+      "This rubric is unavailable. Your work and prior evidence are kept.",
+    );
+  const result = await createTrustedDb().rpc("record_practical_progress", {
+    p_user_id: userId,
+    p_attempt_id: id,
+    p_request_id: input.requestId,
+    p_content_hash: input.contentHash,
+    p_feedback: attempt.progress ? null : scorePractical(attempt.input),
+  });
+  if (result.error) failed(result.error.code);
+  return practicalProgressSchema.parse(result.data);
 }

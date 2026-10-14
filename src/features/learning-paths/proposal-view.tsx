@@ -70,6 +70,12 @@ export function ProposalView({
             {!context.course && <p>This step uses your goal and evidence without a course.</p>}
             <details className="path-evidence">
               <summary>Evidence used for this suggestion ({observed.length})</summary>
+              {observed.some((skill) => skill.evidence?.method === "guided_scaffold") && (
+                <p>
+                  Guided scaffold observations cover fixed code choices and traces. They do not
+                  verify an independently written or executed app.
+                </p>
+              )}
               {!observed.length && (
                 <p>
                   No assessed observations were used; this is a conservative starting suggestion.
@@ -80,12 +86,17 @@ export function ProposalView({
                   <strong>{skill.name}</strong>
                   <p>{skill.evidence?.scope ?? "Scope not recorded."}</p>
                   <p className="field-help">
-                    {skill.evidence?.kind.replaceAll("_", " ")} ·{" "}
-                    {skill.evidence?.rubricVersion ?? "No rubric recorded"} ·{" "}
+                    {skill.evidence?.method === "guided_scaffold"
+                      ? "Guided scaffold observation"
+                      : skill.evidence?.kind.replaceAll("_", " ")}{" "}
+                    · {skill.evidence?.rubricVersion ?? "No rubric recorded"} ·{" "}
                     {skill.status.replaceAll("_", " ")}
                   </p>
                   {skill.evidence?.attemptId && (
-                    <Link href={`/assessment/${skill.evidence.attemptId}`} className="text-link">
+                    <Link
+                      href={`/${skill.evidence.method === "guided_scaffold" ? "practice" : "assessment"}/${skill.evidence.attemptId}`}
+                      className="text-link"
+                    >
                       Review this observation
                     </Link>
                   )}
