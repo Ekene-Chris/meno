@@ -104,7 +104,7 @@ Routes authenticate and validate requests, feature services load or save domain 
 
 Stored data includes the authentication account, chosen entry state, goal, optional display name and learning preferences, unassessed skill records, and bounded history events. The course API additionally stores permitted outlines, module/topic mappings, self-reported checkpoints, and retained course revisions. Course history receipts contain request fingerprints and revision IDs, not copies of the outline. No assessed task submissions, AI conversation logs, or live opportunity records are collected yet. Language preference is stored for future use; the current interface is English.
 
-The application uses the public Supabase key and the learner's session. The privileged local test key is only for test setup and cleanup; it is not used by application code. OpenAI and hosting remain future integrations.
+The application uses the public Supabase key and the learner's session. The privileged local test key is only for test setup and cleanup; it is not used by application code. Hosted development uses Supabase and Vercel; OpenAI remains a future integration.
 
 ## Project documents
 
