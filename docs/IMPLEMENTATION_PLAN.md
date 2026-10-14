@@ -56,7 +56,7 @@ Initial defaults proposed for implementation are a frontend JavaScript curriculu
 | 0. Repository organization | None | Canonical handoff paths, preserved sources, review and plan | Complete; initial source checksums passed. Temporary guides are now consolidated in the root README. |
 | 1. Application bootstrap | Stage 0 | Runnable application and reproducible development setup | Complete; clean install, lint, typecheck, unit tests, setup helper, and production build pass. |
 | 2. Slice 1: Passport foundation | Stage 1 | Authentication, goals, constraints, private persisted learner context | Implemented; session reentry, atomic saves, cross-user denial, and evidence restrictions pass database/browser tests. |
-| 3. Slice 2: Course, diagnostic, recovery | Stage 2 | Editable syllabus mapping, real assessment evidence, proposed/accepted milestone | In progress: C1 persistence and C2 manual editor/review verified; extraction, diagnostic, and recovery milestone remain. Full gate: different results yield different justified next steps. |
+| 3. Slice 2: Course, diagnostic, recovery | Stage 2 | Editable syllabus mapping, real assessment evidence, proposed/accepted milestone | In progress: C1/C2/AI1 are merged; D1 is merged and D2 adds the resumable check/evidence journey. Recovery proposals and acceptance remain. Full gate: different results yield different justified next steps. |
 | 4. Slice 3: Mentor and Momentum | Stage 3 | Contextual help, practical task, approved recovery revision | Evaluated work changes relevant evidence and the next action. |
 | 5. Slice 4: Opportunity Radar | Stage 4; requirements fixture can start in Stage 3 | Transparent skill gaps connected to learning | New evidence changes only the opportunity requirements it supports. |
 | 6. Slice 5: Demo and resilience | Stages 2–5 | Reproducible full journey, alternative entries, mobile/error validation | David's story completes without manual database changes between steps. |
@@ -117,7 +117,7 @@ Completed: restored root instructions, strategy/design documents, diagrams, orig
 
 ### Stage 3 — Slice 2: Course context, assessment, and first recovery plan
 
-**Status:** C1 and C2 are complete; AI1 is merged through PR #4; D1 content/scoring is implemented on its feature branch. The D2 assessment journey and recovery packages remain planned. The [course-context contract](COURSE_CONTEXT.md) records the manual editor/review flow, endpoints, version model, retry semantics, and initial limits. Live extraction is available on the development app; assessment UI/evidence and recovery remain pending.
+**Status:** C1/C2 are complete; AI1 and D1 are merged through PRs #4/#5. D2 connects the resumable assessment and scoped Passport evidence on `feat/diagnostic-attempts`. Recovery packages P1/P2 follow. The [course-context contract](COURSE_CONTEXT.md) records the manual flow; the [diagnostic contract](DIAGNOSTIC.md) records attempts, deterministic evaluation, evidence precedence and limitations.
 
 **Directories:** `features/resources/`, `features/assessment/`, `features/learning-paths/`, `app/assessment/`, `app/learning-path/`, the necessary API routes, and the first `lib/ai/` schemas/provider adapter.
 
@@ -231,13 +231,21 @@ Added a bounded OpenAI Responses adapter and private candidate proposals, strict
 
 Local lint, TypeScript, 73 unit tests, 35 database tests and all 16 browser journeys pass, including concurrent reservations, source/ownership validation, review/correction and manual fallback. The production build passes and privileged key values are absent from compiled browser assets. Remote CI passed. The additive migration and sensitive server configuration are applied to development with founder authorization. Real preview extraction, exact retries, preserved confirmed context/checkpoint/skill evidence, and anonymous/cross-user privacy passed; temporary hosted learners were removed. [PR #4](https://github.com/Ekene-Chris/meno/pull/4) is merged. A further real mobile check on the canonical development app passed extraction, correction, checkpoint selection, save, confirmation, reload and unchanged skill evidence; its temporary learner was removed.
 
-### D1 follow-up — implemented on a feature branch
+### D1 follow-up — merged through PR #5
 
 Added eight fixed JavaScript questions for variables, functions, arrays and promises, server-only answer keys, a public content projection, strict submissions, explicit skips, deterministic partial scoring, and scoped findings. The returning-learner fixture distinguishes observed functions/arrays results from promise gaps and unsupported API integration. Version/rubric identifiers and a pinned content fingerprint protect question provenance. D1 has no evidence/database write path or learner UI. See [DIAGNOSTIC.md](DIAGNOSTIC.md).
 
 Local lint, TypeScript and 88 unit tests pass, including 15 diagnostic checks for correct, incorrect, partial, skipped and rejected input. The production build passes. No new migration or provider credential is required.
 
-**Next work package:** D2 — owned, resumable diagnostic attempts, atomic evaluation/evidence receipts and the learner-facing assessment/Passport flow. Then P1/P2 add accepted recovery milestones.
+### D2 follow-up — implemented on a feature branch
+
+Added owned, versioned attempts, explicit partial saves and skips, fresh-session resume, review before evaluation, paginated history, and scoped Passport findings with their source. Authenticated services score only stored responses. One database transaction finalizes the attempt, creates evidence, updates supported summaries and stores an idempotent event/receipt. Client roles cannot grade, write evidence or invoke trusted assessment RPCs. Concurrent starts/submissions, stale edits and exact retries are covered.
+
+Retakes preserve every prior evidence row. Skips create no negative evidence; incomplete scopes preserve earlier completed findings. Complete later observations may update the same quiz scope, including a newly observed gap, while stronger practical/external sources and different scopes keep their summaries. The UI exposes provenance and uses **Shown in quiz examples** for successful diagnostic findings. No API integration mastery or career readiness is inferred.
+
+The existing server-only Supabase key also supports trusted diagnostic mutations after owner/session checks; OpenAI is unnecessary for this flow. Existing courses/checkpoints are unchanged. Local lint, TypeScript, 94 unit tests, 45 database checks and all 21 browser journeys are verified; the production build passes and compiled browser assets contain no privileged key values or answer keys. Mobile question/results/Passport layouts were inspected. The additive D2 migration has been applied to the authorized development project without resetting data. Remote CI and live preview acceptance results are tracked in the D2 PR.
+
+**Next work package:** P1 — evidence- and constraint-based next-step selection with revisioned milestone proposals. P2 adds accept/edit/decline so only the learner's accepted revision becomes active. First prepare a small vetted resource/requirements fixture; unassessed skills remain unknown rather than failed.
 
 ## Work queue and reviewable changes
 
@@ -248,8 +256,8 @@ Use these IDs in commits or future issues to keep implementation tied to an obse
 | C1 | **Complete:** course draft, modules, checkpoint, and ownership model | Foundation | Verified authenticated saves, reads, edits, confirmation, ownership isolation, retries, and concurrency; see the course-context contract |
 | C2 | **Complete:** editable course UI and manual skill mapping | C1 | Verified manual mapped/unmapped topics, order and checkpoint edits, saved review/confirmation, cancel, conflicts, retries, mobile entry, and returning-session continuity |
 | AI1 | **Complete:** bounded provider adapter and outline extraction | C2; provider/cost configuration for live calls | Validated candidates appear separately for learner review; confirmed context/evidence are untouched; local/remote checks and real hosted acceptance pass |
-| D1 | **Implemented on feature branch:** versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side |
-| D2 | Diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
+| D1 | **Complete:** versioned diagnostic content and deterministic scoring | C2; rubric decisions | Fixtures for correct, incorrect, partial, and skipped responses produce documented scoped findings; answer keys stay server-side; PR #5 merged |
+| D2 | **Implemented on feature branch:** diagnostic attempt UI, evaluation transaction, and evidence view | D1 | Attempts resume safely; submit retries do not duplicate evidence; the Passport shows observed findings and their provenance |
 | P1 | Next-step selection and revisioned milestone proposals | D2; small resource/requirements fixture | Different evidence or study constraints produce different justified small milestones; unassessed skills are not treated as failures |
 | P2 | Path UI and accept/edit/decline behavior | P1 | Only an accepted proposal replaces the active plan; stale or duplicate requests cannot overwrite a newer revision |
 | M1 | Course-aware mentor workspace and resource selection | P2, AI1 | Explanation and recommendations reference the learner's actual context and vetted resources; provider failure preserves saved work |

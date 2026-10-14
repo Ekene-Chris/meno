@@ -16,7 +16,7 @@ const statusLabels: Record<string, string> = {
 
 export default async function Dashboard() {
   const { db, user } = await requireLearner();
-  const { profile, goal, skills, events } = await getPassport(db, user.id);
+  const { profile, goal, skills, events, recentEvidence } = await getPassport(db, user.id);
   if (!profile || !goal) redirect("/onboarding");
   const entry = entryStates.find((entry) => entry.value === profile.entry_state);
   const savedDate = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeZone: "UTC" }).format(
@@ -101,10 +101,13 @@ export default async function Dashboard() {
           <h2>Pick up where you left off.</h2>
           <p className="chapter-description">
             Bring a course or class, arrange its topics, and save your place. Your progress belongs
-            here, even after a pause. Skill checks and mentor guidance are coming next.
+            here, even after a pause. A short JavaScript check can show what you remember.
           </p>
           <Link href="/courses" className="text-link">
             Continue with your courses <ArrowUpRight size={16} aria-hidden="true" />
+          </Link>
+          <Link href="/assessment" className="text-link">
+            Check what you remember <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
         </div>
       </section>
@@ -122,18 +125,87 @@ export default async function Dashboard() {
         </p>
         <div className="skill-grid">
           {skills.map((skill) => (
-            <article className="skill-item" key={skill.id}>
+            <article
+              className={`skill-item${skill.evidence ? " has-evidence" : ""}`}
+              key={skill.id}
+            >
               <div>
                 <h3>{skill.name}</h3>
                 <p>{skill.description}</p>
               </div>
               <span className={`skill-status status-${skill.finding?.status ?? "not_assessed"}`}>
-                {statusLabels[skill.finding?.status ?? "not_assessed"]}
+                {skill.evidence?.kind === "quiz" && skill.finding?.status === "demonstrated"
+                  ? "Shown in quiz examples"
+                  : statusLabels[skill.finding?.status ?? "not_assessed"]}
               </span>
+              {skill.evidence && (
+                <div className="skill-evidence">
+                  <p>
+                    {skill.evidence.scope ??
+                      skill.evidence.caveat ??
+                      "An observation is recorded for this skill."}
+                  </p>
+                  <p className="field-help">
+                    {skill.evidence.kind === "quiz"
+                      ? "Quiz observation"
+                      : skill.evidence.kind.replaceAll("_", " ")}{" "}
+                    · {skill.evidence.rubric_version ?? "Unassessed source"}
+                  </p>
+                  {skill.evidence.assessment_attempt_id && (
+                    <Link
+                      href={`/assessment/${skill.evidence.assessment_attempt_id}`}
+                      className="text-link"
+                    >
+                      View the answers and evidence
+                    </Link>
+                  )}
+                </div>
+              )}
             </article>
           ))}
         </div>
       </section>
+      {!!recentEvidence.length && (
+        <section className="form-section" aria-label="Recent skill evidence">
+          <h2>Your observed learning</h2>
+          <p>
+            Previous observations stay in your history. A short quiz supports only its stated scope;
+            it doesn’t certify project or career readiness.
+          </p>
+          <ul className="evidence-history">
+            {recentEvidence.map((evidence) => (
+              <li key={evidence.id}>
+                <strong>
+                  {skills.find((skill) => skill.id === evidence.skill_id)?.name ??
+                    evidence.skill_id}
+                </strong>
+                <p>{evidence.scope ?? evidence.caveat}</p>
+                <span className="field-help">
+                  {evidence.kind === "quiz" ? "Quiz" : evidence.kind.replaceAll("_", " ")} ·{" "}
+                  {evidence.outcome === "meets_criteria"
+                    ? "Met the scoped criteria"
+                    : evidence.outcome === "needs_practice"
+                      ? "Review the observed example"
+                      : "Limited observation"}{" "}
+                  ·{" "}
+                  {new Intl.DateTimeFormat("en", {
+                    dateStyle: "medium",
+                    timeZone: "Africa/Lagos",
+                  }).format(new Date(evidence.evaluated_at))}
+                </span>
+                {evidence.assessment_attempt_id && (
+                  <Link
+                    href={`/assessment/${evidence.assessment_attempt_id}`}
+                    className="text-link"
+                  >
+                    Review this check
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <section className="recent-section">
         <div className="section-title">
           <h2>A little history</h2>
@@ -150,7 +222,11 @@ export default async function Dashboard() {
                     ? "You saved a course draft"
                     : event.type === "course_confirmed"
                       ? "You confirmed your course context"
-                      : "You updated your learning context"}
+                      : event.type === "diagnostic_started"
+                        ? "You began a JavaScript check"
+                        : event.type === "diagnostic_evaluated"
+                          ? "You saved observed skill evidence"
+                          : "You updated your learning context"}
               </span>
               <time dateTime={event.occurred_at}>
                 {new Intl.DateTimeFormat("en", {

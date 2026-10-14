@@ -470,11 +470,14 @@ export function CourseEditor({
                   <Check size={20} aria-hidden="true" /> Your place is saved.
                 </h2>
                 <p>
-                  Return here whenever you’re ready. Skill checks and mentor guidance are coming
-                  next.
+                  Return here whenever you’re ready. A short JavaScript check can help you see what
+                  you remember while keeping this course and your place intact.
                 </p>
                 <Link className="text-link" href="/dashboard">
                   Back to your Passport
+                </Link>
+                <Link className="text-link" href="/assessment">
+                  Check what you remember
                 </Link>
               </div>
             )}

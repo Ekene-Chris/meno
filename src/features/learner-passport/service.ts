@@ -29,14 +29,42 @@ export async function getPassport(db: SupabaseClient<Database>, userId: string) 
       "We couldn't load your Passport. Please try again.",
     );
   }
+  const evidenceIds = (findings.data ?? []).flatMap((finding) =>
+    finding.last_evidence_id ? [finding.last_evidence_id] : [],
+  );
+  const [currentEvidence, recentEvidence] = await Promise.all([
+    evidenceIds.length
+      ? db.from("skill_evidence").select("*").eq("user_id", userId).in("id", evidenceIds)
+      : Promise.resolve({ data: [], error: null }),
+    db
+      .from("skill_evidence")
+      .select("*")
+      .eq("user_id", userId)
+      .order("evaluated_at", { ascending: false })
+      .order("id")
+      .limit(20),
+  ]);
+  if (currentEvidence.error || recentEvidence.error)
+    throw new AppError(
+      503,
+      "PASSPORT_UNAVAILABLE",
+      "We couldn’t load your evidence. Please retry.",
+    );
   return {
     profile: profile.data,
     goal: goal.data,
     skills: (skills.data ?? []).map((skill) => ({
       ...skill,
       finding: findings.data?.find((item) => item.skill_id === skill.id) ?? null,
+      evidence:
+        currentEvidence.data?.find(
+          (evidence) =>
+            evidence.id ===
+            findings.data?.find((item) => item.skill_id === skill.id)?.last_evidence_id,
+        ) ?? null,
     })),
     events: events.data ?? [],
+    recentEvidence: recentEvidence.data ?? [],
   };
 }
 

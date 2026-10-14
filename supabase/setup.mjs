@@ -18,6 +18,7 @@ writeFileSync(".env.local", [
   "NEXT_PUBLIC_APP_URL=http://localhost:3000",
   `TEST_DATABASE_URL=${settings.DB_URL}`,
   `SUPABASE_TEST_SERVICE_ROLE_KEY=${settings.SERVICE_ROLE_KEY}`,
+  `SUPABASE_SECRET_KEY=${settings.SERVICE_ROLE_KEY}`,
   "",
 ].join("\n"), { mode: 0o600, flag: "wx" });
 console.log("Created .env.local for local development. Credential values were not printed.");
