@@ -67,4 +67,6 @@ vercel deploy --prod
 
 Local lint, typecheck, fifty unit tests, and twelve browser journeys pass, including exact hosted-origin boundaries and the first-save navigation regression. The existing database authorization checks remain part of CI. Hosted verification uses only temporary, explicitly identified development learners and removes them afterward; the regular test suite is never pointed at the hosted project.
 
+The live check passed public sign-up without confirmation, Passport creation, course save/confirmation, checkpoint reload, sign-out/reentry, mobile layout, and cross-user API/page denial. Both temporary hosted accounts and their associated course/Passport data were removed. The authenticated catalog contains fourteen skills, and course mapping leaves assessed skill findings unchanged. Sign-up reached onboarding in approximately four and two seconds for the two checked accounts.
+
 Official references: [Supabase migrations](https://supabase.com/docs/guides/deployment/database-migrations), [Auth configuration](https://supabase.com/docs/guides/auth/general-configuration), [SMTP restrictions](https://supabase.com/docs/guides/auth/auth-smtp), and [Vercel system environment variables](https://vercel.com/docs/environment-variables/system-environment-variables).

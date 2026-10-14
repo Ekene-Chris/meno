@@ -1,6 +1,6 @@
 # Meno implementation plan
 
-Updated on 13 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1's bounded extraction is next.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 was merged through [PR #2](https://github.com/Ekene-Chris/meno/pull/2) with passing CI. Hosted development setup is recorded in [HOSTED_DEVELOPMENT.md](HOSTED_DEVELOPMENT.md). The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
+Updated on 14 October 2026. This is the working delivery roadmap for the complete Meno experience, from the committed foundation through a usable pilot and later expansion. Foundation commit: `97c2c9e`. Repository organization, bootstrap, and Slice 1 are implemented. Slice 2 has begun: **C1 course-context persistence and C2's manual course editor are complete. AI1's bounded extraction is next.** C1 was merged through [PR #1](https://github.com/Ekene-Chris/meno/pull/1) with passing CI; C2 was merged through [PR #2](https://github.com/Ekene-Chris/meno/pull/2) with passing CI. Hosted development setup is recorded in [HOSTED_DEVELOPMENT.md](HOSTED_DEVELOPMENT.md). The full mentor demonstration is not yet complete. See the [root README](../README.md) for the current setup.
 
 Build a persistent mentor that helps a returning learner take a useful next step and see why it matters. The first complete demonstration runs from existing course context to diagnostic evidence, accepted recovery work, evaluated submission, and a changed opportunity requirement gap.
 
@@ -209,7 +209,7 @@ Social feeds, a full LMS, broad crawling, autonomous agents, and application aut
 
 ## First implementation work package — delivered
 
-The first code change contains the app shell, pinned dependencies and scripts, environment example and local setup helper, auth/session integration, profile/goal/skills/evidence migrations with grants and RLS, onboarding, persistent dashboard, and authorization tests. Shared skills have no fabricated assessment results. No model provider, course importer, diagnostic, recovery path, opportunity feature, or deployment is implemented yet.
+The first code change contains the app shell, pinned dependencies and scripts, environment example and local setup helper, auth/session integration, profile/goal/skills/evidence migrations with grants and RLS, onboarding, persistent dashboard, and authorization tests. Shared skills have no fabricated assessment results. At that foundation milestone, no model provider, course importer, diagnostic, recovery path, opportunity feature, or deployment was implemented. C1/C2 and hosted development followed as recorded below.
 
 Local verification on 13 October 2026: clean `npm ci` completed with no reported dependency vulnerabilities; Biome lint, TypeScript, 28 unit tests, 13 database integration tests, 3 browser journeys, and the production build passed. An additional browser smoke check against the production server verified account creation, Passport saving, sign-out, and sign-in persistence; its temporary learner was removed. Desktop, mobile, and production Passport screenshots were inspected. The setup helper produced complete private local configuration and refused to overwrite it. Browser build assets contained no privileged test configuration. The CI workflow is configured but has not run remotely.
 
@@ -353,7 +353,7 @@ Track minimal events such as assessment completion, milestone acceptance/complet
 | Provider, model, and spend | Configurable provider adapter; no hard-coded model/pricing assumption | AI1 live calls; founder supplies credentials and operating budget when needed |
 | Resources and opportunities | Small vetted resource set; clearly labeled fictional requirements first | P1/M1 fixtures; real sources checked before live publication |
 | Mentor/source retention | Minimum needed for continuity; user-visible policy | M1 persistence, then B2 for pilot export/deletion |
-| Hosting and release | Proposed hosting target remains unprovisioned | B3; review current service constraints and costs then |
+| Hosting and release | Hosted development uses Vercel and Supabase; the verified pilot release remains unprovisioned | B3; review current service constraints and costs then |
 | Reminders/languages/funding | In-app English prototype, stored language preference, free-access ambition | Pilot feedback and Stage 8 prioritization |
 
 No question in this table blocks unrelated local work. Record a working default as a proposal, an implemented technical choice as adopted, and a founder-confirmed product decision only when it is actually confirmed.

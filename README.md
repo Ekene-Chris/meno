@@ -38,7 +38,7 @@ Open [Meno locally](http://localhost:3000), choose **Create an account**, and co
 
 `db:env` creates an ignored `.env.local` from the local Supabase stack without printing credentials. It refuses to overwrite an existing file: skip that step on an already configured checkout. [`.env.example`](.env.example) documents each variable. Keep `NEXT_PUBLIC_APP_URL` equal to the browser origin, including the port, when changing the development address.
 
-The local stack uses API port `54321`, database port `54322`, and email preview port `54324`. Email confirmation is disabled **only in the local development configuration**. Hosted authentication and email delivery will need separate configuration before deployment.
+The local stack uses API port `54321`, database port `54322`, and email preview port `54324`. Email confirmation is disabled locally and, by the founder’s choice, on the hosted development project. The [hosted guide](docs/HOSTED_DEVELOPMENT.md) records that configuration; verified pilot authentication and email delivery remain future work.
 
 After pulling a feature branch with new migrations, run `npm run db:migrate` against the running local stack. It applies pending migrations without resetting existing learner data. New checkouts also use this command; already-applied migrations are skipped.
 
